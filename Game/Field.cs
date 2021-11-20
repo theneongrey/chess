@@ -45,9 +45,9 @@ namespace GameLogic
             return position.X + position.Y * 8;
         }
 
-        internal IEnumerable<APiece> GetPiecesByTypeAndColor<T>(PieceColor color) where T : APiece
+        internal bool IsCellEmpty(Position position)
         {
-            return GetPieceListByColor(color).OfType<T>();
+            return GetPieceAt(position) == null;
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace GameLogic
         /// </summary>
         /// <param name="position">Cell location</param>
         /// <returns>A pice or null</returns>
-        internal APiece? GetPieceAt(Position position)
+        public APiece? GetPieceAt(Position position)
         {
             if (position.X < 0 || position.X > 7 || position.Y < 0 || position.Y > 7)
             {

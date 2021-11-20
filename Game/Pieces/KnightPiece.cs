@@ -13,14 +13,15 @@ namespace GameLogic.Pieces
             _basicMovements = new JumpMovement();
         }
 
-        protected override IEnumerable<Position> GetAllowedPositions(Field field)
+        protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Field field)
         {
-            return _basicMovements.GetAllowedPositions(Position);
+            var filteredPositions = FilterMovementForObstacles(_basicMovements.GetAllowedPositions(Position), field);
+            return filteredPositions;
         }
 
         protected override bool IsTargetPositionAllowed(Field field, Position targetPosition)
         {
-            return _basicMovements.IsTargetPositionAllowed(Position, targetPosition);
+            return field.GetPieceAt(targetPosition)?.Color != Color && _basicMovements.IsTargetPositionAllowed(Position, targetPosition);
         }
     }
 }

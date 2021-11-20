@@ -9,15 +9,18 @@
             _collections = collections;
         }
 
-        public IEnumerable<Position> GetAllowedPositions(Position startPosition)
+        public IEnumerable<IEnumerable<Position>> GetAllowedPositions(Position startPosition)
         {
-            var allowedMovement = new List<Position>();
-            foreach (var movement in _collections)
+            var result = new List<IEnumerable<Position>>();
+            foreach (var movementCollection in _collections)
             {
-                allowedMovement.AddRange(movement.GetAllowedPositions(startPosition));
+                foreach (var positionCollection in movementCollection.GetAllowedPositions(startPosition))
+                {
+                    result.Add(positionCollection);
+                }
             }
 
-            return allowedMovement;
+            return result;
         }
 
         public bool IsTargetPositionAllowed(Position currentPosition, Position targetPosition)

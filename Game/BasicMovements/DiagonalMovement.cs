@@ -9,40 +9,38 @@
             _maxRange = maxRange;
         }
 
-        public IEnumerable<Position> GetAllowedPositions(Position startPosition)
+        public IEnumerable<IEnumerable<Position>> GetAllowedPositions(Position startPosition)
         {
-            List<Position> allowedPositions = new List<Position>();
-
-            var x = startPosition.X - _maxRange - 1;
-            var y = startPosition.Y - _maxRange - 1;
-
-            do
+            var movesUpRight = new List<Position>();
+            var movesUpLeft = new List<Position>();
+            var movesDownRight = new List<Position>();
+            var movesDownLeft = new List<Position>();
+            for (var i = 1; i <= _maxRange; i++)
             {
-                ++x;
-                ++y;
-                if (x < 0 || y < 0 || x == startPosition.X)
+                var rightX = startPosition.X + i;
+                var leftX = startPosition.X - i;
+                var upY = startPosition.Y + i;
+                var downY = startPosition.Y - i;
+
+                if (rightX < 8 && upY < 8)
                 {
-                    continue;
+                    movesUpRight.Add(new Position(rightX, upY));
                 }
-
-                allowedPositions.Add(new Position(x, y));
-            } while (x < 7 && y < 7 && x-startPosition.X < _maxRange);
-
-            x = startPosition.X - _maxRange - 1;
-            y = startPosition.Y + _maxRange + 1;
-            do
-            {
-                ++x;
-                --y;
-                if (x < 0 || y > 7 || x == startPosition.X)
+                if (leftX >= 0 && upY < 8)
                 {
-                    continue;
+                    movesUpLeft.Add(new Position(leftX, upY));
                 }
+                if (rightX < 8 && downY >= 0)
+                {
+                    movesDownRight.Add(new Position(rightX, downY));
+                }
+                if (leftX >= 0 && downY >= 0)
+                {
+                    movesDownLeft.Add(new Position(leftX, downY));
+                }
+            }
 
-                allowedPositions.Add(new Position(x, y));
-            } while (x < 7 && y > 0 && x - startPosition.X < _maxRange);
-
-            return allowedPositions;
+            return new[] { movesUpRight, movesUpLeft, movesDownRight, movesDownLeft };
         }
 
         public bool IsTargetPositionAllowed(Position currentPosition, Position targetPosition)

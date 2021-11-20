@@ -9,29 +9,39 @@
             _maxRange = maxRange;
         }
 
-        public IEnumerable<Position> GetAllowedPositions(Position startPosition)
+        public IEnumerable<IEnumerable<Position>> GetAllowedPositions(Position startPosition)
         {
-            List<Position> allowedPositions = new List<Position>();
-            for (var x = Math.Max(startPosition.X - _maxRange, 0); x <= Math.Min(startPosition.X + _maxRange, 7); x++)
+            var movesUp = new List<Position>();
+            var movesDown = new List<Position>();
+            var movesLeft = new List<Position>();
+            var movesRight = new List<Position>();
+
+            for (var i = 1; i <= _maxRange; i++)
             {
-                if (startPosition.X == x)
+                var up = startPosition.Y + i;
+                var down = startPosition.Y - i;
+                var left = startPosition.X - i;
+                var right = startPosition.X + i;
+
+                if (up < 8)
                 {
-                    continue;
+                    movesUp.Add(new Position(startPosition.X, up));
                 }
-
-                allowedPositions.Add(new Position(x, startPosition.Y));
-            }
-            for (var y = Math.Max(startPosition.Y - _maxRange, 0); y <= Math.Min(startPosition.Y + _maxRange, 7); y++)
-            {
-                if (startPosition.Y == y)
+                if (down >= 0)
                 {
-                    continue;
+                    movesDown.Add(new Position(startPosition.X, down));
                 }
-
-                allowedPositions.Add(new Position(startPosition.X, y));
+                if (left >= 0)
+                {
+                    movesLeft.Add(new Position(left, startPosition.Y));
+                }
+                if (right < 8)
+                {
+                    movesRight.Add(new Position(right, startPosition.Y));
+                }
             }
 
-            return allowedPositions;
+            return new[] { movesUp, movesDown, movesLeft, movesRight };
         }
 
         public bool IsTargetPositionAllowed(Position currentPosition, Position targetPosition)

@@ -13,18 +13,59 @@ namespace GameLogic.Pieces
             _basicMovements = new BasicMovementCollection(new DiagonalMovement(1), new HorizontalVerticalMovement(1));
         }
 
-        protected override IEnumerable<Position> GetAllowedPositions(Field field)
+        private bool IsLeftCastlingPossible(Field field)
         {
-            var allowedPositions = new List<Position>(_basicMovements.GetAllowedPositions(Position));
+            var row = Position.Y;
+            var leftRook = field.GetPieceAt(new Position(0, row));
+
+            if (leftRook is not RookPiece || leftRook.WasMoved)
+            {
+                return false;
+            }
+
+            for (var i = 1; i < 4; i++)
+            {
+                if (!field.IsCellEmpty(new Position(i, row)))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool IsRightCastlingPossible(Field field)
+        {
+            var row = Position.Y;
+            var leftRook = field.GetPieceAt(new Position(0, row));
+
+            if (leftRook is not RookPiece || leftRook.WasMoved)
+            {
+                return false;
+            }
+            
+            if (!field.IsCellEmpty(new Position(5, row)) && 
+                !field.IsCellEmpty(new Position(6, row)))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Field field)
+        {
+            var filteredPositions = FilterMovementForObstacles(_basicMovements.GetAllowedPositions(Position), field);
+            var allowedPositions = new List<IEnumerable<Position>>(filteredPositions);
             if (!WasMoved)
             {
-                var rooks = field.GetPiecesByTypeAndColor<RookPiece>(Color);
-                foreach(var rook in rooks)
+                if (IsLeftCastlingPossible(field)) 
+                { 
+                    allowedPositions.Add(new[] { new Position(0, Position.Y) });
+                }
+                if (IsRightCastlingPossible(field))
                 {
-                    if (!rook.WasMoved)
-                    {
-                        allowedPositions.Add(rook.Position);
-                    }
+                    allowedPositions.Add(new[] { new Position(7, Position.Y) });
                 }
             }
 
@@ -35,19 +76,22 @@ namespace GameLogic.Pieces
         {
             if (!_basicMovements.IsTargetPositionAllowed(Position, targetPosition))
             {
-                var rooks = field.GetPiecesByTypeAndColor<RookPiece>(Color);
-                foreach (var rook in rooks)
+                if (!WasMoved && targetPosition.Y == Position.Y) 
                 {
-                    if (!rook.WasMoved && rook.Position == targetPosition)
+                    if (targetPosition.X == 0)
                     {
-                        return true;
+                        return IsLeftCastlingPossible(field);
+                    }
+                    if (targetPosition.X == 7)
+                    {
+                        return IsRightCastlingPossible(field);
                     }
                 }
 
                 return false;
             }
 
-            return true;
+            return field.GetPieceAt(targetPosition)?.Color != Color;
         }
     }
 }

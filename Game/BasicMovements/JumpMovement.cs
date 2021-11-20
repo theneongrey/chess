@@ -15,9 +15,9 @@
             (2, -1)
         };
 
-        public IEnumerable<Position> GetAllowedPositions(Position startPosition)
+        public IEnumerable<IEnumerable<Position>> GetAllowedPositions(Position startPosition)
         {
-            var result = new List<Position>();
+            var result = new List<Position[]>();
             
             foreach (var position in _allowedJumps)
             {
@@ -26,7 +26,7 @@
 
                 if (newX >= 0 && newY >= 0 && newX <= 7 && newY <= 7)
                 {
-                    result.Add(new Position(newX, newY));
+                    result.Add(new[] { new Position(newX, newY) });
                 }
             }
 

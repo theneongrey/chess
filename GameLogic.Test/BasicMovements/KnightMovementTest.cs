@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using GameLogic.BasicMovements;
+using System.Linq;
 using Xunit;
 
 namespace GameLogic.Test.BasicMovements
@@ -10,20 +11,24 @@ namespace GameLogic.Test.BasicMovements
         public void KnightAllowedPositions()
         {
             var movement = new JumpMovement();
-            var actualMovements = movement.GetAllowedPositions(new Position(5, 5));
+            var actualMovements = movement.GetAllowedPositions(new Position(5, 5)).ToArray();
             var expectedMovements = new[]
             {
-                new Position(4,7),
-                new Position(6,7),
-                new Position(4,3),
-                new Position(6,3),
-                new Position(7,4),
-                new Position(7,6),
-                new Position(3,4),
-                new Position(3,6)
+                new [] { new Position(6,7) },
+                new [] { new Position(4,7) },
+                new [] { new Position(4,3) },
+                new [] { new Position(6,3) },
+                new [] { new Position(7,6) },
+                new [] { new Position(3,6) },
+                new [] { new Position(3,4) },
+                new [] { new Position(7,4) }
             };
 
-            actualMovements.Should().HaveSameCount(expectedMovements).And.Contain(expectedMovements);
+            actualMovements.Should().HaveSameCount(expectedMovements);
+            for (var i = 0; i < expectedMovements.Length; i++)
+            {
+                actualMovements[i].Should().HaveSameCount(expectedMovements[i]).And.Contain(expectedMovements[i]);
+            }
         }
 
         [Fact]

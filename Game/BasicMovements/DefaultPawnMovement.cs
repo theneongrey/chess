@@ -16,19 +16,21 @@
             return _direction == 1 ? 1 : 6;
         }
 
-        public IEnumerable<Position> GetAllowedPositions(Position startPosition)
+        public IEnumerable<IEnumerable<Position>> GetAllowedPositions(Position startPosition)
         {
             if (startPosition.Y == GetStartY())
             {
-                return new [] 
-                { 
-                    new Position(startPosition.X, startPosition.Y + _direction),
-                    new Position(startPosition.X, startPosition.Y + _direction + _direction)
-                };
+                return new[] {
+                    new[]
+                        {
+                            new Position(startPosition.X, startPosition.Y + _direction),
+                            new Position(startPosition.X, startPosition.Y + _direction + _direction)
+                        }
+                    };
             }
             else
             {
-                return new[] { new Position(startPosition.X, startPosition.Y + _direction) };
+                return new[] { new[] { new Position(startPosition.X, startPosition.Y + _direction) } };
             }
         }
 

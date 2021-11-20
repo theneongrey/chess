@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using GameLogic.BasicMovements;
+using System.Linq;
 using Xunit;
 
 namespace GameLogic.Test.BasicMovements
@@ -14,10 +15,11 @@ namespace GameLogic.Test.BasicMovements
             var expectedMovements = new[]
             {
                 new Position(1,2),
-                new Position(1,3)
+                new Position(1,3) 
             };
 
-            actualMovements.Should().HaveSameCount(expectedMovements).And.Contain(expectedMovements);
+            actualMovements.Should().ContainSingle();
+            actualMovements.First().Should().ContainInOrder(expectedMovements);
         }
 
         [Fact]
@@ -30,7 +32,8 @@ namespace GameLogic.Test.BasicMovements
                 new Position(1,4)
             };
 
-            actualMovements.Should().HaveSameCount(expectedMovements).And.Contain(expectedMovements);
+            actualMovements.Should().ContainSingle();
+            actualMovements.First().Should().ContainInOrder(expectedMovements);
         }
 
         [Fact]
@@ -44,7 +47,8 @@ namespace GameLogic.Test.BasicMovements
                 new Position(1,4)
             };
 
-            actualMovements.Should().HaveSameCount(expectedMovements).And.Contain(expectedMovements);
+            actualMovements.Should().ContainSingle();
+            actualMovements.First().Should().ContainInOrder(expectedMovements);
         }
 
         [Fact]
@@ -57,7 +61,8 @@ namespace GameLogic.Test.BasicMovements
                 new Position(1,2)
             };
 
-            actualMovements.Should().HaveSameCount(expectedMovements).And.Contain(expectedMovements);
+            actualMovements.Should().ContainSingle();
+            actualMovements.First().Should().ContainInOrder(expectedMovements);
         }
 
         [Fact]

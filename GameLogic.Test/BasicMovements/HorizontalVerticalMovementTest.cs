@@ -1,5 +1,6 @@
 using FluentAssertions;
 using GameLogic.BasicMovements;
+using System.Linq;
 using Xunit;
 
 namespace GameLogic.Test.BasicMovements
@@ -10,16 +11,20 @@ namespace GameLogic.Test.BasicMovements
         public void KingAllowedHVPositions()
         {
             var movement = new HorizontalVerticalMovement(1);
-            var actualMovements = movement.GetAllowedPositions(new Position(5, 5));
+            var actualMovements = movement.GetAllowedPositions(new Position(5, 5)).ToArray();
             var expectedMovements = new[]
             {
-                new Position(4,5),
-                new Position(5,4),
-                new Position(5,6),
-                new Position(6,5),
+                new [] { new Position(5,6) },
+                new [] { new Position(5,4) },
+                new [] { new Position(4,5) },
+                new [] { new Position(6,5) },
             };
 
-            actualMovements.Should().HaveSameCount(expectedMovements).And.Contain(expectedMovements);
+            actualMovements.Should().HaveSameCount(expectedMovements);
+            for (var i = 0; i < expectedMovements.Length; i++)
+            {
+                actualMovements[i].Should().HaveSameCount(expectedMovements[i]).And.ContainInOrder(expectedMovements[i]);
+            }
         }
 
         [Fact]
@@ -48,26 +53,42 @@ namespace GameLogic.Test.BasicMovements
         public void RookAllowedPosition()
         {
             var movement = new HorizontalVerticalMovement();
-            var actualMovements = movement.GetAllowedPositions(new Position(1, 2));
+            var actualMovements = movement.GetAllowedPositions(new Position(1, 2)).ToArray();
             var expectedMovements = new[]
             {
-                new Position(1,0),
-                new Position(1,1),
-                new Position(1,3),
-                new Position(1,4),
-                new Position(1,5),
-                new Position(1,6),
-                new Position(1,7),
-                new Position(0,2), 
-                new Position(2,2), 
-                new Position(3,2), 
-                new Position(4,2), 
-                new Position(5,2), 
-                new Position(6,2), 
-                new Position(7,2),
+                new[] 
+                {
+                    new Position(1,3),
+                    new Position(1,4),
+                    new Position(1,5),
+                    new Position(1,6),
+                    new Position(1,7)
+                },
+                new[]
+                {
+                    new Position(1,1),
+                    new Position(1,0),
+                },
+                new[]
+                {
+                    new Position(0,2),
+                },
+                new[]
+                {
+                    new Position(2,2),
+                    new Position(3,2),
+                    new Position(4,2),
+                    new Position(5,2),
+                    new Position(6,2),
+                    new Position(7,2),
+                },
             };
 
-            actualMovements.Should().HaveSameCount(expectedMovements).And.Contain(expectedMovements);
+            actualMovements.Should().HaveSameCount(expectedMovements);
+            for (var i = 0; i < expectedMovements.Length; i++)
+            {
+                actualMovements[i].Should().HaveSameCount(expectedMovements[i]).And.Contain(expectedMovements[i]);
+            }
         }
 
         [Fact]
