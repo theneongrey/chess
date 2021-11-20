@@ -5,10 +5,12 @@
         public Position Position { get; private set; }
         public bool WasMoved { get; private set; }
         public PieceColor Color { get; private set; }
+        public abstract char Identifier { get; }
 
         protected APiece(Position startPosition, PieceColor color)
         {
             Position = startPosition;
+            Color = color;
         }
 
         protected IEnumerable<Position> FilterAllowedMovements(IEnumerable<Position> positions, Field field)
@@ -36,6 +38,11 @@
         public bool IsMoveAllowed(Field field, Position targetPosition)
         {
             throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return (Color == PieceColor.White ? "W" : "B") + Identifier;
         }
     }
 }

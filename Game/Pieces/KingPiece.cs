@@ -5,6 +5,8 @@ namespace GameLogic.Pieces
     public class KingPiece : APiece
     {
         private IBasicMovement _basicMovements;
+        public override char Identifier => 'K';
+
 
         public KingPiece(Position startPosition, PieceColor color) : base(startPosition, color)
         {

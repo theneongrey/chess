@@ -1,4 +1,5 @@
 ﻿using GameLogic.Pieces;
+using System.Text;
 
 namespace GameLogic 
 { 
@@ -9,24 +10,29 @@ namespace GameLogic
         private List<APiece> _whitePieces;
         private APiece[] _cells;
 
-        public Field()
+        internal Field()
         {
             _blackPieces = new List<APiece>();
             _whitePieces = new List<APiece>();
             _allPieces = new List<APiece>();
+            _cells = new APiece[64];
         }
 
-        private void InitField()
+        internal bool AddPiece(APiece piece)
         {
+            var cellIndex = GetCellIndexByPosition(piece.Position);
 
-        }
+            if (_cells[cellIndex] != null)
+            {
+                return false;
+            }
 
-        private void AddPiece(APiece piece)
-        {
+            _cells[cellIndex] = piece;
             var coloredList = GetPieceListByColor(piece.Color);
             coloredList.Add(piece);
             _allPieces.Add(piece);
-            _cells[GetCellIndexByPosition(piece.Position)] = piece;
+
+            return true;
         }
 
         private List<APiece> GetPieceListByColor(PieceColor color)
@@ -57,6 +63,26 @@ namespace GameLogic
             }
 
             return _cells[GetCellIndexByPosition(position)];
+        }
+
+        public override string ToString()
+        {
+            var stringBuilder = new StringBuilder();
+
+            for (var y = 7; y >= 0; y--)
+            {
+                for (var x = 0; x < 8; x++)
+                {
+                    var cell = y * 8 + x;
+                    var piece = _cells[cell];
+
+                    stringBuilder.Append(piece == null ? "  " : piece.ToString());
+                }
+
+                stringBuilder.AppendLine();
+            }
+
+            return stringBuilder.ToString();
         }
     }
 }

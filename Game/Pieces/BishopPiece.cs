@@ -5,6 +5,7 @@ namespace GameLogic.Pieces
     public class BishopPiece : APiece
     {
         private IBasicMovement _basicMovements;
+        public override char Identifier => 'B';
 
         public BishopPiece(Position startPosition, PieceColor color) : base(startPosition, color)
         {
