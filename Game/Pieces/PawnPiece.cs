@@ -6,7 +6,7 @@ namespace GameLogic.Pieces
     {
         private IBasicMovement _basicMovements;
         private int _movementDirection;
-        public override char Identifier => 'P';
+        public override string Identifier => "P";
 
 
         public PawnPiece(Position startPosition, PieceColor color) : base(startPosition, color)

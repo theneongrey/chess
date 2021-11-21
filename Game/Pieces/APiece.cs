@@ -5,7 +5,7 @@
         public Position Position { get; private set; }
         public bool WasMoved { get; private set; }
         public PieceColor Color { get; private set; }
-        public abstract char Identifier { get; }
+        public abstract string Identifier { get; }
 
         protected APiece(Position startPosition, PieceColor color)
         {
@@ -70,7 +70,7 @@
 
         public override string ToString()
         {
-            return (Color == PieceColor.White ? "W" : "B") + Identifier;
+            return (Color == PieceColor.White ? Identifier.ToLower() : Identifier.ToUpper());
         }
     }
 }

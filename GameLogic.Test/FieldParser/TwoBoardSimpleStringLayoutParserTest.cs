@@ -5,26 +5,16 @@ using Xunit;
 
 namespace GameLogic.Test.FieldParser
 {
-    public class SimpleStringLayoutParserTest
+    public class TwoBoardSimpleStringLayoutParserTest
     {
         [Fact]
         public void DefaultLayoutTest()
         {
-            var expectedFieldDebugToString = @"BRBNBBBQBKBBBNBR
-BPBPBPBPBPBPBPBP
-                
-                
-                
-                
-WPWPWPWPWPWPWPWP
-WRWNWBWQWKWBWNWR
-";
-
-            var simpleStringLayoutParser = new SimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(SimpleStringLayoutParser.DefaultLayout);
+            var simpleStringLayoutParser = new TwoBoardSimpleStringLayoutParser();
+            var field = simpleStringLayoutParser.CreateField(TwoBoardSimpleStringLayoutParser.DefaultLayout);
             var actualFieldDebugToString = field.ToString();
 
-            actualFieldDebugToString.Should().Be(expectedFieldDebugToString);
+            actualFieldDebugToString.Should().Be(SingleBoardSimpleStringLayoutParser.DefaultLayout);
         }
 
         [Fact]
@@ -48,17 +38,16 @@ WRWNWBWQWKWBWNWR
                                  --------
 ";
 
-        var expectedFieldDebugToString = @"BQ    BRBKBBBNBR
-BP  BPBP  BPBPBP
-BB  BN  BP      
-  BP            
-          WP    
-    WN  WP      
-WPWPWPWPWK  WPWP
-WR  WBWQ  WBWNWR
-";
+        var expectedFieldDebugToString = @"Q--RKBNR
+P-PP-PPP
+B-N-P---
+-P------
+-----p--
+--n-p---
+ppppk-pp
+r-bq-bnr";
 
-            var simpleStringLayoutParser = new SimpleStringLayoutParser();
+            var simpleStringLayoutParser = new TwoBoardSimpleStringLayoutParser();
             var field = simpleStringLayoutParser.CreateField(randomLayout);
             var actualFieldDebugToString = field.ToString();
 
@@ -77,7 +66,7 @@ WR  WBWQ  WBWNWR
                                  ppppk-pp
                                  r-bq-bnr";
 
-            var simpleStringLayoutParser = new SimpleStringLayoutParser();
+            var simpleStringLayoutParser = new TwoBoardSimpleStringLayoutParser();
 
             Action act = () => simpleStringLayoutParser.CreateField(randomLayout);
 
@@ -91,7 +80,7 @@ WR  WBWQ  WBWNWR
             var randomLayout = @"------;
                                  ------";
 
-            var simpleStringLayoutParser = new SimpleStringLayoutParser();
+            var simpleStringLayoutParser = new TwoBoardSimpleStringLayoutParser();
 
             Action act = () => simpleStringLayoutParser.CreateField(randomLayout);
 
@@ -106,7 +95,7 @@ WR  WBWQ  WBWNWR
             var randomLayout = @"---k----;
                                  ---k----";
 
-            var simpleStringLayoutParser = new SimpleStringLayoutParser();
+            var simpleStringLayoutParser = new TwoBoardSimpleStringLayoutParser();
 
             Action act = () => simpleStringLayoutParser.CreateField(randomLayout);
 
@@ -120,7 +109,7 @@ WR  WBWQ  WBWNWR
             var randomLayout = @"x--k----;
                                  ---k----";
 
-            var simpleStringLayoutParser = new SimpleStringLayoutParser();
+            var simpleStringLayoutParser = new TwoBoardSimpleStringLayoutParser();
 
             Action act = () => simpleStringLayoutParser.CreateField(randomLayout);
 

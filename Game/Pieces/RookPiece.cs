@@ -5,7 +5,7 @@ namespace GameLogic.Pieces
     internal class RookPiece : APiece
     {
         private IBasicMovement _basicMovements;
-        public override char Identifier => 'R';
+        public override string Identifier => "R";
 
         public RookPiece(Position startPosition, PieceColor color) : base(startPosition, color)
         {

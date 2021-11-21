@@ -76,13 +76,13 @@ namespace GameLogic
                     var cell = y * 8 + x;
                     var piece = _cells[cell];
 
-                    stringBuilder.Append(piece == null ? "  " : piece.ToString());
+                    stringBuilder.Append(piece == null ? "-" : piece.ToString());
                 }
 
                 stringBuilder.AppendLine();
             }
 
-            return stringBuilder.ToString();
+            return stringBuilder.ToString().TrimEnd();
         }
     }
 }

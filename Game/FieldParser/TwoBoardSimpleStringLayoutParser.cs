@@ -2,7 +2,7 @@
 
 namespace GameLogic.FieldParser
 {
-    public class SimpleStringLayoutParser : IFieldParser
+    public class TwoBoardSimpleStringLayoutParser : IFieldParser
     {
         public static string DefaultLayout = @"--------
                                                --------
@@ -16,7 +16,7 @@ namespace GameLogic.FieldParser
                                                pppppppp";
 
         /// <summary>
-        /// Creates a field by a simple input (See DefaultLayout variable)
+        /// Creates a field by a simple input (See DefaultLayout variable) with tow separate boards for black and white.
         /// </summary>
         /// <param name="input">Simple input. ; separates sides. - defines an empty cell. a piece is defined by a small case letter. Empty space is only allowed at the beginning or the end of a row. The field must not contain any other character.</param>
         /// <returns>A set up field</returns>

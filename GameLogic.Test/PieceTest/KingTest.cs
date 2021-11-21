@@ -10,22 +10,14 @@ namespace GameLogic.Test.PieceTest
         [Fact]
         public void AllowedMovesForWhiteWithCastelingLeftAndRight()
         {
-            const string fieldLayout = @"--------
-                                         --------
+            const string fieldLayout = @"R---K--R
+                                         ----P---
                                          --------
                                          --------
                                          --------
                                          --------
                                          ----p---
-                                         r---k--r;
-                                         r---k--r
-                                         ----p---
-                                         --------
-                                         --------
-                                         --------
-                                         --------
-                                         --------
-                                         --------";
+                                         r---k--r";
 
             var expectedMoves = new[]
             {
@@ -38,7 +30,7 @@ namespace GameLogic.Test.PieceTest
             };
 
 
-            var simpleStringLayoutParser = new SimpleStringLayoutParser();
+            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
             var field = simpleStringLayoutParser.CreateField(fieldLayout);
             var king = field.GetPieceAt(new Position(4, 0));
 
@@ -50,22 +42,14 @@ namespace GameLogic.Test.PieceTest
         [Fact]
         public void AllowedMovesForBlackWithCastelingLeftAndRight()
         {
-            const string fieldLayout = @"--------
-                                         --------
+            const string fieldLayout = @"R---K--R
+                                         ----P---
                                          --------
                                          --------
                                          --------
                                          --------
                                          ----p---
-                                         r---k--r;
-                                         r---k--r
-                                         ----p---
-                                         --------
-                                         --------
-                                         --------
-                                         --------
-                                         --------
-                                         --------";
+                                         r---k--r";
 
             var expectedMoves = new[]
             {
@@ -77,8 +61,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(7,7)
             };
 
-
-            var simpleStringLayoutParser = new SimpleStringLayoutParser();
+            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
             var field = simpleStringLayoutParser.CreateField(fieldLayout);
             var king = field.GetPieceAt(new Position(4, 7));
 
@@ -90,22 +73,14 @@ namespace GameLogic.Test.PieceTest
         [Fact]
         public void AllowedMovesForWhiteWithoutCasteling()
         {
-            const string fieldLayout = @"--------
+            const string fieldLayout = @"P---K---
                                          --------
                                          --------
                                          --------
                                          --------
                                          --------
                                          ----p---
-                                         ----k--p;
-                                         p---k---
-                                         ----p---
-                                         --------
-                                         --------
-                                         --------
-                                         --------
-                                         --------
-                                         --------";
+                                         ----k--p";
 
             var expectedMoves = new[]
             {
@@ -116,7 +91,7 @@ namespace GameLogic.Test.PieceTest
             };
 
 
-            var simpleStringLayoutParser = new SimpleStringLayoutParser();
+            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
             var field = simpleStringLayoutParser.CreateField(fieldLayout);
             var king = field.GetPieceAt(new Position(4, 0));
 
@@ -128,22 +103,14 @@ namespace GameLogic.Test.PieceTest
         [Fact]
         public void AllowedMovesForBlackWithoutCasteling()
         {
-            const string fieldLayout = @"--------
-                                         --------
+            const string fieldLayout = @"P---K---
+                                         ----P---
                                          --------
                                          --------
                                          --------
                                          --------
                                          ----p---
-                                         ----k--p;
-                                         p---k---
-                                         ----p---
-                                         --------
-                                         --------
-                                         --------
-                                         --------
-                                         --------
-                                         --------";
+                                         ----k--p";
 
             var expectedMoves = new[]
             {
@@ -153,10 +120,73 @@ namespace GameLogic.Test.PieceTest
                 new Position(5,6)
             };
 
-
-            var simpleStringLayoutParser = new SimpleStringLayoutParser();
+            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
             var field = simpleStringLayoutParser.CreateField(fieldLayout);
             var king = field.GetPieceAt(new Position(4, 7));
+
+            Assert.IsType<KingPiece>(king);
+            var actualMoves = king.GetAllowedMoves(field);
+            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+        }
+
+        [Fact]
+        public void AllowedMovesWithNoObstacles()
+        {
+            const string fieldLayout = @"P---K---
+                                         ----P---
+                                         --------
+                                         --------
+                                         ----k---
+                                         --------
+                                         ----p---
+                                         -------p";
+
+            var expectedMoves = new[]
+            {
+                new Position(3,2),
+                new Position(3,3),
+                new Position(3,4),
+                new Position(4,2),
+                new Position(4,4),
+                new Position(5,2),
+                new Position(5,3),
+                new Position(5,4)
+            };
+
+            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
+            var field = simpleStringLayoutParser.CreateField(fieldLayout);
+            var king = field.GetPieceAt(new Position(4, 3));
+
+            Assert.IsType<KingPiece>(king);
+            var actualMoves = king.GetAllowedMoves(field);
+            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+        }
+
+        [Fact]
+        public void AllowedMovesWithObstacles()
+        {
+            const string fieldLayout = @"P---K---
+                                         ----P---
+                                         --------
+                                         ----pP--
+                                         ----k---
+                                         ---p----
+                                         ----p---
+                                         -------p";
+
+            var expectedMoves = new[]
+            {
+                new Position(3,3),
+                new Position(3,4),
+                new Position(4,2),
+                new Position(5,2),
+                new Position(5,3),
+                new Position(5,4)
+            };
+
+            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
+            var field = simpleStringLayoutParser.CreateField(fieldLayout);
+            var king = field.GetPieceAt(new Position(4, 3));
 
             Assert.IsType<KingPiece>(king);
             var actualMoves = king.GetAllowedMoves(field);
