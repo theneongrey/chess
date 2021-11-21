@@ -1,13 +1,11 @@
-name: Build
+name: Sonar-Build
 on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, synchronize, reopened]
 jobs:
-  build:
-    name: Build
+  test-build:
+    name: Sonar-Build
     runs-on: windows-latest
     steps:
       - name: Set up JDK 11
