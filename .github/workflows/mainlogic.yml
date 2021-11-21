@@ -1,4 +1,4 @@
-name: .NET
+name: Run-all-tests
 
 on:
   push:
@@ -21,3 +21,4 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      working-directory: ./GameLogic.Test/
