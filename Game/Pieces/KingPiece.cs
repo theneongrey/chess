@@ -44,7 +44,7 @@ namespace GameLogic.Pieces
                 return false;
             }
             
-            if (!field.IsCellEmpty(new Position(5, row)) && 
+            if (!field.IsCellEmpty(new Position(5, row)) || 
                 !field.IsCellEmpty(new Position(6, row)))
             {
                 return false;
