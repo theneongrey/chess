@@ -85,7 +85,6 @@ namespace GameLogic.Test.PieceTest
             var expectedMoves = new[]
             {
                 new Position(3,0),
-                new Position(5,0),
                 new Position(3,1),
                 new Position(5,1)
             };
@@ -115,7 +114,6 @@ namespace GameLogic.Test.PieceTest
             var expectedMoves = new[]
             {
                 new Position(3,7),
-                new Position(5,7),
                 new Position(3,6),
                 new Position(5,6)
             };
