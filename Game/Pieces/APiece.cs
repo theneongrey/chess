@@ -63,6 +63,7 @@
         {
             return CollectAllowedPositions(GetAllowedPositions(field));
         }
+
         public bool IsMoveAllowed(Field field, Position targetPosition)
         {
             return IsTargetPositionAllowed(field, targetPosition);
