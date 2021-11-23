@@ -446,21 +446,29 @@ namespace GameLogic.Test.PieceTest
             var field = simpleStringLayoutParser.CreateField(fieldLayout);
             var rook = field.GetPieceAt(new Position(3, 4));
 
+            var expectedMoves = new[]
+            {
+                new Position(0, 4),
+                new Position(1, 4),
+                new Position(2, 4),
+                new Position(4, 4),
+                new Position(5, 4),
+                new Position(6, 4),
+                new Position(7, 4),
+                new Position(3, 0),
+                new Position(3, 1),
+                new Position(3, 2),
+                new Position(3, 3),
+                new Position(3, 5),
+                new Position(3, 6),
+                new Position(3, 7)
+            };
+
             Assert.IsType<RookPiece>(rook);
-            rook?.IsMoveAllowed(field, new Position(0, 4)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(1, 4)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(2, 4)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(4, 4)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(5, 4)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(6, 4)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(7, 4)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(3, 0)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(3, 1)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(3, 2)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(3, 3)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(3, 5)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(3, 6)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(3, 7)).Should().BeTrue();
+            foreach (var move in expectedMoves)
+            {
+                rook?.IsMoveAllowed(field, move).Should().BeTrue();
+            }
         }
 
         [Fact]
@@ -475,22 +483,30 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          -------p";
 
+            var expectedMoves = new[]
+            {
+                new Position(0, 4),
+                new Position(1, 4),
+                new Position(2, 4),
+                new Position(3, 4),
+                new Position(5, 4),
+                new Position(6, 4),
+                new Position(7, 4),
+                new Position(4, 2),
+                new Position(4, 3),
+                new Position(4, 5),
+                new Position(4, 6)
+            };
+
             var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
             var field = simpleStringLayoutParser.CreateField(fieldLayout);
             var rook = field.GetPieceAt(new Position(4, 4));
 
             Assert.IsType<RookPiece>(rook);
-            rook?.IsMoveAllowed(field, new Position(0, 4)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(1, 4)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(2, 4)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(3, 4)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(5, 4)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(6, 4)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(7, 4)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(4, 2)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(4, 3)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(4, 5)).Should().BeTrue();
-            rook?.IsMoveAllowed(field, new Position(4, 6)).Should().BeTrue();
+            foreach (var move in expectedMoves)
+            {
+                rook?.IsMoveAllowed(field, move).Should().BeTrue();
+            }
         }
 
         [Fact]
@@ -509,14 +525,22 @@ namespace GameLogic.Test.PieceTest
             var field = simpleStringLayoutParser.CreateField(fieldLayout);
             var rook = field.GetPieceAt(new Position(4, 4));
 
+            var expectedMoves = new[]
+            {
+                new Position(4, 0),
+                new Position(4, 1),
+                new Position(4, 7),
+                new Position(0, 4),
+                new Position(1, 4),
+                new Position(6, 4),
+                new Position(7, 4)
+            };
+
             Assert.IsType<RookPiece>(rook);
-            rook?.IsMoveAllowed(field, new Position(4, 0)).Should().BeFalse();
-            rook?.IsMoveAllowed(field, new Position(4, 1)).Should().BeFalse();
-            rook?.IsMoveAllowed(field, new Position(4, 7)).Should().BeFalse();
-            rook?.IsMoveAllowed(field, new Position(0, 4)).Should().BeFalse();
-            rook?.IsMoveAllowed(field, new Position(1, 4)).Should().BeFalse();
-            rook?.IsMoveAllowed(field, new Position(6, 4)).Should().BeFalse();
-            rook?.IsMoveAllowed(field, new Position(7, 4)).Should().BeFalse();
+            foreach (var move in expectedMoves)
+            {
+                rook?.IsMoveAllowed(field, move).Should().BeFalse();
+            }
         }
 
         [Fact]
