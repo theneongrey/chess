@@ -72,13 +72,15 @@ namespace GameLogic.Pieces
             if (!_basicMovements.IsTargetPositionAllowed(Position, targetPosition))
             {
                 // check diagonal capture moves
-                var leftCornerPiece = field.GetPieceAt(new Position(Position.X - 1, Position.Y + _movementDirection));
-                var rightCornerPiece = field.GetPieceAt(new Position(Position.X - 1, Position.Y + _movementDirection));
-                if (leftCornerPiece != null && leftCornerPiece.Color != Color)
+                var leftCapturePosition = new Position(Position.X - 1, Position.Y + _movementDirection);
+                var rightCapturePosition = new Position(Position.X + 1, Position.Y + _movementDirection);
+                var leftCapturePiece = field.GetPieceAt(leftCapturePosition);
+                var rightCapturePiece = field.GetPieceAt(rightCapturePosition);
+                if (leftCapturePiece != null && leftCapturePiece.Color != Color && leftCapturePosition == targetPosition)
                 {
                     return true;
                 }
-                if (rightCornerPiece != null && rightCornerPiece.Color != Color)
+                if (rightCapturePiece != null && rightCapturePiece.Color != Color && rightCapturePosition == targetPosition)
                 {
                     return true;
                 }
