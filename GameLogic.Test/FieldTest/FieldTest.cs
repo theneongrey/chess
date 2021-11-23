@@ -30,8 +30,8 @@ rnbqkbnr";
             
             field.MovePiece(from, to).Should().BeTrue();
             field.GetLastMovedPiece().Should().Be(pawnPiece);
-            pawnPiece.Position.Should().Be(to);
-            pawnPiece.LastPosition.Should().Be(from);
+            pawnPiece!.Position.Should().Be(to);
+            pawnPiece!.LastPosition.Should().Be(from);
 
             var actualFieldDebugToString = field.ToString();
             actualFieldDebugToString.Should().Be(expectedField);
@@ -69,12 +69,12 @@ rnbqkbnr";
 
             field.MovePiece(from, to).Should().BeTrue();
             field.GetLastMovedPiece().Should().Be(pawnPiece);
-            pawnPiece.Position.Should().Be(to);
-            pawnPiece.LastPosition.Should().Be(from);
+            pawnPiece!.Position.Should().Be(to);
+            pawnPiece!.LastPosition.Should().Be(from);
 
             var newPieceAtTo = field.GetPieceAt(to);
             newPieceAtTo.Should().BeOfType<PawnPiece>();
-            newPieceAtTo.Color.Should().Be(PieceColor.White);
+            newPieceAtTo!.Color.Should().Be(PieceColor.White);
 
             field.GetPieceAt(from).Should().BeNull();
 

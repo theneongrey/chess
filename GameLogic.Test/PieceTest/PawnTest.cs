@@ -30,7 +30,7 @@ namespace GameLogic.Test.PieceTest
             var pawn = field.GetPieceAt(new Position(4, 1));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn?.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -56,7 +56,7 @@ namespace GameLogic.Test.PieceTest
             var pawn = field.GetPieceAt(new Position(1, 2));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn?.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -82,7 +82,7 @@ namespace GameLogic.Test.PieceTest
             var pawn = field.GetPieceAt(new Position(4, 1));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn?.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -103,7 +103,7 @@ namespace GameLogic.Test.PieceTest
             var pawn = field.GetPieceAt(new Position(4, 1));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn?.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(field);
             actualMoves.Should().BeEmpty();
         }
 
@@ -124,7 +124,7 @@ namespace GameLogic.Test.PieceTest
             var pawn = field.GetPieceAt(new Position(1, 2));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn?.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(field);
             actualMoves.Should().BeEmpty();
         }
 
@@ -152,7 +152,7 @@ namespace GameLogic.Test.PieceTest
             var pawn = field.GetPieceAt(new Position(5, 2));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn?.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -180,7 +180,7 @@ namespace GameLogic.Test.PieceTest
             var pawn = field.GetPieceAt(new Position(2, 5));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn?.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -209,7 +209,7 @@ namespace GameLogic.Test.PieceTest
             field.MovePiece(new Position(4, 6), new Position(4, 4));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn?.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -238,7 +238,7 @@ namespace GameLogic.Test.PieceTest
             field.MovePiece(new Position(1, 1), new Position(1, 3));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn?.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -265,7 +265,7 @@ namespace GameLogic.Test.PieceTest
             var pawn = field.GetPieceAt(new Position(5, 4));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn?.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -291,13 +291,9 @@ namespace GameLogic.Test.PieceTest
             var pawn = field.GetPieceAt(new Position(2, 3));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn?.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
-
-
-
-
 
         [Fact]
         public void StartMovesWithNoObstacle_MoveIsAllowed()
@@ -324,7 +320,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn?.IsMoveAllowed(field, move).Should().BeTrue();
+                pawn!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -345,7 +341,7 @@ namespace GameLogic.Test.PieceTest
             var pawn = field.GetPieceAt(new Position(1, 2));
 
             Assert.IsType<PawnPiece>(pawn);
-            pawn?.IsMoveAllowed(field, new Position(1, 3)).Should().BeTrue();
+            pawn!.IsMoveAllowed(field, new Position(1, 3)).Should().BeTrue();
         }
 
         [Fact]
@@ -365,7 +361,7 @@ namespace GameLogic.Test.PieceTest
             var pawn = field.GetPieceAt(new Position(4, 1));
 
             Assert.IsType<PawnPiece>(pawn);
-            pawn?.IsMoveAllowed(field, new Position(4, 2)).Should().BeTrue();
+            pawn!.IsMoveAllowed(field, new Position(4, 2)).Should().BeTrue();
         }
 
 
@@ -386,7 +382,7 @@ namespace GameLogic.Test.PieceTest
             var pawn = field.GetPieceAt(new Position(4, 1));
 
             Assert.IsType<PawnPiece>(pawn);
-            pawn?.IsMoveAllowed(field, new Position(4, 3)).Should().BeFalse();
+            pawn!.IsMoveAllowed(field, new Position(4, 3)).Should().BeFalse();
         }
 
         [Fact]
@@ -414,7 +410,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn?.IsMoveAllowed(field, move).Should().BeFalse();
+                pawn!.IsMoveAllowed(field, move).Should().BeFalse();
             }
         }
 
@@ -435,7 +431,7 @@ namespace GameLogic.Test.PieceTest
             var pawn = field.GetPieceAt(new Position(1, 2));
 
             Assert.IsType<PawnPiece>(pawn);
-            pawn?.IsMoveAllowed(field, new Position(1, 3)).Should().BeFalse();
+            pawn!.IsMoveAllowed(field, new Position(1, 3)).Should().BeFalse();
         }
 
         [Fact]
@@ -464,7 +460,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn?.IsMoveAllowed(field, move).Should().BeTrue();
+                pawn!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -494,7 +490,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn?.IsMoveAllowed(field, move).Should().BeTrue();
+                pawn!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -525,7 +521,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn?.IsMoveAllowed(field, move).Should().BeTrue();
+                pawn!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -553,7 +549,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn?.IsMoveAllowed(field, move).Should().BeFalse();
+                pawn!.IsMoveAllowed(field, move).Should().BeFalse();
             }
         }
 
@@ -584,7 +580,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn?.IsMoveAllowed(field, move).Should().BeTrue();
+                pawn!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -612,7 +608,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn?.IsMoveAllowed(field, move).Should().BeFalse();
+                pawn!.IsMoveAllowed(field, move).Should().BeFalse();
             }
         }
     }

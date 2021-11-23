@@ -36,7 +36,7 @@ namespace GameLogic.Test.PieceTest
             var knight = field.GetPieceAt(new Position(4, 4));
 
             Assert.IsType<KnightPiece>(knight);
-            var actualMoves = knight?.GetAllowedMoves(field);
+            var actualMoves = knight!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -68,7 +68,7 @@ namespace GameLogic.Test.PieceTest
             var bishop = field.GetPieceAt(new Position(4, 4));
 
             Assert.IsType<KnightPiece>(bishop);
-            var actualMoves = bishop?.GetAllowedMoves(field);
+            var actualMoves = bishop!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -103,7 +103,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<KnightPiece>(knight);
             foreach (var move in performedMoves)
             {
-                knight?.IsMoveAllowed(field, move).Should().BeTrue();
+                knight!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -137,7 +137,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<KnightPiece>(knight);
             foreach (var move in performedMoves)
             {
-                knight?.IsMoveAllowed(field, move).Should().BeTrue();
+                knight!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -158,7 +158,7 @@ namespace GameLogic.Test.PieceTest
             var knight = field.GetPieceAt(new Position(4, 4));
 
             Assert.IsType<KnightPiece>(knight);
-            knight?.IsMoveAllowed(field, new Position(3, 2)).Should().BeFalse();
+            knight!.IsMoveAllowed(field, new Position(3, 2)).Should().BeFalse();
         }
     }
 }

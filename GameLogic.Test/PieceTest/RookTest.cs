@@ -39,7 +39,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(0, 0));
 
             Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook?.GetAllowedMoves(field);
+            var actualMoves = rook!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -75,7 +75,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(7, 0));
 
             Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook?.GetAllowedMoves(field);
+            var actualMoves = rook!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -111,7 +111,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(0, 7));
 
             Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook?.GetAllowedMoves(field);
+            var actualMoves = rook!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -147,7 +147,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(7, 7));
 
             Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook?.GetAllowedMoves(field);
+            var actualMoves = rook!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -181,7 +181,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(0, 0));
 
             Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook?.GetAllowedMoves(field);
+            var actualMoves = rook!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -215,7 +215,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(7, 0));
 
             Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook?.GetAllowedMoves(field);
+            var actualMoves = rook!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -248,7 +248,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(0, 7));
 
             Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook?.GetAllowedMoves(field);
+            var actualMoves = rook!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -281,7 +281,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(7, 7));
 
             Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook?.GetAllowedMoves(field);
+            var actualMoves = rook!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -317,7 +317,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(7, 0));
 
             Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook?.GetAllowedMoves(field);
+            var actualMoves = rook!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -351,7 +351,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(0, 7));
 
             Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook?.GetAllowedMoves(field);
+            var actualMoves = rook!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -390,7 +390,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(3, 4));
 
             Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook?.GetAllowedMoves(field);
+            var actualMoves = rook!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -426,7 +426,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(4, 4));
 
             Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook?.GetAllowedMoves(field);
+            var actualMoves = rook!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -467,7 +467,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<RookPiece>(rook);
             foreach (var move in performedMoves)
             {
-                rook?.IsMoveAllowed(field, move).Should().BeTrue();
+                rook!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -505,7 +505,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<RookPiece>(rook);
             foreach (var move in performedMoves)
             {
-                rook?.IsMoveAllowed(field, move).Should().BeTrue();
+                rook!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -539,7 +539,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<RookPiece>(rook);
             foreach (var move in performedMoves)
             {
-                rook?.IsMoveAllowed(field, move).Should().BeFalse();
+                rook!.IsMoveAllowed(field, move).Should().BeFalse();
             }
         }
 
@@ -560,7 +560,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(0, 0));
 
             Assert.IsType<RookPiece>(rook);
-            rook?.IsMoveAllowed(field, new Position(4, 0)).Should().BeTrue();
+            rook!.IsMoveAllowed(field, new Position(4, 0)).Should().BeTrue();
         }
 
         [Fact]
@@ -580,7 +580,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(7, 0));
 
             Assert.IsType<RookPiece>(rook);
-            rook?.IsMoveAllowed(field, new Position(4, 0)).Should().BeTrue();
+            rook!.IsMoveAllowed(field, new Position(4, 0)).Should().BeTrue();
         }
 
         [Fact]
@@ -600,7 +600,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(0, 7));
 
             Assert.IsType<RookPiece>(rook);
-            rook?.IsMoveAllowed(field, new Position(4, 7)).Should().BeTrue();
+            rook!.IsMoveAllowed(field, new Position(4, 7)).Should().BeTrue();
         }
 
         [Fact]
@@ -620,7 +620,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(7, 7));
 
             Assert.IsType<RookPiece>(rook);
-            rook?.IsMoveAllowed(field, new Position(4, 7)).Should().BeTrue();
+            rook!.IsMoveAllowed(field, new Position(4, 7)).Should().BeTrue();
         }
 
         [Fact]
@@ -640,7 +640,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(0, 0));
 
             Assert.IsType<RookPiece>(rook);
-            rook?.IsMoveAllowed(field, new Position(4, 0)).Should().BeFalse();
+            rook!.IsMoveAllowed(field, new Position(4, 0)).Should().BeFalse();
         }
 
         [Fact]
@@ -660,7 +660,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(7, 0));
 
             Assert.IsType<RookPiece>(rook);
-            rook?.IsMoveAllowed(field, new Position(4, 0)).Should().BeFalse();
+            rook!.IsMoveAllowed(field, new Position(4, 0)).Should().BeFalse();
         }
 
         [Fact]
@@ -680,7 +680,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(0, 7));
 
             Assert.IsType<RookPiece>(rook);
-            rook?.IsMoveAllowed(field, new Position(4, 7)).Should().BeFalse();
+            rook!.IsMoveAllowed(field, new Position(4, 7)).Should().BeFalse();
         }
 
         [Fact]
@@ -700,7 +700,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(7, 7));
 
             Assert.IsType<RookPiece>(rook);
-            rook?.IsMoveAllowed(field, new Position(4, 7)).Should().BeFalse();
+            rook!.IsMoveAllowed(field, new Position(4, 7)).Should().BeFalse();
         }
     }
 }

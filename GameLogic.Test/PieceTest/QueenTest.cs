@@ -55,7 +55,7 @@ namespace GameLogic.Test.PieceTest
             var queen = field.GetPieceAt(new Position(3, 4));
 
             Assert.IsType<QueenPiece>(queen);
-            var actualMoves = queen?.GetAllowedMoves(field);
+            var actualMoves = queen!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -95,7 +95,7 @@ namespace GameLogic.Test.PieceTest
             var queen = field.GetPieceAt(new Position(3, 4));
 
             Assert.IsType<QueenPiece>(queen);
-            var actualMoves = queen?.GetAllowedMoves(field);
+            var actualMoves = queen!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -149,7 +149,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<QueenPiece>(queen);
             foreach (var move in performedMoves)
             {
-                queen?.IsMoveAllowed(field, move).Should().BeTrue();
+                queen!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -191,7 +191,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<QueenPiece>(queen);
             foreach (var move in performedMoves)
             {
-                queen?.IsMoveAllowed(field, move).Should().BeTrue();
+                queen!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -226,7 +226,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<QueenPiece>(queen);
             foreach (var move in performedMoves)
             {
-                queen?.IsMoveAllowed(field, move).Should().BeFalse();
+                queen!.IsMoveAllowed(field, move).Should().BeFalse();
             }
         }
     }

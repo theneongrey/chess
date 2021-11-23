@@ -35,7 +35,7 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 0));
 
             Assert.IsType<KingPiece>(king);
-            var actualMoves = king?.GetAllowedMoves(field);
+            var actualMoves = king!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -66,7 +66,7 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 7));
 
             Assert.IsType<KingPiece>(king);
-            var actualMoves = king?.GetAllowedMoves(field);
+            var actualMoves = king!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -95,7 +95,7 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 0));
 
             Assert.IsType<KingPiece>(king);
-            var actualMoves = king?.GetAllowedMoves(field);
+            var actualMoves = king!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -123,7 +123,7 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 7));
 
             Assert.IsType<KingPiece>(king);
-            var actualMoves = king?.GetAllowedMoves(field);
+            var actualMoves = king!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -153,7 +153,7 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 0));
 
             Assert.IsType<KingPiece>(king);
-            var actualMoves = king?.GetAllowedMoves(field);
+            var actualMoves = king!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -182,7 +182,7 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 7));
 
             Assert.IsType<KingPiece>(king);
-            var actualMoves = king?.GetAllowedMoves(field);
+            var actualMoves = king!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -215,7 +215,7 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 3));
 
             Assert.IsType<KingPiece>(king);
-            var actualMoves = king?.GetAllowedMoves(field);
+            var actualMoves = king!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -246,7 +246,7 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 3));
 
             Assert.IsType<KingPiece>(king);
-            var actualMoves = king?.GetAllowedMoves(field);
+            var actualMoves = king!.GetAllowedMoves(field);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -279,7 +279,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<KingPiece>(king);
             foreach (var move in performedMoves)
             {
-                king?.IsMoveAllowed(field, move).Should().BeTrue();
+                king!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -312,7 +312,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<KingPiece>(king);
             foreach (var move in performedMoves)
             {
-                king?.IsMoveAllowed(field, move).Should().BeTrue();
+                king!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -333,8 +333,8 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 0));
 
             Assert.IsType<KingPiece>(king);
-            king?.IsMoveAllowed(field, new Position(0, 0)).Should().BeFalse();
-            king?.IsMoveAllowed(field, new Position(7, 0)).Should().BeFalse();
+            king!.IsMoveAllowed(field, new Position(0, 0)).Should().BeFalse();
+            king!.IsMoveAllowed(field, new Position(7, 0)).Should().BeFalse();
         }
 
         [Fact]
@@ -354,8 +354,8 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 7));
 
             Assert.IsType<KingPiece>(king);
-            king?.IsMoveAllowed(field, new Position(0, 7)).Should().BeFalse();
-            king?.IsMoveAllowed(field, new Position(7, 7)).Should().BeFalse();
+            king!.IsMoveAllowed(field, new Position(0, 7)).Should().BeFalse();
+            king!.IsMoveAllowed(field, new Position(7, 7)).Should().BeFalse();
         }
 
         [Fact]
@@ -375,8 +375,8 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 0));
 
             Assert.IsType<KingPiece>(king);
-            king?.IsMoveAllowed(field, new Position(0, 0)).Should().BeFalse();
-            king?.IsMoveAllowed(field, new Position(7, 0)).Should().BeFalse();
+            king!.IsMoveAllowed(field, new Position(0, 0)).Should().BeFalse();
+            king!.IsMoveAllowed(field, new Position(7, 0)).Should().BeFalse();
         }
 
         [Fact]
@@ -410,7 +410,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<KingPiece>(king);
             foreach (var move in performedMoves)
             {
-                king?.IsMoveAllowed(field, move).Should().BeTrue();
+                king!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -443,7 +443,7 @@ namespace GameLogic.Test.PieceTest
             Assert.IsType<KingPiece>(king);
             foreach (var move in performedMoves)
             {
-                king?.IsMoveAllowed(field, move).Should().BeTrue();
+                king!.IsMoveAllowed(field, move).Should().BeTrue();
             }
         }
 
@@ -464,7 +464,7 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 3));
 
             Assert.IsType<KingPiece>(king);
-            king?.IsMoveAllowed(field, new Position(4, 4)).Should().BeFalse();
+            king!.IsMoveAllowed(field, new Position(4, 4)).Should().BeFalse();
         }
     }
 }
