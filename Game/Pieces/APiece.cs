@@ -2,6 +2,7 @@
 {
     public abstract class APiece
     {
+        public Position LastPosition { get; private set; }
         public Position Position { get; private set; }
         public bool WasMoved { get; private set; }
         public PieceColor Color { get; private set; }
@@ -13,7 +14,7 @@
             Color = color;
         }
 
-        protected IEnumerable<IEnumerable<Position>> FilterMovementForObstacles(IEnumerable<IEnumerable<Position>> movements, Field field)
+        protected IEnumerable<IEnumerable<Position>> FilterMovementForObstacles(IEnumerable<IEnumerable<Position>> movements, Field field, bool canCaptureEnemyField = true)
         {
             var result = new List<List<Position>>();
             foreach (var positionCollection in movements)
@@ -24,7 +25,7 @@
                     var piece = field.GetPieceAt(position);
                     if (piece != null)
                     {
-                        if (piece.Color == Color)
+                        if (piece.Color == Color || !canCaptureEnemyField)
                         {
                             break;
                         }
@@ -67,6 +68,19 @@
         public bool IsMoveAllowed(Field field, Position targetPosition)
         {
             return IsTargetPositionAllowed(field, targetPosition);
+        }
+
+        public bool Move(Field field, Position targetPosition)
+        {
+            if (IsMoveAllowed(field, targetPosition))
+            {
+                LastPosition = Position;
+                Position = targetPosition;
+
+                return true;
+            }
+
+            return false;
         }
 
         public override string ToString()

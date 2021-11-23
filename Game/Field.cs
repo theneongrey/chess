@@ -8,7 +8,8 @@ namespace GameLogic
         private List<APiece> _allPieces;
         private List<APiece> _blackPieces;
         private List<APiece> _whitePieces;
-        private APiece[] _cells;
+        private APiece?[] _cells;
+        private APiece? _lastMovedPiece;
 
         internal Field()
         {
@@ -43,6 +44,37 @@ namespace GameLogic
         private int GetCellIndexByPosition(Position position)
         {
             return position.X + position.Y * 8;
+        }
+
+        private APiece? GetCapturedPiece(APiece piece, Position to)
+        {
+            // not a pawn, not the enpassant special case
+            if (piece is not PawnPiece pawn)
+            {
+                return GetPieceAt(to);
+            }
+
+            // moved forward, nothing was captured
+            if (pawn.LastPosition.X - pawn.Position.X == 0)
+            {
+                return null;
+            }
+
+            // endposition makes sense for an enpassant and targetpositon is empty
+            var pawnMovementDirection = pawn.Color == PieceColor.White ? 1 : -1;
+            if (pawnMovementDirection == 1 && pawn.Position.Y == 5 ||
+                pawnMovementDirection == -1 && pawn.Position.Y == 2 &&
+                GetPieceAt(to) == null)
+            {
+                return GetPieceAt(new Position(to.X, to.Y - pawnMovementDirection));
+            }
+
+            return GetPieceAt(to);
+        }
+
+        internal APiece? GetLastMovedPiece()
+        {
+            return _lastMovedPiece;
         }
 
         internal bool IsCellEmpty(Position position)
@@ -83,6 +115,45 @@ namespace GameLogic
             }
 
             return stringBuilder.ToString().TrimEnd();
+        }
+
+        public bool MovePiece(Position from, Position to)
+        {
+            var fromCellIndex = GetCellIndexByPosition(from);
+            var piece = _cells[fromCellIndex];
+            if (piece == null)
+            {
+                return false;
+            }
+
+            if (piece.Move(this, to))
+            {
+                var toCellIndex = GetCellIndexByPosition(to);
+
+                _lastMovedPiece = piece;
+                _cells[fromCellIndex] = null;
+
+                APiece? capturedPiece = GetCapturedPiece(piece, to);
+
+                if (capturedPiece != null)
+                {
+                    if (capturedPiece.Color == PieceColor.White)
+                    {
+                        _whitePieces.Remove(capturedPiece);
+                    }
+                    else
+                    {
+                        _blackPieces.Remove(capturedPiece);
+                    }
+                    _allPieces.Remove(capturedPiece);
+                }
+
+                _cells[toCellIndex] = piece;
+
+                return true;
+            }
+
+            return false;
         }
     }
 }
