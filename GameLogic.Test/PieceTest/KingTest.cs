@@ -262,7 +262,7 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          r---k--r";
 
-            var expectedMoves = new[]
+            var performedMoves = new[]
             {
                 new Position(3, 0),
                 new Position(5, 0),
@@ -277,7 +277,7 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 0));
 
             Assert.IsType<KingPiece>(king);
-            foreach (var move in expectedMoves)
+            foreach (var move in performedMoves)
             {
                 king?.IsMoveAllowed(field, move).Should().BeTrue();
             }
@@ -295,7 +295,7 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          r---k--r";
 
-            var expectedMoves = new[]
+            var performedMoves = new[]
             {
                 new Position(3, 7),
                 new Position(5, 7),
@@ -310,7 +310,7 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 7));
 
             Assert.IsType<KingPiece>(king);
-            foreach (var move in expectedMoves)
+            foreach (var move in performedMoves)
             {
                 king?.IsMoveAllowed(field, move).Should().BeTrue();
             }
@@ -391,7 +391,7 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          -------p";
 
-            var expectedMoves = new[]
+            var performedMoves = new[]
             {
                 new Position(3, 2),
                 new Position(3, 3),
@@ -408,7 +408,7 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 3));
 
             Assert.IsType<KingPiece>(king);
-            foreach (var move in expectedMoves)
+            foreach (var move in performedMoves)
             {
                 king?.IsMoveAllowed(field, move).Should().BeTrue();
             }
@@ -426,7 +426,7 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          -------p";
 
-            var expectedMoves = new[]
+            var performedMoves = new[]
             {
                 new Position(3, 3),
                 new Position(3, 4),
@@ -441,7 +441,7 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 3));
 
             Assert.IsType<KingPiece>(king);
-            foreach (var move in expectedMoves)
+            foreach (var move in performedMoves)
             {
                 king?.IsMoveAllowed(field, move).Should().BeTrue();
             }

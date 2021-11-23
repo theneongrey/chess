@@ -446,7 +446,7 @@ namespace GameLogic.Test.PieceTest
             var field = simpleStringLayoutParser.CreateField(fieldLayout);
             var rook = field.GetPieceAt(new Position(3, 4));
 
-            var expectedMoves = new[]
+            var performedMoves = new[]
             {
                 new Position(0, 4),
                 new Position(1, 4),
@@ -465,7 +465,7 @@ namespace GameLogic.Test.PieceTest
             };
 
             Assert.IsType<RookPiece>(rook);
-            foreach (var move in expectedMoves)
+            foreach (var move in performedMoves)
             {
                 rook?.IsMoveAllowed(field, move).Should().BeTrue();
             }
@@ -483,7 +483,7 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          -------p";
 
-            var expectedMoves = new[]
+            var performedMoves = new[]
             {
                 new Position(0, 4),
                 new Position(1, 4),
@@ -503,7 +503,7 @@ namespace GameLogic.Test.PieceTest
             var rook = field.GetPieceAt(new Position(4, 4));
 
             Assert.IsType<RookPiece>(rook);
-            foreach (var move in expectedMoves)
+            foreach (var move in performedMoves)
             {
                 rook?.IsMoveAllowed(field, move).Should().BeTrue();
             }
@@ -525,7 +525,7 @@ namespace GameLogic.Test.PieceTest
             var field = simpleStringLayoutParser.CreateField(fieldLayout);
             var rook = field.GetPieceAt(new Position(4, 4));
 
-            var expectedMoves = new[]
+            var performedMoves = new[]
             {
                 new Position(4, 0),
                 new Position(4, 1),
@@ -537,7 +537,7 @@ namespace GameLogic.Test.PieceTest
             };
 
             Assert.IsType<RookPiece>(rook);
-            foreach (var move in expectedMoves)
+            foreach (var move in performedMoves)
             {
                 rook?.IsMoveAllowed(field, move).Should().BeFalse();
             }

@@ -111,7 +111,7 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          --------";
 
-            var expectedMoves = new[]
+            var performedMoves = new[]
             {
                 new Position(0, 4),
                 new Position(1, 4),
@@ -147,7 +147,7 @@ namespace GameLogic.Test.PieceTest
             var queen = field.GetPieceAt(new Position(3, 4));
 
             Assert.IsType<QueenPiece>(queen);
-            foreach (var move in expectedMoves)
+            foreach (var move in performedMoves)
             {
                 queen?.IsMoveAllowed(field, move).Should().BeTrue();
             }
@@ -165,7 +165,7 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          ---r----";
 
-            var expectedMoves = new[]
+            var performedMoves = new[]
             {
                 new Position(1, 4),
                 new Position(2, 4),
@@ -189,7 +189,7 @@ namespace GameLogic.Test.PieceTest
             var queen = field.GetPieceAt(new Position(3, 4));
 
             Assert.IsType<QueenPiece>(queen);
-            foreach (var move in expectedMoves)
+            foreach (var move in performedMoves)
             {
                 queen?.IsMoveAllowed(field, move).Should().BeTrue();
             }
@@ -207,7 +207,7 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          ---r----";
 
-            var expectedMoves = new[]
+            var performedMoves = new[]
             {
                 new Position(0, 4),
                 new Position(6, 4),
@@ -224,7 +224,7 @@ namespace GameLogic.Test.PieceTest
             var queen = field.GetPieceAt(new Position(3, 4));
 
             Assert.IsType<QueenPiece>(queen);
-            foreach (var move in expectedMoves)
+            foreach (var move in performedMoves)
             {
                 queen?.IsMoveAllowed(field, move).Should().BeFalse();
             }

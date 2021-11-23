@@ -89,7 +89,7 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          -------p";
 
-            var expectedMoves = new[]
+            var performedMoves = new[]
             {
                 new Position(3, 3),
                 new Position(2, 2),
@@ -111,7 +111,7 @@ namespace GameLogic.Test.PieceTest
             var bishop = field.GetPieceAt(new Position(4, 4));
 
             Assert.IsType<BishopPiece>(bishop);
-            foreach (var move in expectedMoves)
+            foreach (var move in performedMoves)
             {
                 bishop?.IsMoveAllowed(field, move).Should().BeTrue();
             }
@@ -129,7 +129,7 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          -------p";
 
-            var expectedMoves = new[]
+            var performedMoves = new[]
             {
                 new Position(5, 3),
                 new Position(6, 2),
@@ -145,7 +145,7 @@ namespace GameLogic.Test.PieceTest
             var bishop = field.GetPieceAt(new Position(4, 4));
 
             Assert.IsType<BishopPiece>(bishop);
-            foreach (var move in expectedMoves)
+            foreach (var move in performedMoves)
             {
                 bishop?.IsMoveAllowed(field, move).Should().BeTrue();
             }
@@ -162,7 +162,7 @@ namespace GameLogic.Test.PieceTest
                                          ---p----
                                          ----p---
                                          -------p";
-            var expectedMoves = new[]
+            var performedMoves = new[]
             {
                 new Position(3, 3),
                 new Position(2, 2),
@@ -177,7 +177,7 @@ namespace GameLogic.Test.PieceTest
             var bishop = field.GetPieceAt(new Position(4, 4));
 
             Assert.IsType<BishopPiece>(bishop);
-            foreach (var move in expectedMoves)
+            foreach (var move in performedMoves)
             {
                 bishop?.IsMoveAllowed(field, move).Should().BeFalse();
             }
