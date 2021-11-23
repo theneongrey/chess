@@ -72,7 +72,7 @@ namespace GameLogic
             return GetPieceAt(to);
         }
 
-        internal APiece? GetLastMovedPiece()
+        public APiece? GetLastMovedPiece()
         {
             return _lastMovedPiece;
         }
@@ -119,19 +119,24 @@ namespace GameLogic
 
         public bool MovePiece(Position from, Position to)
         {
-            var fromCellIndex = GetCellIndexByPosition(from);
-            var piece = _cells[fromCellIndex];
-            if (piece == null)
+            var piece = GetPieceAt(from);
+            if (piece != null)
             {
-                return false;
+                return MovePiece(piece, to);
             }
 
+            return false;
+        }
+
+        public bool MovePiece(APiece piece, Position to)
+        {
             if (piece.Move(this, to))
             {
+                var fromIndex = GetCellIndexByPosition(piece.LastPosition);
                 var toCellIndex = GetCellIndexByPosition(to);
 
                 _lastMovedPiece = piece;
-                _cells[fromCellIndex] = null;
+                _cells[fromIndex] = null;
 
                 APiece? capturedPiece = GetCapturedPiece(piece, to);
 
