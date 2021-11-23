@@ -11,6 +11,8 @@ namespace GameLogic
         private APiece?[] _cells;
         private APiece? _lastMovedPiece;
 
+        public APiece? PieceCapturedOnLastMove { get; private set; }
+
         internal Field()
         {
             _blackPieces = new List<APiece>();
@@ -72,6 +74,28 @@ namespace GameLogic
             return GetPieceAt(to);
         }
 
+        private void RemovePieceFromLists(APiece? piece)
+        {
+            if (piece != null)
+            {
+                if (piece.Color == PieceColor.White)
+                {
+                    _whitePieces.Remove(piece);
+                }
+                else
+                {
+                    _blackPieces.Remove(piece);
+                }
+                _allPieces.Remove(piece);
+            }
+        }
+
+        public bool IsCheckMate()
+        {
+            //ToDo
+            return false;
+        }
+
         public APiece? GetLastMovedPiece()
         {
             return _lastMovedPiece;
@@ -128,6 +152,12 @@ namespace GameLogic
             return false;
         }
 
+        public void ReplacePiece(APiece selectedPiece, APiece piece)
+        {
+            RemovePieceFromLists(selectedPiece);
+            AddPiece(piece);
+        }
+
         public bool MovePiece(APiece piece, Position to)
         {
             if (piece.Move(this, to))
@@ -139,19 +169,8 @@ namespace GameLogic
                 _cells[fromIndex] = null;
 
                 APiece? capturedPiece = GetCapturedPiece(piece, to);
-
-                if (capturedPiece != null)
-                {
-                    if (capturedPiece.Color == PieceColor.White)
-                    {
-                        _whitePieces.Remove(capturedPiece);
-                    }
-                    else
-                    {
-                        _blackPieces.Remove(capturedPiece);
-                    }
-                    _allPieces.Remove(capturedPiece);
-                }
+                PieceCapturedOnLastMove = capturedPiece;
+                RemovePieceFromLists(capturedPiece);
 
                 _cells[toCellIndex] = piece;
 
