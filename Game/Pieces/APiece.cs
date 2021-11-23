@@ -11,6 +11,7 @@
         protected APiece(Position startPosition, PieceColor color)
         {
             Position = startPosition;
+            LastPosition = startPosition;
             Color = color;
         }
 

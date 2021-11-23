@@ -57,11 +57,11 @@ namespace GameLogic.Pieces
             }
             if (Position.X > 0 && CanPerformEnPassant(field, Position.X - 1))
             {
-                result.Add(new[] { new Position(Position.X - 1, Position.Y) });
+                result.Add(new[] { new Position(Position.X - 1, Position.Y + _movementDirection) });
             }
             if (Position.X < 7 && CanPerformEnPassant(field, Position.X + 1))
             {
-                result.Add(new[] { new Position(Position.X + 1, Position.Y) });
+                result.Add(new[] { new Position(Position.X + 1, Position.Y + _movementDirection) });
             }
 
             return result;
@@ -71,6 +71,7 @@ namespace GameLogic.Pieces
         {
             if (!_basicMovements.IsTargetPositionAllowed(Position, targetPosition))
             {
+                // check diagonal capture moves
                 var leftCornerPiece = field.GetPieceAt(new Position(Position.X - 1, Position.Y + _movementDirection));
                 var rightCornerPiece = field.GetPieceAt(new Position(Position.X - 1, Position.Y + _movementDirection));
                 if (leftCornerPiece != null && leftCornerPiece.Color != Color)
@@ -81,16 +82,27 @@ namespace GameLogic.Pieces
                 {
                     return true;
                 }
-                if (targetPosition.X == Position.X - 1 && targetPosition.Y == Position.Y && CanPerformEnPassant(field, Position.X - 1))
+                if (targetPosition.X == Position.X - 1 && targetPosition.Y == Position.Y + _movementDirection && 
+                    CanPerformEnPassant(field, Position.X - 1))
                 {
                     return true;
                 }
-                if (targetPosition.X == Position.X + 1 && targetPosition.Y == Position.Y && CanPerformEnPassant(field, Position.X + 1))
+                if (targetPosition.X == Position.X + 1 && targetPosition.Y == Position.Y + _movementDirection && 
+                    CanPerformEnPassant(field, Position.X + 1))
                 {
                     return true;
                 }
 
                 return false;
+            }
+
+            // on first move, jump to cells, check cell inbetween
+            if (LastPosition == Position && Position.Y + _movementDirection != targetPosition.Y)
+            {
+                if (field.GetPieceAt(new Position(Position.X, Position.Y + _movementDirection)) != null)
+                {
+                    return false;
+                }
             }
 
             return field.GetPieceAt(targetPosition) == null;
