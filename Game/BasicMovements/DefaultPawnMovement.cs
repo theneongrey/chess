@@ -1,12 +1,12 @@
 ﻿namespace GameLogic.BasicMovements
 {
-    public enum PawnDirection { Up, Down };
+    internal enum PawnDirection { Up, Down };
 
-    public class DefaultPawnMovement : IBasicMovement
+    internal class DefaultPawnMovement : IBasicMovement
     {
         private int _direction;
 
-        public DefaultPawnMovement(PawnDirection direction)
+        internal DefaultPawnMovement(PawnDirection direction)
         {
             _direction = direction == PawnDirection.Up ? 1 : -1;
         }

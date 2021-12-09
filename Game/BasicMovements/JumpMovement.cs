@@ -1,6 +1,6 @@
 ﻿namespace GameLogic.BasicMovements
 {
-    public class JumpMovement : IBasicMovement
+    internal class JumpMovement : IBasicMovement
     {
         private (int, int)[] _allowedJumps = new[]
         {

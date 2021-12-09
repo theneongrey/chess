@@ -2,7 +2,7 @@
 
 namespace GameLogic.FieldParser
 {
-    public class TwoBoardSimpleStringLayoutParser : IFieldParser
+    internal class TwoBoardSimpleStringLayoutParser : IFieldParser
     {
         public static string DefaultLayout = @"--------
                                                --------

@@ -2,7 +2,7 @@
 
 namespace GameLogic.Pieces
 {
-    public class KingPiece : APiece
+    internal class KingPiece : APiece
     {
         private IBasicMovement _basicMovements;
         public override string Identifier => "K";

@@ -1,6 +1,8 @@
 ﻿using GameLogic.FieldParser;
 using GameLogic.Pieces;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("GameLogic.Test")]
 namespace GameLogic
 {
     public class Game

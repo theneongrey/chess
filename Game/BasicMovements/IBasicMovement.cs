@@ -1,6 +1,6 @@
 ﻿namespace GameLogic.BasicMovements
 {
-    public interface IBasicMovement
+    internal interface IBasicMovement
     {
         /// <summary>
         /// Returns a collection of possible moves and their position

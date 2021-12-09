@@ -1,10 +1,10 @@
 ﻿namespace GameLogic.BasicMovements
 {
-    public class BasicMovementCollection : IBasicMovement
+    internal class BasicMovementCollection : IBasicMovement
     {
         private IBasicMovement[] _collections;
 
-        public BasicMovementCollection(params IBasicMovement[] collections)
+        internal BasicMovementCollection(params IBasicMovement[] collections)
         {
             _collections = collections;
         }

@@ -1,10 +1,10 @@
 ﻿namespace GameLogic.BasicMovements
 {
-    public class HorizontalVerticalMovement : IBasicMovement
+    internal class HorizontalVerticalMovement : IBasicMovement
     {
         private int _maxRange;
 
-        public HorizontalVerticalMovement(int maxRange = 8)
+        internal HorizontalVerticalMovement(int maxRange = 8)
         {
             _maxRange = maxRange;
         }

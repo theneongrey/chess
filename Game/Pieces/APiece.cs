@@ -1,6 +1,6 @@
 ﻿namespace GameLogic.Pieces
 {
-    public abstract class APiece
+    internal abstract class APiece
     {
         public Position LastPosition { get; private set; }
         public Position Position { get; private set; }

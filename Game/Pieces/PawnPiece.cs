@@ -2,7 +2,7 @@
 
 namespace GameLogic.Pieces
 {
-    public class PawnPiece : APiece
+    internal class PawnPiece : APiece
     {
         private IBasicMovement _basicMovements;
         private int _movementDirection;

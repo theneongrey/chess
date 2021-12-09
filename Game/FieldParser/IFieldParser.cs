@@ -1,6 +1,6 @@
 ﻿namespace GameLogic.FieldParser
 {
-    public interface IFieldParser
+    internal interface IFieldParser
     {
         public Field CreateField(string input);
     }
