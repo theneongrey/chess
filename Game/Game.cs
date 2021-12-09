@@ -45,7 +45,7 @@ namespace GameLogic
 
         private void CheckForGameOver()
         {
-            if (_field.IsCheckMate())
+            if (IsCheckMate())
             {
                 if (_colorsTurn == PieceColor.White)
                 {
@@ -98,11 +98,64 @@ namespace GameLogic
             }
         }
 
+        private APiece? GetCapturedPiece(APiece piece, Position to)
+        {
+            // not a pawn, not the enpassant special case
+            if (piece is not PawnPiece pawn)
+            {
+                return _field.GetPieceAt(to);
+            }
+
+            // moved forward, nothing was captured
+            if (pawn.LastPosition.X - pawn.Position.X == 0)
+            {
+                return null;
+            }
+
+            // endposition makes sense for an enpassant and targetpositon is empty
+            var pawnMovementDirection = pawn.Color == PieceColor.White ? 1 : -1;
+            if (pawnMovementDirection == 1 && pawn.Position.Y == 5 ||
+                pawnMovementDirection == -1 && pawn.Position.Y == 2 &&
+                _field.GetPieceAt(to) == null)
+            {
+                return _field.GetPieceAt(new Position(to.X, to.Y - pawnMovementDirection));
+            }
+
+            return _field.GetPieceAt(to);
+        }
+
+        internal bool IsCheckMate()
+        {
+            return false;
+        }
+
+        private void ReplacePiece(APiece selectedPiece, APiece piece)
+        {
+            _field.RemovePiece(selectedPiece);
+            _field.AddPiece(piece);
+        }
+
+        private bool MovePiece(APiece piece, Position to)
+        {
+            // to do: handle castling
+            if (piece.IsMoveAllowed(_field, to))
+            {
+                _field.MovePiece(piece, to);
+
+                APiece? capturedPiece = GetCapturedPiece(piece, to);
+                _field.RemovePiece(capturedPiece);
+
+                return true;
+            }
+
+            return false;
+        }
+
         public bool TryMove(Position to)
         {
             if (!IsGameRunning ||
                 _selectedPiece == null ||
-                !_field.MovePiece(_selectedPiece, to))
+                !MovePiece(_selectedPiece, to))
             {
                 return false;
             }
@@ -138,7 +191,7 @@ namespace GameLogic
                 return false;
             }
 
-            _field.ReplacePiece(_selectedPiece!, piece);
+            ReplacePiece(_selectedPiece!, piece);
             SwapTurns();
             _state = GameState.GameRunning;
 

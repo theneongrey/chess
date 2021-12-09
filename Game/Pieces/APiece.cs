@@ -71,17 +71,10 @@
             return IsTargetPositionAllowed(field, targetPosition);
         }
 
-        public bool Move(Field field, Position targetPosition)
+        public void Move(Position targetPosition)
         {
-            if (IsMoveAllowed(field, targetPosition))
-            {
-                LastPosition = Position;
-                Position = targetPosition;
-
-                return true;
-            }
-
-            return false;
+            LastPosition = Position;
+            Position = targetPosition;
         }
 
         public override string ToString()

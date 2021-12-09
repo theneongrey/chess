@@ -11,8 +11,6 @@ namespace GameLogic
         private APiece?[] _cells;
         private APiece? _lastMovedPiece;
 
-        public APiece? PieceCapturedOnLastMove { get; private set; }
-
         internal Field()
         {
             _blackPieces = new List<APiece>();
@@ -39,37 +37,6 @@ namespace GameLogic
         private List<APiece> GetPieceListByColor(PieceColor color)
         {
             return color == PieceColor.White ? _whitePieces : _blackPieces;
-        }
-
-        private APiece? GetCapturedPiece(APiece piece, Position to)
-        {
-            // not a pawn, not the enpassant special case
-            if (piece is not PawnPiece pawn)
-            {
-                return GetPieceAt(to);
-            }
-
-            // moved forward, nothing was captured
-            if (pawn.LastPosition.X - pawn.Position.X == 0)
-            {
-                return null;
-            }
-
-            // endposition makes sense for an enpassant and targetpositon is empty
-            var pawnMovementDirection = pawn.Color == PieceColor.White ? 1 : -1;
-            if (pawnMovementDirection == 1 && pawn.Position.Y == 5 ||
-                pawnMovementDirection == -1 && pawn.Position.Y == 2 &&
-                GetPieceAt(to) == null)
-            {
-                return GetPieceAt(new Position(to.X, to.Y - pawnMovementDirection));
-            }
-
-            return GetPieceAt(to);
-        }
-
-        internal bool IsCheckMate()
-        {
-            return false;
         }
 
         public void RemovePiece(APiece? piece)
@@ -101,19 +68,26 @@ namespace GameLogic
         }
 
         /// <summary>
-        /// Gets the content of a cell (a piece or null) at a given position. If the position is out of boundary, it will return null 
+        /// Gets the content of a cell (a piece or null) at a given position. 
         /// </summary>
         /// <param name="position">Cell location</param>
         /// <returns>A pice or null</returns>
         public APiece? GetPieceAt(Position position)
         {
-            if (position.X < 0 || position.X > 7 || position.Y < 0 || position.Y > 7)
-            {
-                return null;
-            }
-
             return _cells[position.AsCellIndex];
         }
+        
+        public void MovePiece(APiece piece, Position to)
+        {
+            _lastMovedPiece = piece;
+
+            var oldPos = piece.Position;
+            piece.Move(to);
+
+            _cells[oldPos.AsCellIndex] = null;
+            _cells[to.AsCellIndex] = piece;
+        }
+
 
         public override string ToString()
         {
@@ -133,43 +107,6 @@ namespace GameLogic
             }
 
             return stringBuilder.ToString().TrimEnd();
-        }
-
-        public bool MovePiece(Position from, Position to)
-        {
-            var piece = GetPieceAt(from);
-            if (piece != null)
-            {
-                return MovePiece(piece, to);
-            }
-
-            return false;
-        }
-
-        public bool MovePiece(APiece piece, Position to)
-        {
-            // to do: handle castling
-            var oldCellIndex = piece.Position.AsCellIndex;
-            if (piece.Move(this, to))
-            {
-                _lastMovedPiece = piece;
-
-                APiece? capturedPiece = GetCapturedPiece(piece, to);
-                PieceCapturedOnLastMove = capturedPiece;
-                RemovePiece(capturedPiece);
-                _cells[oldCellIndex] = null;
-                _cells[piece.Position.AsCellIndex] = piece;
-
-                return true;
-            }
-
-            return false;
-        }
-
-        public void ReplacePiece(APiece selectedPiece, APiece piece)
-        {
-            RemovePiece(selectedPiece);
-            AddPiece(piece);
         }
     }
 }
