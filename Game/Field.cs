@@ -23,14 +23,12 @@ namespace GameLogic
 
         internal bool AddPiece(APiece piece)
         {
-            var cellIndex = GetCellIndexByPosition(piece.Position);
-
-            if (_cells[cellIndex] != null)
+            if (_cells[piece.Position.AsCellIndex] != null)
             {
                 return false;
             }
 
-            _cells[cellIndex] = piece;
+            _cells[piece.Position.AsCellIndex] = piece;
             var coloredList = GetPieceListByColor(piece.Color);
             coloredList.Add(piece);
             _allPieces.Add(piece);
@@ -41,11 +39,6 @@ namespace GameLogic
         private List<APiece> GetPieceListByColor(PieceColor color)
         {
             return color == PieceColor.White ? _whitePieces : _blackPieces;
-        }
-
-        private int GetCellIndexByPosition(Position position)
-        {
-            return position.X + position.Y * 8;
         }
 
         private APiece? GetCapturedPiece(APiece piece, Position to)
@@ -74,8 +67,6 @@ namespace GameLogic
             return GetPieceAt(to);
         }
 
-
-
         internal bool IsCheckMate()
         {
             return false;
@@ -85,7 +76,7 @@ namespace GameLogic
         {
             if (piece != null)
             {
-                _cells[GetCellIndexByPosition(piece.Position)] = null;
+                _cells[piece.Position.AsCellIndex] = null;
 
                 if (piece.Color == PieceColor.White)
                 {
@@ -121,7 +112,7 @@ namespace GameLogic
                 return null;
             }
 
-            return _cells[GetCellIndexByPosition(position)];
+            return _cells[position.AsCellIndex];
         }
 
         public override string ToString()
@@ -158,18 +149,16 @@ namespace GameLogic
         public bool MovePiece(APiece piece, Position to)
         {
             // to do: handle castling
-            var oldCellIndex = GetCellIndexByPosition(piece.Position);
+            var oldCellIndex = piece.Position.AsCellIndex;
             if (piece.Move(this, to))
             {
-                var newCellIndex = GetCellIndexByPosition(piece.Position);
-
                 _lastMovedPiece = piece;
 
                 APiece? capturedPiece = GetCapturedPiece(piece, to);
                 PieceCapturedOnLastMove = capturedPiece;
                 RemovePiece(capturedPiece);
                 _cells[oldCellIndex] = null;
-                _cells[newCellIndex] = piece;
+                _cells[piece.Position.AsCellIndex] = piece;
 
                 return true;
             }
