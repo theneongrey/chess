@@ -35,7 +35,7 @@ namespace GameLogic.Pieces
 
             var piece = field.GetPieceAt(new Position(x, Position.Y));
             return piece is PawnPiece pawn &&
-                field.GetLastMovedPiece() == piece &&
+                field.LastMovedPiece == piece &&
                 pawn.Color != Color &&
                 pawn.LastPosition == new Position(x, Position.Y + _movementDirection * 2);
         }

@@ -143,7 +143,10 @@ namespace GameLogic
                 _field.MovePiece(piece, to);
 
                 APiece? capturedPiece = GetCapturedPiece(piece, to);
-                _field.RemovePiece(capturedPiece);
+                if (capturedPiece != null)
+                {
+                    _field.RemovePiece(capturedPiece);
+                }
 
                 return true;
             }

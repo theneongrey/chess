@@ -69,11 +69,16 @@ namespace GameLogic.FieldParser
                 for (int colIndex = 0; colIndex < row.Length; colIndex++)
                 {
                     char cell = row[colIndex];
-                    var piece = GetPieceByChar(cell, new Position(colIndex, rowIndex), color);
+                    var position = new Position(colIndex, rowIndex);
+                    var piece = GetPieceByChar(cell, position, color);
                     
-                    if (piece != null && !field.AddPiece(piece))
+                    if (piece != null)
                     {
-                        throw new FieldParserException($"The cell at position {colIndex},{rowIndex} is set twice.");
+                        if (field.GetPieceAt(position) != null)
+                        {
+                            throw new FieldParserException($"The cell at position {colIndex},{rowIndex} is set twice.");
+                        }
+                        field.AddPiece(piece);
                     }
                 }
             }

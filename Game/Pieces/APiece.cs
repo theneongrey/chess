@@ -73,6 +73,7 @@
 
         public void Move(Position targetPosition)
         {
+            WasMoved = true;
             LastPosition = Position;
             Position = targetPosition;
         }

@@ -3,63 +3,38 @@ using System.Text;
 
 namespace GameLogic 
 { 
-    internal class Field
+    internal class Field : ICloneable
     {
-        private List<APiece> _allPieces;
-        private List<APiece> _blackPieces;
-        private List<APiece> _whitePieces;
-        private APiece?[] _cells;
-        private APiece? _lastMovedPiece;
+        public APiece?[] Cells { get; }
+        public APiece? LastMovedPiece { get; private set; }
 
         internal Field()
         {
-            _blackPieces = new List<APiece>();
-            _whitePieces = new List<APiece>();
-            _allPieces = new List<APiece>();
-            _cells = new APiece[64];
+            Cells = new APiece[64];
         }
 
-        internal bool AddPiece(APiece piece)
+        public object Clone()
         {
-            if (_cells[piece.Position.AsCellIndex] != null)
+            var clone = new Field();
+            foreach (var cell in Cells)
             {
-                return false;
-            }
-
-            _cells[piece.Position.AsCellIndex] = piece;
-            var coloredList = GetPieceListByColor(piece.Color);
-            coloredList.Add(piece);
-            _allPieces.Add(piece);
-
-            return true;
-        }
-
-        private List<APiece> GetPieceListByColor(PieceColor color)
-        {
-            return color == PieceColor.White ? _whitePieces : _blackPieces;
-        }
-
-        public void RemovePiece(APiece? piece)
-        {
-            if (piece != null)
-            {
-                _cells[piece.Position.AsCellIndex] = null;
-
-                if (piece.Color == PieceColor.White)
+                if (cell != null)
                 {
-                    _whitePieces.Remove(piece);
+                    clone.AddPiece(cell);
                 }
-                else
-                {
-                    _blackPieces.Remove(piece);
-                }
-                _allPieces.Remove(piece);
             }
+            clone.LastMovedPiece = LastMovedPiece;
+            return clone;
         }
 
-        public APiece? GetLastMovedPiece()
+        internal void AddPiece(APiece piece)
         {
-            return _lastMovedPiece;
+            Cells[piece.Position.AsCellIndex] = piece;
+        }
+
+        public void RemovePiece(APiece piece)
+        {
+            Cells[piece.Position.AsCellIndex] = null;
         }
 
         internal bool IsCellEmpty(Position position)
@@ -74,20 +49,17 @@ namespace GameLogic
         /// <returns>A pice or null</returns>
         public APiece? GetPieceAt(Position position)
         {
-            return _cells[position.AsCellIndex];
+            return Cells[position.AsCellIndex];
         }
         
         public void MovePiece(APiece piece, Position to)
         {
-            _lastMovedPiece = piece;
+            LastMovedPiece = piece;
 
-            var oldPos = piece.Position;
+            RemovePiece(piece);
             piece.Move(to);
-
-            _cells[oldPos.AsCellIndex] = null;
-            _cells[to.AsCellIndex] = piece;
+            AddPiece(piece);
         }
-
 
         public override string ToString()
         {
@@ -98,7 +70,7 @@ namespace GameLogic
                 for (var x = 0; x < 8; x++)
                 {
                     var cell = y * 8 + x;
-                    var piece = _cells[cell];
+                    var piece = Cells[cell];
 
                     stringBuilder.Append(piece == null ? "-" : piece.ToString());
                 }
