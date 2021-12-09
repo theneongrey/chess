@@ -205,8 +205,9 @@ namespace GameLogic.Test.PieceTest
             var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
             var field = simpleStringLayoutParser.CreateField(fieldLayout);
             var pawn = field.GetPieceAt(new Position(5, 4));
+            var blackPawn = field.GetPieceAt(new Position(4, 6));
 
-            field.MovePiece(new Position(4, 6), new Position(4, 4));
+            field.MovePiece(blackPawn!, new Position(4, 4));
 
             Assert.IsType<PawnPiece>(pawn);
             var actualMoves = pawn!.GetAllowedMoves(field);
@@ -234,8 +235,9 @@ namespace GameLogic.Test.PieceTest
             var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
             var field = simpleStringLayoutParser.CreateField(fieldLayout);
             var pawn = field.GetPieceAt(new Position(2, 3));
+            var whitePawn = field.GetPieceAt(new Position(1,1));
 
-            field.MovePiece(new Position(1, 1), new Position(1, 3));
+            field.MovePiece(whitePawn!, new Position(1, 3));
 
             Assert.IsType<PawnPiece>(pawn);
             var actualMoves = pawn!.GetAllowedMoves(field);
@@ -515,8 +517,9 @@ namespace GameLogic.Test.PieceTest
             var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
             var field = simpleStringLayoutParser.CreateField(fieldLayout);
             var pawn = field.GetPieceAt(new Position(5, 4));
+            var blackPawn = field.GetPieceAt(new Position(4, 6));
 
-            field.MovePiece(new Position(4, 6), new Position(4, 4));
+            field.MovePiece(blackPawn!, new Position(4, 4));
 
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
@@ -574,8 +577,9 @@ namespace GameLogic.Test.PieceTest
             var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
             var field = simpleStringLayoutParser.CreateField(fieldLayout);
             var pawn = field.GetPieceAt(new Position(2, 3));
+            var whitePawn = field.GetPieceAt(new Position(1, 1));
 
-            field.MovePiece(new Position(1, 1), new Position(1, 3));
+            field.MovePiece(whitePawn!, new Position(1, 3));
 
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
