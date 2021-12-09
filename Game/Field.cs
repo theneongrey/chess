@@ -3,7 +3,7 @@ using System.Text;
 
 namespace GameLogic 
 { 
-    public class Field
+    internal class Field
     {
         private List<APiece> _allPieces;
         private List<APiece> _blackPieces;
@@ -74,10 +74,19 @@ namespace GameLogic
             return GetPieceAt(to);
         }
 
-        private void RemovePieceFromLists(APiece? piece)
+
+
+        internal bool IsCheckMate()
+        {
+            return false;
+        }
+
+        public void RemovePiece(APiece? piece)
         {
             if (piece != null)
             {
+                _cells[GetCellIndexByPosition(piece.Position)] = null;
+
                 if (piece.Color == PieceColor.White)
                 {
                     _whitePieces.Remove(piece);
@@ -88,12 +97,6 @@ namespace GameLogic
                 }
                 _allPieces.Remove(piece);
             }
-        }
-
-        public bool IsCheckMate()
-        {
-            //ToDo
-            return false;
         }
 
         public APiece? GetLastMovedPiece()
@@ -152,32 +155,32 @@ namespace GameLogic
             return false;
         }
 
-        public void ReplacePiece(APiece selectedPiece, APiece piece)
-        {
-            RemovePieceFromLists(selectedPiece);
-            AddPiece(piece);
-        }
-
         public bool MovePiece(APiece piece, Position to)
         {
+            // to do: handle castling
+            var oldCellIndex = GetCellIndexByPosition(piece.Position);
             if (piece.Move(this, to))
             {
-                var fromIndex = GetCellIndexByPosition(piece.LastPosition);
-                var toCellIndex = GetCellIndexByPosition(to);
+                var newCellIndex = GetCellIndexByPosition(piece.Position);
 
                 _lastMovedPiece = piece;
-                _cells[fromIndex] = null;
 
                 APiece? capturedPiece = GetCapturedPiece(piece, to);
                 PieceCapturedOnLastMove = capturedPiece;
-                RemovePieceFromLists(capturedPiece);
-
-                _cells[toCellIndex] = piece;
+                RemovePiece(capturedPiece);
+                _cells[oldCellIndex] = null;
+                _cells[newCellIndex] = piece;
 
                 return true;
             }
 
             return false;
+        }
+
+        public void ReplacePiece(APiece selectedPiece, APiece piece)
+        {
+            RemovePiece(selectedPiece);
+            AddPiece(piece);
         }
     }
 }
