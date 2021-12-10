@@ -1,5 +1,6 @@
 ﻿using GameLogic.CheckTester;
 using GameLogic.FieldParser;
+using GameLogic.GameHistory;
 using GameLogic.Pieces;
 using System.Runtime.CompilerServices;
 
@@ -12,6 +13,7 @@ namespace GameLogic
         private PieceColor _colorsTurn;
         private GameState _state;
         private APiece? _selectedPiece;
+        private GameStack _gameHistory;
 
         public bool IsGameRunning => _state == GameState.GameRunning;
         public bool IsPieceSelectionActive => _state == GameState.PieceSelection;
@@ -102,7 +104,7 @@ namespace GameLogic
 
         private APiece? GetCapturedPiece(APiece piece, Position to)
         {
-            // not a pawn, not the enpassant special case
+            // not a pawn -> not the enpassant special case
             if (piece is not PawnPiece pawn)
             {
                 return _field.GetPieceAt(to);
@@ -140,10 +142,15 @@ namespace GameLogic
             return true;
         }
 
+        private void PerformMove(AGameMove move)
+        {
+            _gameHistory.AddAndRunMove(_field, move);
+        }
+
         private void ReplacePiece(APiece selectedPiece, APiece piece)
         {
-            _field.RemovePiece(selectedPiece);
-            _field.AddPiece(piece);
+            PerformMove(new RemovePiece(selectedPiece));
+            PerformMove(new AddPiece(piece));
         }
 
         private bool MovePiece(APiece piece, Position to)
@@ -151,12 +158,12 @@ namespace GameLogic
             // to do: handle castling
             if (piece.IsMoveAllowed(_field, to))
             {
-                _field.MovePieceTo(piece, to);
+                PerformMove(new MovePiece(piece, to));
 
                 APiece? capturedPiece = GetCapturedPiece(piece, to);
                 if (capturedPiece != null)
                 {
-                    _field.RemovePiece(capturedPiece);
+                    PerformMove(new RemovePiece(capturedPiece));
                 }
 
                 return true;

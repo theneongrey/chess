@@ -3,7 +3,7 @@ using System.Text;
 
 namespace GameLogic 
 { 
-    internal class Field : ICloneable
+    internal class Field
     {
         private APiece?[] _cells;
         public APiece? LastMovedPiece { get; private set; }

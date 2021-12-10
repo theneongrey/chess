@@ -14,6 +14,12 @@
             _moves.Push(move);
         }
 
+        internal void AddAndRunMove(Field field, AGameMove move)
+        {
+            _moves.Push(move);
+            move.Redo(field);
+        }
+
         internal void Undo(Field field)
         {
             if (_moves.Any())

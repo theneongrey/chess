@@ -8,12 +8,11 @@ namespace GameLogic.GameHistory
         private Position _to;
         private APiece _piece;
 
-        internal MovePiece(Field field, APiece piece, Position to)
+        internal MovePiece(APiece piece, Position to)
         {
             _from = piece.Position;
             _to = to;
             _piece = piece;
-            Redo(field);
         }
 
         internal override void Redo(Field field)

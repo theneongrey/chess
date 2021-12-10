@@ -6,10 +6,9 @@ namespace GameLogic.GameHistory
     {
         private APiece _piece;
 
-        internal RemovePiece(Field field, APiece piece)
+        internal RemovePiece(APiece piece)
         {
             _piece = piece;
-            Redo(field);
         }
 
         internal override void Redo(Field field)

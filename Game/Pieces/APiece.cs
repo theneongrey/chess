@@ -2,7 +2,7 @@
 
 namespace GameLogic.Pieces
 {
-    internal abstract class APiece : ICloneable
+    internal abstract class APiece
     {
         public Position LastPosition { get; private set; }
         public Position Position { get; private set; }
