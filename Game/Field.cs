@@ -46,7 +46,9 @@ namespace GameLogic
         public void MovePieceTo(APiece piece, Position to)
         {
             LastMovedPiece = piece;
-            SetPieceAt(piece, to);
+            RemovePiece(piece);
+            piece.Move(to);
+            AddPiece(piece);
         }
 
         public void SetPieceAt(APiece piece, Position at)

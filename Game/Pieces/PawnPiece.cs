@@ -29,7 +29,7 @@ namespace GameLogic.Pieces
 
         public override void Move(Position targetPosition)
         {
-            AdvancedTwoCellsOnLastMove = Math.Abs(targetPosition.Y + Position.Y) == 2;
+            AdvancedTwoCellsOnLastMove = Math.Abs(targetPosition.Y - Position.Y) == 2;
             base.Move(targetPosition);
         }
 
