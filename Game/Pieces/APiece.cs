@@ -79,6 +79,12 @@ namespace GameLogic.Pieces
             return nonCheckTestAllowedMoves.Where(p => !CheckTest.WillKingBeInDanger(field, this, p));
         }
 
+        public bool CanMove(Field field)
+        {
+            var nonCheckTestAllowedMoves = CollectAllowedPositions(GetAllowedPositions(field));
+            return nonCheckTestAllowedMoves.Any(p => !CheckTest.WillKingBeInDanger(field, this, p));
+        }
+
         public bool IsMoveAllowed(Field field, Position targetPosition)
         {
             return IsTargetPositionAllowed(field, targetPosition) && !CheckTest.WillKingBeInDanger(field, this, targetPosition);

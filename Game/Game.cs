@@ -128,7 +128,16 @@ namespace GameLogic
 
         internal bool IsCheckMate()
         {
-            return false;
+            var pieces = _field.GetPiecesByColor(_colorsTurn == PieceColor.White ? PieceColor.Black : PieceColor.White);
+            foreach (var piece in pieces)
+            {
+                if (piece.CanMove(_field))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private void ReplacePiece(APiece selectedPiece, APiece piece)
@@ -169,13 +178,12 @@ namespace GameLogic
 
             if (IsGameRunning)
             {
-                IsCheckPending = CheckTest.IsKingInDanger(_field, _colorsTurn);
-
                 CheckForPieceSelection();
 
                 if (!IsPieceSelectionActive)
                 {
                     SwapTurns();
+                    IsCheckPending = CheckTest.IsKingInDanger(_field, _colorsTurn);
                 }
             }
 
