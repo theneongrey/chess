@@ -19,7 +19,7 @@ namespace GameLogic.Pieces
             return filteredPositions;
         }
 
-        protected override bool IsTargetPositionAllowed(Field field, Position targetPosition)
+        public override bool IsTargetPositionAllowed(Field field, Position targetPosition)
         {
             // check if target position is valid move
             if (!_basicMovements.IsTargetPositionAllowed(Position, targetPosition))

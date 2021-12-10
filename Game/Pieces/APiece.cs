@@ -59,7 +59,14 @@ namespace GameLogic.Pieces
         }
 
         protected abstract IEnumerable<IEnumerable<Position>> GetAllowedPositions(Field field);
-        protected abstract bool IsTargetPositionAllowed(Field field, Position targetPosition);
+
+        /// <summary>
+        /// Checks if moving to target position is allowed. Avoids checking for kings threads
+        /// </summary>
+        /// <param name="field">Current field</param>
+        /// <param name="targetPosition">Wished target position</param>
+        /// <returns>Is target position allowed</returns>
+        public abstract bool IsTargetPositionAllowed(Field field, Position targetPosition);
 
         public IEnumerable<Position> GetAllowedMoves(Field field)
         {
@@ -73,6 +80,12 @@ namespace GameLogic.Pieces
             return nonCheckTestAllowedMoves.Any(p => !CheckTest.WillKingBeInDanger(field, this, p));
         }
 
+        /// <summary>
+        /// Checks if moving to target position is allowed, including check for kings safety
+        /// </summary>
+        /// <param name="field">Current field</param>
+        /// <param name="targetPosition">Wished target position</param>
+        /// <returns>Is move allowed</returns>
         public bool IsMoveAllowed(Field field, Position targetPosition)
         {
             return IsTargetPositionAllowed(field, targetPosition) && !CheckTest.WillKingBeInDanger(field, this, targetPosition);

@@ -19,7 +19,7 @@ namespace GameLogic.Pieces
             return filteredPositions;
         }
 
-        protected override bool IsTargetPositionAllowed(Field field, Position targetPosition)
+        public override bool IsTargetPositionAllowed(Field field, Position targetPosition)
         {
             return field.GetPieceAt(targetPosition)?.Color != Color && _basicMovements.IsTargetPositionAllowed(Position, targetPosition);
         }

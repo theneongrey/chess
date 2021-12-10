@@ -59,7 +59,7 @@ namespace GameLogic.CheckTester
                 foreach(var position in positionCollection)
                 {
                     var piece = field.GetPieceAt(position);
-                    if (piece != null && piece.Color != king.Color && piece.IsMoveAllowed(field, king.Position))
+                    if (piece != null && piece.Color != king.Color && piece.IsTargetPositionAllowed(field, king.Position))
                     {
                         return true;
                     } 
