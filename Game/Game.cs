@@ -1,4 +1,5 @@
-﻿using GameLogic.FieldParser;
+﻿using GameLogic.CheckTester;
+using GameLogic.FieldParser;
 using GameLogic.Pieces;
 using System.Runtime.CompilerServices;
 
@@ -13,7 +14,6 @@ namespace GameLogic
         private APiece? _selectedPiece;
 
         public bool IsGameRunning => _state == GameState.GameRunning;
-
         public bool IsPieceSelectionActive => _state == GameState.PieceSelection;
 
         public bool IsGameOver => _state switch
@@ -23,6 +23,8 @@ namespace GameLogic
                 GameState.Draw => true,
                 _ => false,
             };
+
+        public bool IsCheckPending { get; private set; }
 
         public Game()
         {
@@ -140,7 +142,7 @@ namespace GameLogic
             // to do: handle castling
             if (piece.IsMoveAllowed(_field, to))
             {
-                _field.MovePiece(piece, to);
+                _field.MovePieceTo(piece, to);
 
                 APiece? capturedPiece = GetCapturedPiece(piece, to);
                 if (capturedPiece != null)
@@ -167,6 +169,8 @@ namespace GameLogic
 
             if (IsGameRunning)
             {
+                IsCheckPending = CheckTest.IsKingInDanger(_field, _colorsTurn);
+
                 CheckForPieceSelection();
 
                 if (!IsPieceSelectionActive)
@@ -178,23 +182,24 @@ namespace GameLogic
             return true;
         }
 
-        public bool PerformPieceSelection(PieceSelectionType @type)
+        public bool PerformPieceSelection(Piece @type)
         {
-            APiece? piece = type switch
+            var pieceAssignment = new Dictionary<Piece, Func<APiece>>()
             {
-                PieceSelectionType.Queen => new QueenPiece(_selectedPiece!.Position, _colorsTurn),
-                PieceSelectionType.Rook => new RookPiece(_selectedPiece!.Position, _colorsTurn),
-                PieceSelectionType.Knight => new KnightPiece(_selectedPiece!.Position, _colorsTurn),
-                PieceSelectionType.Bishop => new BishopPiece(_selectedPiece!.Position, _colorsTurn),
-                _ => null
+                { TradablePieces.Queen, () => new QueenPiece(_selectedPiece!.Position, _colorsTurn) },
+                { TradablePieces.Knight, () => new KnightPiece(_selectedPiece!.Position, _colorsTurn) },
+                { TradablePieces.Rook, () => new RookPiece(_selectedPiece!.Position, _colorsTurn) },
+                { TradablePieces.Bishop, () => new BishopPiece(_selectedPiece!.Position, _colorsTurn) },
             };
+
+            pieceAssignment.TryGetValue(@type, out var piece);
 
             if (piece == null)
             {
                 return false;
             }
 
-            ReplacePiece(_selectedPiece!, piece);
+            ReplacePiece(_selectedPiece!, piece.Invoke());
             SwapTurns();
             _state = GameState.GameRunning;
 

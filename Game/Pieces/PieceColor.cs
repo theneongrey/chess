@@ -1,4 +1,4 @@
 ﻿namespace GameLogic.Pieces
 {
-    internal enum PieceColor { Black, White }
+    public enum PieceColor { Black, White }
 }

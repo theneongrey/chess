@@ -5,22 +5,22 @@ namespace GameLogic
 { 
     internal class Field : ICloneable
     {
-        public APiece?[] Cells { get; }
+        private APiece?[] _cells;
         public APiece? LastMovedPiece { get; private set; }
 
         internal Field()
         {
-            Cells = new APiece[64];
+            _cells = new APiece[64];
         }
 
         public object Clone()
         {
             var clone = new Field();
-            foreach (var cell in Cells)
+            foreach (var piece in _cells)
             {
-                if (cell != null)
+                if (piece != null)
                 {
-                    clone.AddPiece(cell);
+                    clone.AddPiece(piece);
                 }
             }
             clone.LastMovedPiece = LastMovedPiece;
@@ -29,12 +29,17 @@ namespace GameLogic
 
         internal void AddPiece(APiece piece)
         {
-            Cells[piece.Position.AsCellIndex] = piece;
+            _cells[piece.Position.AsCellIndex] = piece;
         }
 
         public void RemovePiece(APiece piece)
         {
-            Cells[piece.Position.AsCellIndex] = null;
+            _cells[piece.Position.AsCellIndex] = null;
+        }
+
+        public IEnumerable<T> GetPiecesByTypeAndColor<T>(PieceColor color) where T : APiece
+        {
+            return _cells.Where(p => p is T && p.Color == color).Select(p => (T)p!);
         }
 
         internal bool IsCellEmpty(Position position)
@@ -49,16 +54,25 @@ namespace GameLogic
         /// <returns>A pice or null</returns>
         public APiece? GetPieceAt(Position position)
         {
-            return Cells[position.AsCellIndex];
+            return _cells[position.AsCellIndex];
         }
         
-        public void MovePiece(APiece piece, Position to)
+        public void MovePieceTo(APiece piece, Position to)
         {
             LastMovedPiece = piece;
+            SetPieceAt(piece, to);
+        }
 
+        public void SetPieceAt(APiece piece, Position at)
+        {
             RemovePiece(piece);
-            piece.Move(to);
+            piece.SetPosition(at);
             AddPiece(piece);
+        }
+
+        public IEnumerable<APiece> GetPiecesByColor(PieceColor color)
+        {
+            return _cells.Where(p => p != null && p.Color == color)!;
         }
 
         public override string ToString()
@@ -70,7 +84,7 @@ namespace GameLogic
                 for (var x = 0; x < 8; x++)
                 {
                     var cell = y * 8 + x;
-                    var piece = Cells[cell];
+                    var piece = _cells[cell];
 
                     stringBuilder.Append(piece == null ? "-" : piece.ToString());
                 }

@@ -5,13 +5,14 @@ namespace GameLogic.Pieces
     internal class KingPiece : APiece
     {
         private IBasicMovement _basicMovements;
-        public override string Identifier => "K";
-
+        public override Piece PieceType { get; }
 
         public KingPiece(Position startPosition, PieceColor color) : base(startPosition, color)
         {
             _basicMovements = new BasicMovementCollection(new DiagonalMovement(1), new HorizontalVerticalMovement(1));
+            PieceType = color == PieceColor.White ? ColoredPieces.WhiteKing : ColoredPieces.BlackKing;
         }
+        public override object Clone() => Clone(new KingPiece(Position, Color));
 
         private bool IsLeftCastlingPossible(Field field)
         {
@@ -61,11 +62,11 @@ namespace GameLogic.Pieces
             {
                 if (IsLeftCastlingPossible(field)) 
                 { 
-                    allowedPositions.Add(new[] { new Position(0, Position.Y) });
+                    allowedPositions.Add(new[] { new Position(2, Position.Y) });
                 }
                 if (IsRightCastlingPossible(field))
                 {
-                    allowedPositions.Add(new[] { new Position(7, Position.Y) });
+                    allowedPositions.Add(new[] { new Position(6, Position.Y) });
                 }
             }
 
@@ -78,11 +79,11 @@ namespace GameLogic.Pieces
             {
                 if (!WasMoved && targetPosition.Y == Position.Y) 
                 {
-                    if (targetPosition.X == 0)
+                    if (targetPosition.X == 2)
                     {
                         return IsLeftCastlingPossible(field);
                     }
-                    if (targetPosition.X == 7)
+                    if (targetPosition.X == 6)
                     {
                         return IsRightCastlingPossible(field);
                     }

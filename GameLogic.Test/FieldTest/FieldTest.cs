@@ -28,7 +28,7 @@ rnbqkbnr";
             var pawnPiece = field.GetPieceAt(from);
             pawnPiece.Should().BeOfType<PawnPiece>();
             
-            field.MovePiece(pawnPiece!, to);
+            field.MovePieceTo(pawnPiece!, to);
             field.LastMovedPiece.Should().Be(pawnPiece);
             pawnPiece!.Position.Should().Be(to);
             pawnPiece!.LastPosition.Should().Be(from);

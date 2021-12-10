@@ -5,12 +5,14 @@ namespace GameLogic.Pieces
     internal class RookPiece : APiece
     {
         private IBasicMovement _basicMovements;
-        public override string Identifier => "R";
+        public override Piece PieceType { get; }
 
         public RookPiece(Position startPosition, PieceColor color) : base(startPosition, color)
         {
             _basicMovements = new HorizontalVerticalMovement();
+            PieceType = color == PieceColor.White ? ColoredPieces.WhiteRook : ColoredPieces.BlackRook;
         }
+        public override object Clone() => Clone(new RookPiece(Position, Color));
 
         private bool IsCastlingPossible(Field field)
         {

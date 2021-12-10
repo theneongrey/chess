@@ -25,8 +25,8 @@ namespace GameLogic.Test.PieceTest
                 new Position(5,0),
                 new Position(3,1),
                 new Position(5,1),
-                new Position(0,0),
-                new Position(7,0)
+                new Position(2,0),
+                new Position(6,0)
             };
 
 
@@ -57,8 +57,8 @@ namespace GameLogic.Test.PieceTest
                 new Position(5,7),
                 new Position(3,6),
                 new Position(5,6),
-                new Position(0,7),
-                new Position(7,7)
+                new Position(2,7),
+                new Position(6,7)
             };
 
             var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
@@ -268,8 +268,8 @@ namespace GameLogic.Test.PieceTest
                 new Position(5, 0),
                 new Position(3, 1),
                 new Position(5, 1),
-                new Position(0, 0),
-                new Position(7, 0)
+                new Position(2, 0),
+                new Position(6, 0)
             };
 
             var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
@@ -301,8 +301,8 @@ namespace GameLogic.Test.PieceTest
                 new Position(5, 7),
                 new Position(3, 6),
                 new Position(5, 6),
-                new Position(0, 7),
-                new Position(7, 7)
+                new Position(2, 7),
+                new Position(6, 7)
             };
 
             var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
@@ -333,8 +333,8 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 0));
 
             Assert.IsType<KingPiece>(king);
-            king!.IsMoveAllowed(field, new Position(0, 0)).Should().BeFalse();
-            king!.IsMoveAllowed(field, new Position(7, 0)).Should().BeFalse();
+            king!.IsMoveAllowed(field, new Position(2, 0)).Should().BeFalse();
+            king!.IsMoveAllowed(field, new Position(6, 0)).Should().BeFalse();
         }
 
         [Fact]
@@ -354,8 +354,8 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 7));
 
             Assert.IsType<KingPiece>(king);
-            king!.IsMoveAllowed(field, new Position(0, 7)).Should().BeFalse();
-            king!.IsMoveAllowed(field, new Position(7, 7)).Should().BeFalse();
+            king!.IsMoveAllowed(field, new Position(2, 7)).Should().BeFalse();
+            king!.IsMoveAllowed(field, new Position(6, 7)).Should().BeFalse();
         }
 
         [Fact]
@@ -375,8 +375,8 @@ namespace GameLogic.Test.PieceTest
             var king = field.GetPieceAt(new Position(4, 0));
 
             Assert.IsType<KingPiece>(king);
-            king!.IsMoveAllowed(field, new Position(0, 0)).Should().BeFalse();
-            king!.IsMoveAllowed(field, new Position(7, 0)).Should().BeFalse();
+            king!.IsMoveAllowed(field, new Position(2, 0)).Should().BeFalse();
+            king!.IsMoveAllowed(field, new Position(6, 0)).Should().BeFalse();
         }
 
         [Fact]

@@ -1,12 +1,14 @@
-﻿namespace GameLogic.Pieces
+﻿using GameLogic.CheckTester;
+
+namespace GameLogic.Pieces
 {
-    internal abstract class APiece
+    internal abstract class APiece : ICloneable
     {
         public Position LastPosition { get; private set; }
         public Position Position { get; private set; }
         public bool WasMoved { get; private set; }
         public PieceColor Color { get; private set; }
-        public abstract string Identifier { get; }
+        public abstract Piece PieceType { get; }
 
         protected APiece(Position startPosition, PieceColor color)
         {
@@ -14,6 +16,16 @@
             LastPosition = startPosition;
             Color = color;
         }
+
+        protected APiece Clone(APiece newInstance)
+        {
+            newInstance.LastPosition = LastPosition;
+            newInstance.WasMoved = WasMoved;
+            
+            return newInstance;
+        }
+
+        public abstract object Clone();
 
         protected IEnumerable<IEnumerable<Position>> FilterMovementForObstacles(IEnumerable<IEnumerable<Position>> movements, Field field, bool canCaptureEnemyField = true)
         {
@@ -63,12 +75,13 @@
 
         public IEnumerable<Position> GetAllowedMoves(Field field)
         {
-            return CollectAllowedPositions(GetAllowedPositions(field));
+            var nonCheckTestAllowedMoves = CollectAllowedPositions(GetAllowedPositions(field));
+            return nonCheckTestAllowedMoves.Where(p => !CheckTest.WillKingBeInDanger(field, this, p));
         }
 
         public bool IsMoveAllowed(Field field, Position targetPosition)
         {
-            return IsTargetPositionAllowed(field, targetPosition);
+            return IsTargetPositionAllowed(field, targetPosition) && !CheckTest.WillKingBeInDanger(field, this, targetPosition);
         }
 
         public void Move(Position targetPosition)
@@ -78,9 +91,14 @@
             Position = targetPosition;
         }
 
+        public void SetPosition(Position targetPosition)
+        {
+            Position = targetPosition;
+        }
+
         public override string ToString()
         {
-            return (Color == PieceColor.White ? Identifier.ToLower() : Identifier.ToUpper());
+            return PieceType.Identifier;
         }
     }
 }

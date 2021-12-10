@@ -18,12 +18,12 @@ namespace GameLogic.GameHistory
 
         internal override void Redo(Field field)
         {
-            field.MovePiece(_piece, _to);
+            field.MovePieceTo(_piece, _to);
         }
 
         internal override void Undo(Field field)
         {
-            field.MovePiece(_piece, _from);
+            field.MovePieceTo(_piece, _from);
         }
     }
 }

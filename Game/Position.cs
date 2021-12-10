@@ -22,7 +22,6 @@
             AsCellIndex = Y * 8 + x;
         }
 
-
         public override string ToString()
         {
             return $"X={X}, Y={Y}";

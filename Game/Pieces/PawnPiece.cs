@@ -6,7 +6,7 @@ namespace GameLogic.Pieces
     {
         private IBasicMovement _basicMovements;
         private int _movementDirection;
-        public override string Identifier => "P";
+        public override Piece PieceType { get; }
 
         public PawnPiece(Position startPosition, PieceColor color) : base(startPosition, color)
         {
@@ -23,7 +23,9 @@ namespace GameLogic.Pieces
             }
 
             _basicMovements = new DefaultPawnMovement(pawnDirection);
+            PieceType = color == PieceColor.White ? ColoredPieces.WhitePawn : ColoredPieces.BlackPawn;
         }
+        public override object Clone() => Clone(new PawnPiece(Position, Color));
 
         private bool CanPerformEnPassant(Field field, int x)
         {
@@ -72,27 +74,38 @@ namespace GameLogic.Pieces
             if (!_basicMovements.IsTargetPositionAllowed(Position, targetPosition))
             {
                 // check diagonal capture moves
-                var leftCapturePosition = new Position(Position.X - 1, Position.Y + _movementDirection);
-                var rightCapturePosition = new Position(Position.X + 1, Position.Y + _movementDirection);
-                var leftCapturePiece = field.GetPieceAt(leftCapturePosition);
-                var rightCapturePiece = field.GetPieceAt(rightCapturePosition);
-                if (leftCapturePiece != null && leftCapturePiece.Color != Color && leftCapturePosition == targetPosition)
+                if (Position.X != 0)
                 {
-                    return true;
+                    var leftCapturePosition = new Position(Position.X - 1, Position.Y + _movementDirection);
+                    var leftCapturePiece = field.GetPieceAt(leftCapturePosition);
+
+                    if (leftCapturePiece != null && leftCapturePiece.Color != Color && leftCapturePosition == targetPosition)
+                    {
+                        return true;
+                    }
+
+                    if (targetPosition.X == Position.X - 1 && targetPosition.Y == Position.Y + _movementDirection &&
+                        CanPerformEnPassant(field, Position.X - 1))
+                    {
+                        return true;
+                    }
                 }
-                if (rightCapturePiece != null && rightCapturePiece.Color != Color && rightCapturePosition == targetPosition)
+
+                if (Position.X != 7)
                 {
-                    return true;
-                }
-                if (targetPosition.X == Position.X - 1 && targetPosition.Y == Position.Y + _movementDirection && 
-                    CanPerformEnPassant(field, Position.X - 1))
-                {
-                    return true;
-                }
-                if (targetPosition.X == Position.X + 1 && targetPosition.Y == Position.Y + _movementDirection && 
-                    CanPerformEnPassant(field, Position.X + 1))
-                {
-                    return true;
+                    var rightCapturePosition = new Position(Position.X + 1, Position.Y + _movementDirection);
+                    var rightCapturePiece = field.GetPieceAt(rightCapturePosition);
+
+                    if (rightCapturePiece != null && rightCapturePiece.Color != Color && rightCapturePosition == targetPosition)
+                    {
+                        return true;
+                    }
+
+                    if (targetPosition.X == Position.X + 1 && targetPosition.Y == Position.Y + _movementDirection &&
+                        CanPerformEnPassant(field, Position.X + 1))
+                    {
+                        return true;
+                    }
                 }
 
                 return false;
