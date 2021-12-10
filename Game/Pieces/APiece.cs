@@ -4,7 +4,6 @@ namespace GameLogic.Pieces
 {
     internal abstract class APiece
     {
-        public Position LastPosition { get; private set; }
         public Position Position { get; private set; }
         public bool WasMoved { get; private set; }
         public PieceColor Color { get; private set; }
@@ -13,7 +12,6 @@ namespace GameLogic.Pieces
         protected APiece(Position startPosition, PieceColor color)
         {
             Position = startPosition;
-            LastPosition = startPosition;
             Color = color;
         }
 
@@ -80,10 +78,9 @@ namespace GameLogic.Pieces
             return IsTargetPositionAllowed(field, targetPosition) && !CheckTest.WillKingBeInDanger(field, this, targetPosition);
         }
 
-        public void Move(Position targetPosition)
+        public virtual void Move(Position targetPosition)
         {
             WasMoved = true;
-            LastPosition = Position;
             Position = targetPosition;
         }
 

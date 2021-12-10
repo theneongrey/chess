@@ -7,6 +7,7 @@ namespace GameLogic.Pieces
         private IBasicMovement _basicMovements;
         private int _movementDirection;
         public override Piece PieceType { get; }
+        public bool AdvancedTwoCellsOnLastMove { get; private set; }
 
         public PawnPiece(Position startPosition, PieceColor color) : base(startPosition, color)
         {
@@ -26,6 +27,12 @@ namespace GameLogic.Pieces
             PieceType = color == PieceColor.White ? ColoredPieces.WhitePawn : ColoredPieces.BlackPawn;
         }
 
+        public override void Move(Position targetPosition)
+        {
+            AdvancedTwoCellsOnLastMove = Math.Abs(targetPosition.Y + Position.Y) == 2;
+            base.Move(targetPosition);
+        }
+
         private bool CanPerformEnPassant(Field field, int x)
         {
             if (!(_movementDirection == 1 && Position.Y == 4 ||
@@ -38,7 +45,7 @@ namespace GameLogic.Pieces
             return piece is PawnPiece pawn &&
                 field.LastMovedPiece == piece &&
                 pawn.Color != Color &&
-                pawn.LastPosition == new Position(x, Position.Y + _movementDirection * 2);
+                pawn.AdvancedTwoCellsOnLastMove;
         }
 
         protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Field field)
@@ -111,7 +118,7 @@ namespace GameLogic.Pieces
             }
 
             // on first move, jump to cells, check cell inbetween
-            if (LastPosition == Position && Position.Y + _movementDirection != targetPosition.Y)
+            if (!WasMoved && Position.Y + _movementDirection != targetPosition.Y)
             {
                 if (field.GetPieceAt(new Position(Position.X, Position.Y + _movementDirection)) != null)
                 {

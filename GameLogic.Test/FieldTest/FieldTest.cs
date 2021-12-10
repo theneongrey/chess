@@ -31,8 +31,34 @@ rnbqkbnr";
             field.MovePieceTo(pawnPiece!, to);
             field.LastMovedPiece.Should().Be(pawnPiece);
             pawnPiece!.Position.Should().Be(to);
-            pawnPiece!.LastPosition.Should().Be(from);
+            ((PawnPiece)pawnPiece).AdvancedTwoCellsOnLastMove.Should().BeTrue();
 
+            var actualFieldDebugToString = field.ToString();
+            actualFieldDebugToString.Should().Be(expectedField);
+        }
+
+        [Fact]
+        public void SingleRemoveTest()
+        {
+            var expectedField = @"RNBQKBNR
+PPPPPPPP
+--------
+--------
+--------
+--------
+p-pppppp
+rnbqkbnr";
+
+            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
+            var field = simpleStringLayoutParser.CreateField(SingleBoardSimpleStringLayoutParser.DefaultLayout);
+
+            var cell = new Position(1, 1);
+
+            var pawnPiece = field.GetPieceAt(cell);
+            pawnPiece.Should().BeOfType<PawnPiece>();
+
+            field.RemovePiece(pawnPiece!);
+            
             var actualFieldDebugToString = field.ToString();
             actualFieldDebugToString.Should().Be(expectedField);
         }

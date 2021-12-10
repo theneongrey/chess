@@ -34,6 +34,7 @@ namespace GameLogic
             _field = parser.CreateField(SingleBoardSimpleStringLayoutParser.DefaultLayout);
             _colorsTurn = PieceColor.White;
             _state = GameState.GameRunning;
+            _gameHistory = new GameStack();
         }
 
         private APiece? GetPieceIfItsPlayersTurn(Position cell)
@@ -111,7 +112,7 @@ namespace GameLogic
             }
 
             // moved forward, nothing was captured
-            if (pawn.LastPosition.X - pawn.Position.X == 0)
+            if (pawn.Position.X == to.X)
             {
                 return null;
             }
@@ -153,18 +154,57 @@ namespace GameLogic
             PerformMove(new AddPiece(piece));
         }
 
+        private bool HandleCasteling(APiece piece, Position to)
+        {
+            if (piece.WasMoved)
+            {
+                return false;
+            }
+
+            if (piece is KingPiece)
+            {
+                if (to.X - piece.Position.X == 2)
+                {
+                    var rook = _field.GetPieceAt(new Position(7, piece.Position.Y));
+                    PerformMove(new MovePiece(rook!, new Position(4, piece.Position.Y)));
+                    return true;
+                }
+                else if (piece.Position.X - to.X == 2)
+                {
+                    var rook = _field.GetPieceAt(new Position(0, piece.Position.Y));
+                    PerformMove(new MovePiece(rook!, new Position(4, piece.Position.Y)));
+                    return true;
+                }
+            }
+            else if (piece is RookPiece && to.X == 4)
+            {
+                if (_field.GetPieceAt(new Position(4, piece.Position.Y)) is KingPiece king && 
+                    !king.WasMoved)
+                {
+                    var direction = piece.Position.X == 0 ? -1 : 1;
+                    PerformMove(new MovePiece(king, new Position(4 + (2 * direction), piece.Position.Y)));
+                }   
+            }
+
+            return false;
+        }
+
         private bool MovePiece(APiece piece, Position to)
         {
-            // to do: handle castling
             if (piece.IsMoveAllowed(_field, to))
             {
-                PerformMove(new MovePiece(piece, to));
+                var wasACastelingMove = HandleCasteling(piece, to);
 
-                APiece? capturedPiece = GetCapturedPiece(piece, to);
-                if (capturedPiece != null)
+                if (!wasACastelingMove)
                 {
-                    PerformMove(new RemovePiece(capturedPiece));
+                    APiece? capturedPiece = GetCapturedPiece(piece, to);
+                    if (capturedPiece != null)
+                    {
+                        PerformMove(new RemovePiece(capturedPiece));
+                    }
                 }
+
+                PerformMove(new MovePiece(piece, to));
 
                 return true;
             }
