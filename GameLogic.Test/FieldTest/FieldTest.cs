@@ -50,7 +50,6 @@ rnbqkbnr";
             field.MovePieceTo(pawnPiece!, to);
             field.LastMovedPiece.Should().Be(pawnPiece);
             pawnPiece!.Position.Should().Be(to);
-            ((PawnPiece)pawnPiece).AdvancedTwoCellsOnLastMove.Should().BeTrue();
 
             var actualFieldDebugToString = field.ToString();
             actualFieldDebugToString.Should().Be(expectedField);

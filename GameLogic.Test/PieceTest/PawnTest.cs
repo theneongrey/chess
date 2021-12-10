@@ -129,6 +129,94 @@ namespace GameLogic.Test.PieceTest
         }
 
         [Fact]
+        public void MovedTwoCellsForWhitePawn_AdvancedTwoCellsOnLastMove_ShouldBeTrue()
+        {
+            const string fieldLayout = @"RNBQKBNR
+                                         PPPPPPPP
+                                         --------
+                                         --------
+                                         --------
+                                         --------
+                                         pppppppp
+                                         rnbqkbnr";
+
+            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
+            var field = simpleStringLayoutParser.CreateField(fieldLayout);
+            var pawn = field.GetPieceAt(new Position(1, 1))!;
+
+            Assert.IsType<PawnPiece>(pawn);
+            
+            field.MovePieceTo(pawn, new Position(1, 3));
+            ((PawnPiece)pawn).AdvancedTwoCellsOnLastMove.Should().BeTrue();
+        }
+
+        [Fact]
+        public void MovedOneCellsForWhitePawn_AdvancedTwoCellsOnLastMove_ShouldBeFalse()
+        {
+            const string fieldLayout = @"RNBQKBNR
+                                         PPPPPPPP
+                                         --------
+                                         --------
+                                         --------
+                                         --------
+                                         pppppppp
+                                         rnbqkbnr";
+
+            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
+            var field = simpleStringLayoutParser.CreateField(fieldLayout);
+            var pawn = field.GetPieceAt(new Position(1, 1))!;
+
+            Assert.IsType<PawnPiece>(pawn);
+
+            field.MovePieceTo(pawn, new Position(1, 2));
+            ((PawnPiece)pawn).AdvancedTwoCellsOnLastMove.Should().BeFalse();
+        }
+
+        [Fact]
+        public void MovedTwoCellsForBlackPawn_AdvancedTwoCellsOnLastMove_ShouldBeTrue()
+        {
+            const string fieldLayout = @"RNBQKBNR
+                                         PPPPPPPP
+                                         --------
+                                         --------
+                                         --------
+                                         --------
+                                         pppppppp
+                                         rnbqkbnr";
+
+            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
+            var field = simpleStringLayoutParser.CreateField(fieldLayout);
+            var pawn = field.GetPieceAt(new Position(1, 6))!;
+
+            Assert.IsType<PawnPiece>(pawn);
+
+            field.MovePieceTo(pawn, new Position(1, 4));
+            ((PawnPiece)pawn).AdvancedTwoCellsOnLastMove.Should().BeTrue();
+        }
+
+        [Fact]
+        public void MovedOneCellsForBlackPawn_AdvancedTwoCellsOnLastMove_ShouldBeFalse()
+        {
+            const string fieldLayout = @"RNBQKBNR
+                                         PPPPPPPP
+                                         --------
+                                         --------
+                                         --------
+                                         --------
+                                         pppppppp
+                                         rnbqkbnr";
+
+            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
+            var field = simpleStringLayoutParser.CreateField(fieldLayout);
+            var pawn = field.GetPieceAt(new Position(1, 6))!;
+
+            Assert.IsType<PawnPiece>(pawn);
+
+            field.MovePieceTo(pawn, new Position(1, 5));
+            ((PawnPiece)pawn).AdvancedTwoCellsOnLastMove.Should().BeFalse();
+        }
+
+        [Fact]
         public void AllowedCaptureMovesForWhite()
         {
             const string fieldLayout = @"RN-QK-NR
@@ -560,7 +648,7 @@ namespace GameLogic.Test.PieceTest
         public void EnPassantMovesForBlack_MoveIsAllowed()
         {
             const string fieldLayout = @"RNBQKBNR
-                                         PPPPPPPP
+                                         PP-PPPPP
                                          --------
                                          --------
                                          --P-----
@@ -592,7 +680,7 @@ namespace GameLogic.Test.PieceTest
         public void EnPassantMovesForBlack_MoveIsNotAllowed()
         {
             const string fieldLayout = @"RNBQKBNR
-                                         PPPPPPPP
+                                         PP-PPPPP
                                          --------
                                          --------
                                          --Pp----
