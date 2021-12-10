@@ -25,7 +25,6 @@ namespace GameLogic.Pieces
             _basicMovements = new DefaultPawnMovement(pawnDirection);
             PieceType = color == PieceColor.White ? ColoredPieces.WhitePawn : ColoredPieces.BlackPawn;
         }
-        public override object Clone() => Clone(new PawnPiece(Position, Color));
 
         private bool CanPerformEnPassant(Field field, int x)
         {

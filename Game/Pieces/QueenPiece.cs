@@ -12,7 +12,6 @@ namespace GameLogic.Pieces
             _basicMovements = new BasicMovementCollection(new DiagonalMovement(), new HorizontalVerticalMovement());
             PieceType = color == PieceColor.White ? ColoredPieces.WhiteQueen : ColoredPieces.BlackQueen;
         }
-        public override object Clone() => Clone(new QueenPiece(Position, Color));
 
         protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Field field)
         {

@@ -17,16 +17,6 @@ namespace GameLogic.Pieces
             Color = color;
         }
 
-        protected APiece Clone(APiece newInstance)
-        {
-            newInstance.LastPosition = LastPosition;
-            newInstance.WasMoved = WasMoved;
-            
-            return newInstance;
-        }
-
-        public abstract object Clone();
-
         protected IEnumerable<IEnumerable<Position>> FilterMovementForObstacles(IEnumerable<IEnumerable<Position>> movements, Field field, bool canCaptureEnemyField = true)
         {
             var result = new List<List<Position>>();

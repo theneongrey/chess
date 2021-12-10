@@ -13,8 +13,6 @@ namespace GameLogic.Pieces
             PieceType = color == PieceColor.White ? ColoredPieces.WhiteBishop : ColoredPieces.BlackBishop;
         }
 
-        public override object Clone() => Clone(new BishopPiece(Position, Color));
-
         protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Field field)
         {
             var filteredPositions = FilterMovementForObstacles(_basicMovements.GetAllowedPositions(Position), field);

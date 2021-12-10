@@ -12,7 +12,6 @@ namespace GameLogic.Pieces
             _basicMovements = new HorizontalVerticalMovement();
             PieceType = color == PieceColor.White ? ColoredPieces.WhiteRook : ColoredPieces.BlackRook;
         }
-        public override object Clone() => Clone(new RookPiece(Position, Color));
 
         private bool IsCastlingPossible(Field field)
         {

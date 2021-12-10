@@ -12,7 +12,6 @@ namespace GameLogic.Pieces
             _basicMovements = new JumpMovement();
             PieceType = color == PieceColor.White ? ColoredPieces.WhiteKnight : ColoredPieces.BlackKnight;
         }
-        public override object Clone() => Clone(new KnightPiece(Position, Color));
 
         protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Field field)
         {

@@ -13,20 +13,6 @@ namespace GameLogic
             _cells = new APiece[64];
         }
 
-        public object Clone()
-        {
-            var clone = new Field();
-            foreach (var piece in _cells)
-            {
-                if (piece != null)
-                {
-                    clone.AddPiece(piece);
-                }
-            }
-            clone.LastMovedPiece = LastMovedPiece;
-            return clone;
-        }
-
         internal void AddPiece(APiece piece)
         {
             _cells[piece.Position.AsCellIndex] = piece;
