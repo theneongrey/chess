@@ -151,7 +151,7 @@ namespace GameLogic
             _gameHistory.AddAndRunMove(_board, move);
         }
 
-        private bool HandleCasteling(APiece piece, Position to)
+        private bool CheckCasteling(APiece piece, Position to)
         {
             if (piece.WasMoved)
             {
@@ -162,25 +162,16 @@ namespace GameLogic
             {
                 if (to.X - piece.Position.X == 2)
                 {
-                    var rook = _board.GetPieceAt(new Position(7, piece.Position.Y));
-                    PerformMove(new MovePiece(rook!, new Position(4, piece.Position.Y)));
-                    return true;
+                    return _board.GetPieceAt(new Position(7, piece.Position.Y)) is RookPiece rook && rook.IsCastlingPossible(_board);
                 }
                 else if (piece.Position.X - to.X == 2)
                 {
-                    var rook = _board.GetPieceAt(new Position(0, piece.Position.Y));
-                    PerformMove(new MovePiece(rook!, new Position(4, piece.Position.Y)));
-                    return true;
+                    return _board.GetPieceAt(new Position(0, piece.Position.Y)) is RookPiece rook && rook.IsCastlingPossible(_board);
                 }
             }
-            else if (piece is RookPiece && to.X == 4)
+            else if (piece is RookPiece rook && to.X == 4)
             {
-                if (_board.GetPieceAt(new Position(4, piece.Position.Y)) is KingPiece king && 
-                    !king.WasMoved)
-                {
-                    var direction = piece.Position.X == 0 ? -1 : 1;
-                    PerformMove(new MovePiece(king, new Position(4 + (2 * direction), piece.Position.Y)));
-                }   
+                return rook.IsCastlingPossible(_board);
             }
 
             return false;
@@ -190,18 +181,21 @@ namespace GameLogic
         {
             if (piece.IsMoveAllowed(_board, to))
             {
-                var wasACastelingMove = HandleCasteling(piece, to);
-
-                if (!wasACastelingMove)
+                var isCastelingMove = CheckCasteling(piece, to);
+                if (isCastelingMove)
+                {
+                    PerformMove(new GameMoveCasteling(_board.GetPieceAt(new Position(4, to.Y))!, to));
+                }
+                else
                 {
                     APiece? capturedPiece = GetCapturedPiece(piece, to);
                     if (capturedPiece != null)
                     {
-                        PerformMove(new RemovePiece(capturedPiece));
+                        PerformMove(new GameMoveRemovePiece(capturedPiece));
                     }
                 }
 
-                PerformMove(new MovePiece(piece, to));
+                PerformMove(new GameMoveMovePiece(piece, to));
 
                 return true;
             }
@@ -251,7 +245,7 @@ namespace GameLogic
                 return false;
             }
 
-            PerformMove(new PromotePiece(_selectedPiece!, piece.Invoke()));
+            PerformMove(new GameMovePromotePiece(_selectedPiece!, piece.Invoke()));
             SwapTurns();
             _state = GameState.GameRunning;
 
@@ -281,6 +275,11 @@ namespace GameLogic
         public override string ToString()
         {
             return _board.ToString();
+        }
+
+        public string ToFullAlgebraicNotation()
+        {
+            return _gameHistory.ToString()!;
         }
     }
 }

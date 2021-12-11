@@ -13,7 +13,7 @@ namespace GameLogic.InternPieces
             PieceType = color == PieceColor.White ? ColoredPieces.WhiteRook : ColoredPieces.BlackRook;
         }
 
-        private bool IsCastlingPossible(Board board)
+        public bool IsCastlingPossible(Board board)
         {
             var pieceAtKingPosition = board.GetPieceAt(new Position(4, Position.Y));
             if (pieceAtKingPosition is KingPiece king && !king.WasMoved)

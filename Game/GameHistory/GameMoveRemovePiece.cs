@@ -2,11 +2,11 @@
 
 namespace GameLogic.GameHistory
 {
-    internal class RemovePiece : AGameMove
+    internal class GameMoveRemovePiece : AGameMove
     {
         private APiece _piece;
 
-        internal RemovePiece(APiece piece)
+        internal GameMoveRemovePiece(APiece piece)
         {
             _piece = piece;
         }

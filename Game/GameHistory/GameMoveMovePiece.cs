@@ -2,13 +2,13 @@
 
 namespace GameLogic.GameHistory
 {
-    internal class MovePiece : AGameMove
+    internal class GameMoveMovePiece : AGameMove
     {
         private Position _from;
         private Position _to;
         private APiece _piece;
 
-        internal MovePiece(APiece piece, Position to)
+        internal GameMoveMovePiece(APiece piece, Position to)
         {
             _from = piece.Position;
             _to = to;

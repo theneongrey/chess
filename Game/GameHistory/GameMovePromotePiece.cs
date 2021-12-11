@@ -2,12 +2,12 @@
 
 namespace GameLogic.GameHistory
 {
-    internal class PromotePiece : AGameMove
+    internal class GameMovePromotePiece : AGameMove
     {
         private APiece _pawn;
         private APiece _newPiece;
 
-        public PromotePiece(APiece pawn, APiece newPiece)
+        public GameMovePromotePiece(APiece pawn, APiece newPiece)
         {
             _pawn = pawn;
             _newPiece = newPiece;
