@@ -4,6 +4,10 @@ namespace GameParser.PieceMapper
 {
     public class EnglishPieceMapper : IPieceMapper
     {
+        public string AllowedPromotionPieces => "QRBN";
+
+        public string PawnName => "P";
+
         public Piece GetPieceByName(char name)
         {
             return name switch

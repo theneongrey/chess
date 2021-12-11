@@ -159,7 +159,18 @@ namespace GameParser
                 {
                     throw new InvalidDataException($"Move {move} is not valid. {piece.Identifier} at {from} can not move to {to}.");
                 }
-                if (move[^1] == '#' && !game.IsGameOver)
+                var lastChar = move[^1];
+                if (char.IsUpper(lastChar))
+                {
+                    if (piece.Identifier != _pieceMapper.PawnName || (to.Value.Y != 0 && to.Value.Y != 7) || 
+                        !_pieceMapper.AllowedPromotionPieces.Contains(lastChar))
+                    {
+                        throw new InvalidDataException($"Move {move} is not valid. The given promotion is not valid");
+                    }
+
+                    game.PerformPromotion(_pieceMapper.GetPieceByName(lastChar));
+                }
+                if (lastChar == '#' && !game.IsGameOver)
                 {
                     throw new InvalidDataException($"Game should be over but it isn't.");
                 }
