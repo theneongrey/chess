@@ -1,8 +1,8 @@
 ﻿using GameLogic.InternPieces;
 
-namespace GameLogic.FieldParser
+namespace GameLogic.BoardParser
 {
-    internal class SingleBoardSimpleStringLayoutParser : IFieldParser
+    internal class SimpleBoardParser : IBoardParser
     {
         public static string DefaultLayout = @"RNBQKBNR
 PPPPPPPP
@@ -14,19 +14,19 @@ pppppppp
 rnbqkbnr";
 
         /// <summary>
-        /// Creates a field by a simple input (See DefaultLayout variable) with a single board for black (upper case) and white (lower case)
+        /// Creates a board by a simple input (See DefaultLayout variable) with a single board for black (upper case) and white (lower case)
         /// </summary>
-        /// <param name="input">Simple input. - defines an empty cell. A white piece is defined by a small case letter. A black piece is defined by an upper case letter. Empty space is only allowed at the beginning or the end of a row. The field must not contain any other character.</param>
-        /// <returns>A set up field</returns>
-        /// <exception cref="FieldParserException">When simple input is not defined properly</exception>
-        public Board CreateField(string input)
+        /// <param name="input">Simple input. - defines an empty cell. A white piece is defined by a small case letter. A black piece is defined by an upper case letter. Empty space is only allowed at the beginning or the end of a row. The board must not contain any other character.</param>
+        /// <returns>A set up board</returns>
+        /// <exception cref="BoardParserException">When simple input is not defined properly</exception>
+        public Board CreateBoard(string input)
         {
             var result = new Board();
             var rows = input.Trim().Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (rows.Length != 8)
             {
-                throw new FieldParserException("The input must contain exactly 8 rows.");
+                throw new BoardParserException("The input must contain exactly 8 rows.");
             }
             
             AssignRows(result, rows);
@@ -54,11 +54,11 @@ rnbqkbnr";
                 'B' => new BishopPiece(p, black),
                 'Q' => new QueenPiece(p, black),
                 'K' => new KingPiece(p, black),
-                _ => throw new FieldParserException($"Character {c} at position {p} is not valid")
+                _ => throw new BoardParserException($"Character {c} at position {p} is not valid")
             };
         }
 
-        private void AssignRows(Board field, string[] rows)
+        private void AssignRows(Board board, string[] rows)
         {
             for (int y = 0; y < rows.Length; y++)
             {
@@ -67,7 +67,7 @@ rnbqkbnr";
 
                 if (row.Length != 8)
                 {
-                    throw new FieldParserException($"Every row must contain 8 cells. ({row.Length} cells found at row {y})");
+                    throw new BoardParserException($"Every row must contain 8 cells. ({row.Length} cells found at row {y})");
                 }
 
                 for (int colIndex = 0; colIndex < row.Length; colIndex++)
@@ -76,7 +76,7 @@ rnbqkbnr";
                     var piece = GetPieceByChar(cell, new Position(colIndex, rowIndex));
                     if (piece != null)
                     {
-                        field.AddPiece(piece);
+                        board.AddPiece(piece);
                     }
                 }
             }

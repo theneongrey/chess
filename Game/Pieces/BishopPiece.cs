@@ -13,13 +13,13 @@ namespace GameLogic.InternPieces
             PieceType = color == PieceColor.White ? ColoredPieces.WhiteBishop : ColoredPieces.BlackBishop;
         }
 
-        protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Board field)
+        protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Board board)
         {
-            var filteredPositions = FilterMovementForObstacles(_basicMovements.GetAllowedPositions(Position), field);
+            var filteredPositions = FilterMovementForObstacles(_basicMovements.GetAllowedPositions(Position), board);
             return filteredPositions;
         }
 
-        public override bool IsTargetPositionAllowed(Board field, Position targetPosition)
+        public override bool IsTargetPositionAllowed(Board board, Position targetPosition)
         {
             // check if target position is valid move
             if (!_basicMovements.IsTargetPositionAllowed(Position, targetPosition))
@@ -38,7 +38,7 @@ namespace GameLogic.InternPieces
                 for (var x = Position.X + dirX; x != targetPosition.X; x += dirX)
                 {
                     y += dirY;
-                    if (field.GetPieceAt(new Position(x, y)) != null)
+                    if (board.GetPieceAt(new Position(x, y)) != null)
                     {
                         return false;
                     }
@@ -46,7 +46,7 @@ namespace GameLogic.InternPieces
             }
 
 
-            return field.GetPieceAt(targetPosition)?.Color != Color;
+            return board.GetPieceAt(targetPosition)?.Color != Color;
         }
     }
 }

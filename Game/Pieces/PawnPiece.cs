@@ -33,7 +33,7 @@ namespace GameLogic.InternPieces
             base.Move(targetPosition);
         }
 
-        private bool CanPerformEnPassant(Board field, int x)
+        private bool CanPerformEnPassant(Board board, int x)
         {
             if (!(_movementDirection == 1 && Position.Y == 4 ||
                 _movementDirection == -1 && Position.Y == 3))
@@ -41,20 +41,20 @@ namespace GameLogic.InternPieces
                 return false;
             }
 
-            var piece = field.GetPieceAt(new Position(x, Position.Y));
+            var piece = board.GetPieceAt(new Position(x, Position.Y));
             return piece is PawnPiece pawn &&
-                field.LastMovedPiece == piece &&
+                board.LastMovedPiece == piece &&
                 pawn.Color != Color &&
                 pawn.AdvancedTwoCellsOnLastMove;
         }
 
-        protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Board field)
+        protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Board board)
         {
-            var filteredPositions = FilterMovementForObstacles(_basicMovements.GetAllowedPositions(Position), field, false);
+            var filteredPositions = FilterMovementForObstacles(_basicMovements.GetAllowedPositions(Position), board, false);
             var result = new List<IEnumerable<Position>>(filteredPositions);
 
-            var leftCornerPiece = field.GetPieceAt(new Position(Position.X - 1, Position.Y + _movementDirection));
-            var rightCornerPiece = field.GetPieceAt(new Position(Position.X + 1, Position.Y + _movementDirection));
+            var leftCornerPiece = board.GetPieceAt(new Position(Position.X - 1, Position.Y + _movementDirection));
+            var rightCornerPiece = board.GetPieceAt(new Position(Position.X + 1, Position.Y + _movementDirection));
             if (leftCornerPiece != null && leftCornerPiece.Color != Color)
             {
                 result.Add(new[] { leftCornerPiece.Position });
@@ -63,11 +63,11 @@ namespace GameLogic.InternPieces
             {
                 result.Add(new[] { rightCornerPiece.Position });
             }
-            if (Position.X > 0 && CanPerformEnPassant(field, Position.X - 1))
+            if (Position.X > 0 && CanPerformEnPassant(board, Position.X - 1))
             {
                 result.Add(new[] { new Position(Position.X - 1, Position.Y + _movementDirection) });
             }
-            if (Position.X < 7 && CanPerformEnPassant(field, Position.X + 1))
+            if (Position.X < 7 && CanPerformEnPassant(board, Position.X + 1))
             {
                 result.Add(new[] { new Position(Position.X + 1, Position.Y + _movementDirection) });
             }
@@ -75,7 +75,7 @@ namespace GameLogic.InternPieces
             return result;
         }
 
-        public override bool IsTargetPositionAllowed(Board field, Position targetPosition)
+        public override bool IsTargetPositionAllowed(Board board, Position targetPosition)
         {
             if (!_basicMovements.IsTargetPositionAllowed(Position, targetPosition))
             {
@@ -83,7 +83,7 @@ namespace GameLogic.InternPieces
                 if (Position.X != 0)
                 {
                     var leftCapturePosition = new Position(Position.X - 1, Position.Y + _movementDirection);
-                    var leftCapturePiece = field.GetPieceAt(leftCapturePosition);
+                    var leftCapturePiece = board.GetPieceAt(leftCapturePosition);
 
                     if (leftCapturePiece != null && leftCapturePiece.Color != Color && leftCapturePosition == targetPosition)
                     {
@@ -91,7 +91,7 @@ namespace GameLogic.InternPieces
                     }
 
                     if (targetPosition.X == Position.X - 1 && targetPosition.Y == Position.Y + _movementDirection &&
-                        CanPerformEnPassant(field, Position.X - 1))
+                        CanPerformEnPassant(board, Position.X - 1))
                     {
                         return true;
                     }
@@ -100,7 +100,7 @@ namespace GameLogic.InternPieces
                 if (Position.X != 7)
                 {
                     var rightCapturePosition = new Position(Position.X + 1, Position.Y + _movementDirection);
-                    var rightCapturePiece = field.GetPieceAt(rightCapturePosition);
+                    var rightCapturePiece = board.GetPieceAt(rightCapturePosition);
 
                     if (rightCapturePiece != null && rightCapturePiece.Color != Color && rightCapturePosition == targetPosition)
                     {
@@ -108,7 +108,7 @@ namespace GameLogic.InternPieces
                     }
 
                     if (targetPosition.X == Position.X + 1 && targetPosition.Y == Position.Y + _movementDirection &&
-                        CanPerformEnPassant(field, Position.X + 1))
+                        CanPerformEnPassant(board, Position.X + 1))
                     {
                         return true;
                     }
@@ -120,13 +120,13 @@ namespace GameLogic.InternPieces
             // on first move, jump to cells, check cell inbetween
             if (!WasMoved && Position.Y + _movementDirection != targetPosition.Y)
             {
-                if (field.GetPieceAt(new Position(Position.X, Position.Y + _movementDirection)) != null)
+                if (board.GetPieceAt(new Position(Position.X, Position.Y + _movementDirection)) != null)
                 {
                     return false;
                 }
             }
 
-            return field.GetPieceAt(targetPosition) == null;
+            return board.GetPieceAt(targetPosition) == null;
         }
     }
 }

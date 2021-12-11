@@ -15,7 +15,7 @@ namespace GameLogic.InternPieces
             Color = color;
         }
 
-        protected IEnumerable<IEnumerable<Position>> FilterMovementForObstacles(IEnumerable<IEnumerable<Position>> movements, Board field, bool canCaptureEnemyField = true)
+        protected IEnumerable<IEnumerable<Position>> FilterMovementForObstacles(IEnumerable<IEnumerable<Position>> movements, Board board, bool canCaptureEnemyOnCell = true)
         {
             var result = new List<List<Position>>();
             foreach (var positionCollection in movements)
@@ -23,10 +23,10 @@ namespace GameLogic.InternPieces
                 var filteredCollection = new List<Position>();
                 foreach (var position in positionCollection)
                 {
-                    var piece = field.GetPieceAt(position);
+                    var piece = board.GetPieceAt(position);
                     if (piece != null)
                     {
-                        if (piece.Color == Color || !canCaptureEnemyField)
+                        if (piece.Color == Color || !canCaptureEnemyOnCell)
                         {
                             break;
                         }
@@ -58,37 +58,37 @@ namespace GameLogic.InternPieces
             return result;
         }
 
-        protected abstract IEnumerable<IEnumerable<Position>> GetAllowedPositions(Board field);
+        protected abstract IEnumerable<IEnumerable<Position>> GetAllowedPositions(Board board);
 
         /// <summary>
         /// Checks if moving to target position is allowed. Avoids checking for kings threads
         /// </summary>
-        /// <param name="field">Current field</param>
+        /// <param name="board">Current board</param>
         /// <param name="targetPosition">Wished target position</param>
         /// <returns>Is target position allowed</returns>
-        public abstract bool IsTargetPositionAllowed(Board field, Position targetPosition);
+        public abstract bool IsTargetPositionAllowed(Board board, Position targetPosition);
 
-        public IEnumerable<Position> GetAllowedMoves(Board field)
+        public IEnumerable<Position> GetAllowedMoves(Board board)
         {
-            var nonCheckTestAllowedMoves = CollectAllowedPositions(GetAllowedPositions(field));
-            return nonCheckTestAllowedMoves.Where(p => !CheckTest.WillKingBeInDanger(field, this, p));
+            var nonCheckTestAllowedMoves = CollectAllowedPositions(GetAllowedPositions(board));
+            return nonCheckTestAllowedMoves.Where(p => !CheckTest.WillKingBeInDanger(board, this, p));
         }
 
-        public bool CanMove(Board field)
+        public bool CanMove(Board board)
         {
-            var nonCheckTestAllowedMoves = CollectAllowedPositions(GetAllowedPositions(field));
-            return nonCheckTestAllowedMoves.Any(p => !CheckTest.WillKingBeInDanger(field, this, p));
+            var nonCheckTestAllowedMoves = CollectAllowedPositions(GetAllowedPositions(board));
+            return nonCheckTestAllowedMoves.Any(p => !CheckTest.WillKingBeInDanger(board, this, p));
         }
 
         /// <summary>
         /// Checks if moving to target position is allowed, including check for kings safety
         /// </summary>
-        /// <param name="field">Current field</param>
+        /// <param name="board">Current board</param>
         /// <param name="targetPosition">Wished target position</param>
         /// <returns>Is move allowed</returns>
-        public bool IsMoveAllowed(Board field, Position targetPosition)
+        public bool IsMoveAllowed(Board board, Position targetPosition)
         {
-            return IsTargetPositionAllowed(field, targetPosition) && !CheckTest.WillKingBeInDanger(field, this, targetPosition);
+            return IsTargetPositionAllowed(board, targetPosition) && !CheckTest.WillKingBeInDanger(board, this, targetPosition);
         }
 
         public virtual void Move(Position targetPosition)

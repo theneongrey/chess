@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using GameLogic.FieldParser;
+using GameLogic.BoardParser;
 using GameLogic.InternPieces;
 using Xunit;
 
@@ -10,7 +10,7 @@ namespace GameLogic.Test.PieceTest
         [Fact]
         public void AllowedMovesWithNoObstacles()
         {
-            const string fieldLayout = @"----K---
+            const string boardLayout = @"----K---
                                          ----P---
                                          --------
                                          ---q----
@@ -50,19 +50,19 @@ namespace GameLogic.Test.PieceTest
                 new Position(0, 7)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var queen = field.GetPieceAt(new Position(3, 4));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var queen = board.GetPieceAt(new Position(3, 4));
 
             Assert.IsType<QueenPiece>(queen);
-            var actualMoves = queen!.GetAllowedMoves(field);
+            var actualMoves = queen!.GetAllowedMoves(board);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
         [Fact]
         public void AllowedMovesWithObstacles()
         {
-            const string fieldLayout = @"R---K---
+            const string boardLayout = @"R---K---
                                          ---P-P--
                                          --------
                                          -B-q--b-
@@ -90,19 +90,19 @@ namespace GameLogic.Test.PieceTest
                 new Position(0, 7)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var queen = field.GetPieceAt(new Position(3, 4));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var queen = board.GetPieceAt(new Position(3, 4));
 
             Assert.IsType<QueenPiece>(queen);
-            var actualMoves = queen!.GetAllowedMoves(field);
+            var actualMoves = queen!.GetAllowedMoves(board);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
         [Fact]
         public void WithNoObstacles_MoveIsAllowed()
         {
-            const string fieldLayout = @"----K---
+            const string boardLayout = @"----K---
                                          ----P---
                                          --------
                                          ---q----
@@ -142,21 +142,21 @@ namespace GameLogic.Test.PieceTest
                 new Position(0, 7)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var queen = field.GetPieceAt(new Position(3, 4));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var queen = board.GetPieceAt(new Position(3, 4));
 
             Assert.IsType<QueenPiece>(queen);
             foreach (var move in performedMoves)
             {
-                queen!.IsMoveAllowed(field, move).Should().BeTrue();
+                queen!.IsMoveAllowed(board, move).Should().BeTrue();
             }
         }
 
         [Fact]
         public void WithObstacles_MoveIsAllowed()
         {
-            const string fieldLayout = @"R---K---
+            const string boardLayout = @"R---K---
                                          ---P-P--
                                          --------
                                          -B-q--b-
@@ -184,21 +184,21 @@ namespace GameLogic.Test.PieceTest
                 new Position(0, 7)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var queen = field.GetPieceAt(new Position(3, 4));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var queen = board.GetPieceAt(new Position(3, 4));
 
             Assert.IsType<QueenPiece>(queen);
             foreach (var move in performedMoves)
             {
-                queen!.IsMoveAllowed(field, move).Should().BeTrue();
+                queen!.IsMoveAllowed(board, move).Should().BeTrue();
             }
         }
 
         [Fact]
         public void WithObstacles_MoveIsNotAllowed()
         {
-            const string fieldLayout = @"R---K---
+            const string boardLayout = @"R---K---
                                          ---P-P--
                                          --------
                                          -B-q--b-
@@ -219,14 +219,14 @@ namespace GameLogic.Test.PieceTest
                 new Position(6, 7)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var queen = field.GetPieceAt(new Position(3, 4));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var queen = board.GetPieceAt(new Position(3, 4));
 
             Assert.IsType<QueenPiece>(queen);
             foreach (var move in performedMoves)
             {
-                queen!.IsMoveAllowed(field, move).Should().BeFalse();
+                queen!.IsMoveAllowed(board, move).Should().BeFalse();
             }
         }
     }

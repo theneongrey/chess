@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using GameLogic.FieldParser;
+using GameLogic.BoardParser;
 using GameLogic.InternPieces;
 using Xunit;
 
@@ -10,7 +10,7 @@ namespace GameLogic.Test.PieceTest
         [Fact]
         public void AllowedStartMovesWithNoObstacle()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -25,19 +25,19 @@ namespace GameLogic.Test.PieceTest
                 new Position(4,3),
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(4, 1));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(4, 1));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(board);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
         [Fact]
         public void AllowedRegularMoveWithNoObstacle()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -51,19 +51,19 @@ namespace GameLogic.Test.PieceTest
                 new Position(1,3)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(1, 2));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(1, 2));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(board);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
         [Fact]
         public void AllowedStartMovesWithObstacle()
         {
-            const string fieldLayout = @"RNBQK-NR
+            const string boardLayout = @"RNBQK-NR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -77,19 +77,19 @@ namespace GameLogic.Test.PieceTest
                 new Position(4,2),
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(4, 1));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(4, 1));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(board);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
         [Fact]
         public void AllowedStartMovesWithDirectObstacle_ShouldBeEmpty()
         {
-            const string fieldLayout = @"RNBQK-NR
+            const string boardLayout = @"RNBQK-NR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -98,19 +98,19 @@ namespace GameLogic.Test.PieceTest
                                          pppppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(4, 1));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(4, 1));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(board);
             actualMoves.Should().BeEmpty();
         }
 
         [Fact]
         public void AllowedRegularMoveWithObstacle_ShouldBeEmpty()
         {
-            const string fieldLayout = @"RNBQK-NR
+            const string boardLayout = @"RNBQK-NR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -119,19 +119,19 @@ namespace GameLogic.Test.PieceTest
                                          p-pppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(1, 2));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(1, 2));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(board);
             actualMoves.Should().BeEmpty();
         }
 
         [Fact]
         public void MovedTwoCellsForWhitePawn_AdvancedTwoCellsOnLastMove_ShouldBeTrue()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -140,20 +140,20 @@ namespace GameLogic.Test.PieceTest
                                          pppppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(1, 1))!;
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(1, 1))!;
 
             Assert.IsType<PawnPiece>(pawn);
             
-            field.MovePieceTo(pawn, new Position(1, 3));
+            board.MovePieceTo(pawn, new Position(1, 3));
             ((PawnPiece)pawn).AdvancedTwoCellsOnLastMove.Should().BeTrue();
         }
 
         [Fact]
         public void MovedOneCellsForWhitePawn_AdvancedTwoCellsOnLastMove_ShouldBeFalse()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -162,20 +162,20 @@ namespace GameLogic.Test.PieceTest
                                          pppppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(1, 1))!;
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(1, 1))!;
 
             Assert.IsType<PawnPiece>(pawn);
 
-            field.MovePieceTo(pawn, new Position(1, 2));
+            board.MovePieceTo(pawn, new Position(1, 2));
             ((PawnPiece)pawn).AdvancedTwoCellsOnLastMove.Should().BeFalse();
         }
 
         [Fact]
         public void MovedTwoCellsForBlackPawn_AdvancedTwoCellsOnLastMove_ShouldBeTrue()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -184,20 +184,20 @@ namespace GameLogic.Test.PieceTest
                                          pppppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(1, 6))!;
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(1, 6))!;
 
             Assert.IsType<PawnPiece>(pawn);
 
-            field.MovePieceTo(pawn, new Position(1, 4));
+            board.MovePieceTo(pawn, new Position(1, 4));
             ((PawnPiece)pawn).AdvancedTwoCellsOnLastMove.Should().BeTrue();
         }
 
         [Fact]
         public void MovedOneCellsForBlackPawn_AdvancedTwoCellsOnLastMove_ShouldBeFalse()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -206,20 +206,20 @@ namespace GameLogic.Test.PieceTest
                                          pppppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(1, 6))!;
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(1, 6))!;
 
             Assert.IsType<PawnPiece>(pawn);
 
-            field.MovePieceTo(pawn, new Position(1, 5));
+            board.MovePieceTo(pawn, new Position(1, 5));
             ((PawnPiece)pawn).AdvancedTwoCellsOnLastMove.Should().BeFalse();
         }
 
         [Fact]
         public void AllowedCaptureMovesForWhite()
         {
-            const string fieldLayout = @"RN-QK-NR
+            const string boardLayout = @"RN-QK-NR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -235,19 +235,19 @@ namespace GameLogic.Test.PieceTest
                 new Position(6, 3)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(5, 2));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(5, 2));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(board);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
         [Fact]
         public void AllowedCaptureMovesForBlack()
         {
-            const string fieldLayout = @"RN-QK-NR
+            const string boardLayout = @"RN-QK-NR
                                          PP-PPPPP
                                          --P-----
                                          -b-b----
@@ -263,19 +263,19 @@ namespace GameLogic.Test.PieceTest
                 new Position(3, 4)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(2, 5));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(2, 5));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(board);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
         [Fact]
         public void AllowedEnPassantMovesForWhite()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPPPPPP
                                          --------
                                          -----p--
@@ -290,22 +290,22 @@ namespace GameLogic.Test.PieceTest
                 new Position(4, 5)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(5, 4));
-            var blackPawn = field.GetPieceAt(new Position(4, 6));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(5, 4));
+            var blackPawn = board.GetPieceAt(new Position(4, 6));
 
-            field.MovePieceTo(blackPawn!, new Position(4, 4));
+            board.MovePieceTo(blackPawn!, new Position(4, 4));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(board);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
         [Fact]
         public void AllowedEnPassantMovesForBlack()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -320,15 +320,15 @@ namespace GameLogic.Test.PieceTest
                 new Position(1, 2)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(2, 3));
-            var whitePawn = field.GetPieceAt(new Position(1,1));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(2, 3));
+            var whitePawn = board.GetPieceAt(new Position(1,1));
 
-            field.MovePieceTo(whitePawn!, new Position(1, 3));
+            board.MovePieceTo(whitePawn!, new Position(1, 3));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(board);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
@@ -336,7 +336,7 @@ namespace GameLogic.Test.PieceTest
         [Fact]
         public void AllowedMovesForWhite_WhenEnPassantIsNotPossible()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPP-PPP
                                          --------
                                          ----Pp--
@@ -350,19 +350,19 @@ namespace GameLogic.Test.PieceTest
                 new Position(5, 5)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(5, 4));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(5, 4));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(board);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
         [Fact]
         public void AllowedEnPassantMovesForBlack_WhenEnPassantIsNotPossible()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -376,19 +376,19 @@ namespace GameLogic.Test.PieceTest
                 new Position(2, 2)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(2, 3));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(2, 3));
 
             Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(field);
+            var actualMoves = pawn!.GetAllowedMoves(board);
             actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
         }
 
         [Fact]
         public void StartMovesWithNoObstacle_MoveIsAllowed()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -403,21 +403,21 @@ namespace GameLogic.Test.PieceTest
                 new Position(4,3),
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(4, 1));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(4, 1));
 
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn!.IsMoveAllowed(field, move).Should().BeTrue();
+                pawn!.IsMoveAllowed(board, move).Should().BeTrue();
             }
         }
 
         [Fact]
         public void RegularMoveWithNoObstacle_MoveIsAllowed()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -426,18 +426,18 @@ namespace GameLogic.Test.PieceTest
                                          p-pppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(1, 2));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(1, 2));
 
             Assert.IsType<PawnPiece>(pawn);
-            pawn!.IsMoveAllowed(field, new Position(1, 3)).Should().BeTrue();
+            pawn!.IsMoveAllowed(board, new Position(1, 3)).Should().BeTrue();
         }
 
         [Fact]
         public void StartMovesWithObstacle_MoveIsAllowed()
         {
-            const string fieldLayout = @"RNBQK-NR
+            const string boardLayout = @"RNBQK-NR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -446,19 +446,19 @@ namespace GameLogic.Test.PieceTest
                                          pppppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(4, 1));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(4, 1));
 
             Assert.IsType<PawnPiece>(pawn);
-            pawn!.IsMoveAllowed(field, new Position(4, 2)).Should().BeTrue();
+            pawn!.IsMoveAllowed(board, new Position(4, 2)).Should().BeTrue();
         }
 
 
         [Fact]
         public void StartMovesWithObstacle_MoveIsNotAllowed()
         {
-            const string fieldLayout = @"RNBQK-NR
+            const string boardLayout = @"RNBQK-NR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -467,18 +467,18 @@ namespace GameLogic.Test.PieceTest
                                          pppppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(4, 1));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(4, 1));
 
             Assert.IsType<PawnPiece>(pawn);
-            pawn!.IsMoveAllowed(field, new Position(4, 3)).Should().BeFalse();
+            pawn!.IsMoveAllowed(board, new Position(4, 3)).Should().BeFalse();
         }
 
         [Fact]
         public void StartMovesWithDirectObstacle_MoveIsNotAllowed()
         {
-            const string fieldLayout = @"RNBQK-NR
+            const string boardLayout = @"RNBQK-NR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -493,21 +493,21 @@ namespace GameLogic.Test.PieceTest
                 new Position(4,3),
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(4, 1));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(4, 1));
 
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn!.IsMoveAllowed(field, move).Should().BeFalse();
+                pawn!.IsMoveAllowed(board, move).Should().BeFalse();
             }
         }
 
         [Fact]
         public void RegularMoveWithObstacle_MoveIsNotAllowed()
         {
-            const string fieldLayout = @"RNBQK-NR
+            const string boardLayout = @"RNBQK-NR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -516,18 +516,18 @@ namespace GameLogic.Test.PieceTest
                                          p-pppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(1, 2));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(1, 2));
 
             Assert.IsType<PawnPiece>(pawn);
-            pawn!.IsMoveAllowed(field, new Position(1, 3)).Should().BeFalse();
+            pawn!.IsMoveAllowed(board, new Position(1, 3)).Should().BeFalse();
         }
 
         [Fact]
         public void CaptureMovesForWhite_MoveIsAllowed()
         {
-            const string fieldLayout = @"RN-QK-NR
+            const string boardLayout = @"RN-QK-NR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -543,21 +543,21 @@ namespace GameLogic.Test.PieceTest
                 new Position(6, 3)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(5, 2));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(5, 2));
 
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn!.IsMoveAllowed(field, move).Should().BeTrue();
+                pawn!.IsMoveAllowed(board, move).Should().BeTrue();
             }
         }
 
         [Fact]
         public void CaptureMovesForBlack_MoveIsAllowed()
         {
-            const string fieldLayout = @"RN-QK-NR
+            const string boardLayout = @"RN-QK-NR
                                          PP-PPPPP
                                          --P-----
                                          -b-b----
@@ -573,21 +573,21 @@ namespace GameLogic.Test.PieceTest
                 new Position(3, 4)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(2, 5));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(2, 5));
 
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn!.IsMoveAllowed(field, move).Should().BeTrue();
+                pawn!.IsMoveAllowed(board, move).Should().BeTrue();
             }
         }
 
         [Fact]
         public void EnPassantMovesForWhite_MoveIsAllowed()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPPPPPP
                                          --------
                                          -----p--
@@ -602,24 +602,24 @@ namespace GameLogic.Test.PieceTest
                 new Position(4, 5)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(5, 4));
-            var blackPawn = field.GetPieceAt(new Position(4, 6));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(5, 4));
+            var blackPawn = board.GetPieceAt(new Position(4, 6));
 
-            field.MovePieceTo(blackPawn!, new Position(4, 4));
+            board.MovePieceTo(blackPawn!, new Position(4, 4));
 
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn!.IsMoveAllowed(field, move).Should().BeTrue();
+                pawn!.IsMoveAllowed(board, move).Should().BeTrue();
             }
         }
 
         [Fact]
         public void EnPassantMovesForWhite_MoveIsNotAllowed()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPP-PPP
                                          --------
                                          ----Pp--
@@ -633,21 +633,21 @@ namespace GameLogic.Test.PieceTest
                 new Position(4, 5)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(5, 4));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(5, 4));
 
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn!.IsMoveAllowed(field, move).Should().BeFalse();
+                pawn!.IsMoveAllowed(board, move).Should().BeFalse();
             }
         }
 
         [Fact]
         public void EnPassantMovesForBlack_MoveIsAllowed()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PP-PPPPP
                                          --------
                                          --------
@@ -662,24 +662,24 @@ namespace GameLogic.Test.PieceTest
                 new Position(1, 2)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(2, 3));
-            var whitePawn = field.GetPieceAt(new Position(1, 1));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(2, 3));
+            var whitePawn = board.GetPieceAt(new Position(1, 1));
 
-            field.MovePieceTo(whitePawn!, new Position(1, 3));
+            board.MovePieceTo(whitePawn!, new Position(1, 3));
 
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn!.IsMoveAllowed(field, move).Should().BeTrue();
+                pawn!.IsMoveAllowed(board, move).Should().BeTrue();
             }
         }
 
         [Fact]
         public void EnPassantMovesForBlack_MoveIsNotAllowed()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PP-PPPPP
                                          --------
                                          --------
@@ -693,14 +693,14 @@ namespace GameLogic.Test.PieceTest
                 new Position(1, 2)
             };
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var pawn = field.GetPieceAt(new Position(2, 3));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var pawn = board.GetPieceAt(new Position(2, 3));
 
             Assert.IsType<PawnPiece>(pawn);
             foreach (var move in performedMoves)
             {
-                pawn!.IsMoveAllowed(field, move).Should().BeFalse();
+                pawn!.IsMoveAllowed(board, move).Should().BeFalse();
             }
         }
     }

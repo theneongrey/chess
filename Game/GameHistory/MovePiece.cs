@@ -15,14 +15,14 @@ namespace GameLogic.GameHistory
             _piece = piece;
         }
 
-        internal override void Redo(Board field)
+        internal override void Redo(Board board)
         {
-            field.MovePieceTo(_piece, _to);
+            board.MovePieceTo(_piece, _to);
         }
 
-        internal override void Undo(Board field)
+        internal override void Undo(Board board)
         {
-            field.MovePieceTo(_piece, _from);
+            board.MovePieceTo(_piece, _from);
         }
     }
 }

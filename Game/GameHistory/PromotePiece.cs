@@ -13,16 +13,16 @@ namespace GameLogic.GameHistory
             _newPiece = newPiece;
         }
 
-        internal override void Redo(Board field)
+        internal override void Redo(Board board)
         {
-            field.RemovePiece(_pawn);
-            field.AddPiece(_newPiece);
+            board.RemovePiece(_pawn);
+            board.AddPiece(_newPiece);
         }
 
-        internal override void Undo(Board field)
+        internal override void Undo(Board board)
         {
-            field.RemovePiece(_newPiece);
-            field.AddPiece(_pawn);
+            board.RemovePiece(_newPiece);
+            board.AddPiece(_pawn);
         }
     }
 }

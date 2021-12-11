@@ -1,20 +1,20 @@
 ﻿using FluentAssertions;
-using GameLogic.FieldParser;
+using GameLogic.BoardParser;
 using System;
 using Xunit;
 
-namespace GameLogic.Test.FieldParser
+namespace GameLogic.Test.BoardParser
 {
     public class SingleBoardSimpleStringLayoutParserTest
     {
         [Fact]
         public void DefaultLayoutTest()
         {
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(SingleBoardSimpleStringLayoutParser.DefaultLayout);
-            var actualFieldDebugToString = field.ToString();
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var boardParser = simpleStringLayoutParser.CreateBoard(SimpleBoardParser.DefaultLayout);
+            var actualBoardDebugToString = boardParser.ToString();
 
-            actualFieldDebugToString.Should().Be(SingleBoardSimpleStringLayoutParser.DefaultLayout);
+            actualBoardDebugToString.Should().Be(SimpleBoardParser.DefaultLayout);
         }
 
         [Fact]
@@ -29,11 +29,11 @@ B-N-P---
 ppppk-pp
 r-bq-bnr";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(randomLayout);
-            var actualFieldDebugToString = field.ToString();
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var boardParser = simpleStringLayoutParser.CreateBoard(randomLayout);
+            var actualBoardDebugToString = boardParser.ToString();
 
-            actualFieldDebugToString.Should().Be(randomLayout);
+            actualBoardDebugToString.Should().Be(randomLayout);
         }
 
         [Fact]
@@ -47,11 +47,11 @@ r-bq-bnr";
                                  ppppk-pp
                                  r-bq-bnr";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
+            var simpleStringLayoutParser = new SimpleBoardParser();
 
-            Action act = () => simpleStringLayoutParser.CreateField(randomLayout);
+            Action act = () => simpleStringLayoutParser.CreateBoard(randomLayout);
 
-            act.Should().Throw<FieldParserException>()
+            act.Should().Throw<BoardParserException>()
                 .WithMessage("The input must contain exactly 8 rows.");
         }
 
@@ -67,11 +67,11 @@ r-bq-bnr";
                                  ---p--
                                  ---k--";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
+            var simpleStringLayoutParser = new SimpleBoardParser();
 
-            Action act = () => simpleStringLayoutParser.CreateField(randomLayout);
+            Action act = () => simpleStringLayoutParser.CreateBoard(randomLayout);
 
-            act.Should().Throw<FieldParserException>()
+            act.Should().Throw<BoardParserException>()
                 .WithMessage("Every row must contain 8 cells. (6 cells found at row 0)");
         }
 
@@ -87,11 +87,11 @@ r-bq-bnr";
                                  --------
                                  --------";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
+            var simpleStringLayoutParser = new SimpleBoardParser();
 
-            Action act = () => simpleStringLayoutParser.CreateField(randomLayout);
+            Action act = () => simpleStringLayoutParser.CreateBoard(randomLayout);
 
-            act.Should().Throw<FieldParserException>()
+            act.Should().Throw<BoardParserException>()
                 .WithMessage("Character x at position X=0, Y=7 is not valid");
         }
     }

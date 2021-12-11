@@ -1,5 +1,5 @@
 ﻿using GameLogic.CheckTester;
-using GameLogic.FieldParser;
+using GameLogic.BoardParser;
 using GameLogic.GameHistory;
 using GameLogic.InternPieces;
 using System.Runtime.CompilerServices;
@@ -9,7 +9,7 @@ namespace GameLogic
 {
     public class Game
     {
-        private Board _field;
+        private Board _board;
         private PieceColor _colorsTurn;
         private GameState _state;
         private APiece? _selectedPiece;
@@ -30,8 +30,8 @@ namespace GameLogic
 
         public Game()
         {
-            var parser = new SingleBoardSimpleStringLayoutParser();
-            _field = parser.CreateField(SingleBoardSimpleStringLayoutParser.DefaultLayout);
+            var parser = new SimpleBoardParser();
+            _board = parser.CreateBoard(SimpleBoardParser.DefaultLayout);
             _colorsTurn = PieceColor.White;
             _state = GameState.GameRunning;
             _gameHistory = new GameStack();
@@ -39,7 +39,7 @@ namespace GameLogic
 
         private APiece? GetPieceIfItsPlayersTurn(Position cell)
         {
-            var piece = _field.GetPieceAt(cell);
+            var piece = _board.GetPieceAt(cell);
             if (piece == null || piece.Color != _colorsTurn)
             {
                 return null;
@@ -92,7 +92,7 @@ namespace GameLogic
                 return Enumerable.Empty<Position>();
             }
 
-            return piece.GetAllowedMoves(_field);
+            return piece.GetAllowedMoves(_board);
         }
 
         public void SelectPiece(Position from)
@@ -108,7 +108,7 @@ namespace GameLogic
             // not a pawn -> not the enpassant special case
             if (piece is not PawnPiece pawn)
             {
-                return _field.GetPieceAt(to);
+                return _board.GetPieceAt(to);
             }
 
             // moved forward, nothing was captured
@@ -121,20 +121,20 @@ namespace GameLogic
             var pawnMovementDirection = pawn.Color == PieceColor.White ? 1 : -1;
             if (pawnMovementDirection == 1 && pawn.Position.Y == 5 ||
                 pawnMovementDirection == -1 && pawn.Position.Y == 2 &&
-                _field.GetPieceAt(to) == null)
+                _board.GetPieceAt(to) == null)
             {
-                return _field.GetPieceAt(new Position(to.X, to.Y - pawnMovementDirection));
+                return _board.GetPieceAt(new Position(to.X, to.Y - pawnMovementDirection));
             }
 
-            return _field.GetPieceAt(to);
+            return _board.GetPieceAt(to);
         }
 
         internal bool IsCheckMate()
         {
-            var pieces = _field.GetPiecesByColor(_colorsTurn == PieceColor.White ? PieceColor.Black : PieceColor.White);
+            var pieces = _board.GetPiecesByColor(_colorsTurn == PieceColor.White ? PieceColor.Black : PieceColor.White);
             foreach (var piece in pieces)
             {
-                if (piece.CanMove(_field))
+                if (piece.CanMove(_board))
                 {
                     return false;
                 }
@@ -145,7 +145,7 @@ namespace GameLogic
 
         private void PerformMove(AGameMove move)
         {
-            _gameHistory.AddAndRunMove(_field, move);
+            _gameHistory.AddAndRunMove(_board, move);
         }
 
         private bool HandleCasteling(APiece piece, Position to)
@@ -159,20 +159,20 @@ namespace GameLogic
             {
                 if (to.X - piece.Position.X == 2)
                 {
-                    var rook = _field.GetPieceAt(new Position(7, piece.Position.Y));
+                    var rook = _board.GetPieceAt(new Position(7, piece.Position.Y));
                     PerformMove(new MovePiece(rook!, new Position(4, piece.Position.Y)));
                     return true;
                 }
                 else if (piece.Position.X - to.X == 2)
                 {
-                    var rook = _field.GetPieceAt(new Position(0, piece.Position.Y));
+                    var rook = _board.GetPieceAt(new Position(0, piece.Position.Y));
                     PerformMove(new MovePiece(rook!, new Position(4, piece.Position.Y)));
                     return true;
                 }
             }
             else if (piece is RookPiece && to.X == 4)
             {
-                if (_field.GetPieceAt(new Position(4, piece.Position.Y)) is KingPiece king && 
+                if (_board.GetPieceAt(new Position(4, piece.Position.Y)) is KingPiece king && 
                     !king.WasMoved)
                 {
                     var direction = piece.Position.X == 0 ? -1 : 1;
@@ -185,7 +185,7 @@ namespace GameLogic
 
         private bool MovePiece(APiece piece, Position to)
         {
-            if (piece.IsMoveAllowed(_field, to))
+            if (piece.IsMoveAllowed(_board, to))
             {
                 var wasACastelingMove = HandleCasteling(piece, to);
 
@@ -224,7 +224,7 @@ namespace GameLogic
                 if (!IsPieceSelectionActive)
                 {
                     SwapTurns();
-                    IsCheckPending = CheckTest.IsKingInDanger(_field, _colorsTurn);
+                    IsCheckPending = CheckTest.IsKingInDanger(_board, _colorsTurn);
                 }
             }
 
@@ -263,11 +263,16 @@ namespace GameLogic
                 board[y] = new Piece[8];
                 for (var x = 0; x < board[y].Length; x++)
                 {
-                    board[y][x] = _field.GetPieceAt(new Position(x, y))?.PieceType;
+                    board[y][x] = _board.GetPieceAt(new Position(x, y))?.PieceType;
                 }
             }
 
             return board;
+        }
+
+        public override string ToString()
+        {
+            return _board.ToString();
         }
     }
 }

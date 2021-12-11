@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using GameLogic.CheckTester;
-using GameLogic.FieldParser;
+using GameLogic.BoardParser;
 using GameLogic.InternPieces;
 using Xunit;
 
@@ -11,17 +11,17 @@ namespace GameLogic.Test.CheckTesterTest
         [Fact]
         public void KingIsNotInDanger_ReturnsFalse()
         {
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(SingleBoardSimpleStringLayoutParser.DefaultLayout);
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(SimpleBoardParser.DefaultLayout);
         
-            CheckTest.IsKingInDanger(field, PieceColor.White).Should().BeFalse();
-            CheckTest.IsKingInDanger(field, PieceColor.Black).Should().BeFalse();
+            CheckTest.IsKingInDanger(board, PieceColor.White).Should().BeFalse();
+            CheckTest.IsKingInDanger(board, PieceColor.Black).Should().BeFalse();
         }
 
         [Fact]
         public void WhiteKingIsInDangerByPawn_ReturnsTrue()
         {
-            const string fieldLayout = @"P---K---
+            const string boardLayout = @"P---K---
                                          ----P---
                                          -----P--
                                          --P-n---
@@ -30,16 +30,16 @@ namespace GameLogic.Test.CheckTesterTest
                                          ----p---
                                          -------p";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
 
-            CheckTest.IsKingInDanger(field, PieceColor.White).Should().BeTrue();
+            CheckTest.IsKingInDanger(board, PieceColor.White).Should().BeTrue();
         }
 
         [Fact]
         public void WhiteKingIsInDangerByQueen_ReturnsTrue()
         {
-            const string fieldLayout = @"P--QK---
+            const string boardLayout = @"P--QK---
                                          ----P---
                                          -----P--
                                          ----n---
@@ -48,16 +48,16 @@ namespace GameLogic.Test.CheckTesterTest
                                          ----p---
                                          -------p";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
 
-            CheckTest.IsKingInDanger(field, PieceColor.White).Should().BeTrue();
+            CheckTest.IsKingInDanger(board, PieceColor.White).Should().BeTrue();
         }
 
         [Fact]
         public void BlackKingIsInDangerByKnight_ReturnsTrue()
         {
-            const string fieldLayout = @"P---K---
+            const string boardLayout = @"P---K---
                                          ----P---
                                          ---n-P--
                                          ----n---
@@ -66,25 +66,25 @@ namespace GameLogic.Test.CheckTesterTest
                                          ----p---
                                          -------p";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
 
-            CheckTest.IsKingInDanger(field, PieceColor.Black).Should().BeTrue();
+            CheckTest.IsKingInDanger(board, PieceColor.Black).Should().BeTrue();
         }
 
         [Fact]
-        public void KingWillBeInDangerTest_WhenPawnMovesTwoCells_DoesNotchangeFieldOrPieces()
+        public void KingWillBeInDangerTest_WhenPawnMovesTwoCells_DoesNotchangeBoardOrPieces()
         {
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(SingleBoardSimpleStringLayoutParser.DefaultLayout);
-            var pawn = (PawnPiece)field.GetPieceAt(new Position(1, 1))!;
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(SimpleBoardParser.DefaultLayout);
+            var pawn = (PawnPiece)board.GetPieceAt(new Position(1, 1))!;
 
-            CheckTest.WillKingBeInDanger(field, pawn!, new Position(1, 3));
+            CheckTest.WillKingBeInDanger(board, pawn!, new Position(1, 3));
 
-            var actualFieldDebugToString = field.ToString();
-            actualFieldDebugToString.Should().Be(SingleBoardSimpleStringLayoutParser.DefaultLayout);
-            field.LastMovedPiece.Should().BeNull();
-            field.GetPieceAt(new Position(1, 3)).Should().BeNull();
+            var actualBoardDebugToString = board.ToString();
+            actualBoardDebugToString.Should().Be(SimpleBoardParser.DefaultLayout);
+            board.LastMovedPiece.Should().BeNull();
+            board.GetPieceAt(new Position(1, 3)).Should().BeNull();
 
             pawn.WasMoved.Should().BeFalse();
             pawn.AdvancedTwoCellsOnLastMove.Should().BeFalse();
@@ -92,9 +92,9 @@ namespace GameLogic.Test.CheckTesterTest
         }
 
         [Fact]
-        public void KingWillBeInDangerTest_AfterCapturing_DoesNotchangeFieldOrPieces()
+        public void KingWillBeInDangerTest_AfterCapturing_DoesNotchangeBoarddOrPieces()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
 PPP-PPPP
 --------
 ---P----
@@ -103,18 +103,18 @@ PPP-PPPP
 pppp-ppp
 rnbqkbnr";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var whitePawn = (PawnPiece)field.GetPieceAt(new Position(4, 3))!;
-            var blackPawn = (PawnPiece)field.GetPieceAt(new Position(3, 4))!;
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var whitePawn = (PawnPiece)board.GetPieceAt(new Position(4, 3))!;
+            var blackPawn = (PawnPiece)board.GetPieceAt(new Position(3, 4))!;
 
-            CheckTest.WillKingBeInDanger(field, whitePawn!, new Position(3, 4));
+            CheckTest.WillKingBeInDanger(board, whitePawn!, new Position(3, 4));
 
-            var actualFieldDebugToString = field.ToString();
-            actualFieldDebugToString.Should().Be(fieldLayout);
-            field.LastMovedPiece.Should().BeNull();
-            field.GetPieceAt(new Position(4, 3)).Should().Be(whitePawn);
-            field.GetPieceAt(new Position(3, 4)).Should().Be(blackPawn);
+            var actualBoardDebugToString = board.ToString();
+            actualBoardDebugToString.Should().Be(boardLayout);
+            board.LastMovedPiece.Should().BeNull();
+            board.GetPieceAt(new Position(4, 3)).Should().Be(whitePawn);
+            board.GetPieceAt(new Position(3, 4)).Should().Be(blackPawn);
 
             whitePawn.WasMoved.Should().BeFalse();
             blackPawn.WasMoved.Should().BeFalse();
@@ -125,7 +125,7 @@ rnbqkbnr";
         [Fact]
         public void KingWillNotBeInDanger_ReturnsFalse()
         {
-            const string fieldLayout = @"RNBQKBNR
+            const string boardLayout = @"RNBQKBNR
                                          PPPPPPPP
                                          --------
                                          --------
@@ -134,17 +134,17 @@ rnbqkbnr";
                                          pppppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var knight = field.GetPieceAt(new Position(1, 0));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var knight = board.GetPieceAt(new Position(1, 0));
 
-            CheckTest.WillKingBeInDanger(field, knight!, new Position(2, 2)).Should().BeFalse();
+            CheckTest.WillKingBeInDanger(board, knight!, new Position(2, 2)).Should().BeFalse();
         }
 
         [Fact]
         public void KingWillBeInDangerWhenKingMoves_ReturnsTrue()
         {
-            const string fieldLayout = @"P-Q-K---
+            const string boardLayout = @"P-Q-K---
                                          ----P---
                                          -----P--
                                          ----n---
@@ -153,11 +153,11 @@ rnbqkbnr";
                                          ----p---
                                          -------p";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var king = field.GetPieceAt(new Position(3, 3));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var king = board.GetPieceAt(new Position(3, 3));
 
-            CheckTest.WillKingBeInDanger(field, king!, new Position(2, 3)).Should().BeTrue();
+            CheckTest.WillKingBeInDanger(board, king!, new Position(2, 3)).Should().BeTrue();
         }
 
         [Fact]
@@ -167,7 +167,7 @@ rnbqkbnr";
             // normally she could not move, because then her queen would be threatened by the white rook
             // but this thread should be insignificant and don't block the queens possible moves
 
-            const string fieldLayout = @"r-Q-K---
+            const string boardLayout = @"r-Q-K---
                                          --------
                                          --------
                                          --------
@@ -176,17 +176,17 @@ rnbqkbnr";
                                          --------
                                          --------";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var king = field.GetPieceAt(new Position(3, 3));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var king = board.GetPieceAt(new Position(3, 3));
 
-            CheckTest.WillKingBeInDanger(field, king!, new Position(2, 3)).Should().BeTrue();
+            CheckTest.WillKingBeInDanger(board, king!, new Position(2, 3)).Should().BeTrue();
         }
 
         [Fact]
         public void KingWillBeInDangerWhenOtherPieceMoves_ReturnsTrue()
         {
-            const string fieldLayout = @"---QK---
+            const string boardLayout = @"---QK---
                                          ---r----
                                          --------
                                          --------
@@ -195,11 +195,11 @@ rnbqkbnr";
                                          --------
                                          --------";
 
-            var simpleStringLayoutParser = new SingleBoardSimpleStringLayoutParser();
-            var field = simpleStringLayoutParser.CreateField(fieldLayout);
-            var rook = field.GetPieceAt(new Position(3, 6));
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var rook = board.GetPieceAt(new Position(3, 6));
 
-            CheckTest.WillKingBeInDanger(field, rook!, new Position(2, 6)).Should().BeTrue();
+            CheckTest.WillKingBeInDanger(board, rook!, new Position(2, 6)).Should().BeTrue();
         }
     }
 }

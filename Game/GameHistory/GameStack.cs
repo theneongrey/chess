@@ -14,18 +14,18 @@
             _moves.Push(move);
         }
 
-        internal void AddAndRunMove(Board field, AGameMove move)
+        internal void AddAndRunMove(Board board, AGameMove move)
         {
             _moves.Push(move);
-            move.Redo(field);
+            move.Redo(board);
         }
 
-        internal void Undo(Board field)
+        internal void Undo(Board board)
         {
             if (_moves.Any())
             {
                 var move = _moves.Pop();
-                move.Undo(field);
+                move.Undo(board);
             }
         }
     }
