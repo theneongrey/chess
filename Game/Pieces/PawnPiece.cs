@@ -33,7 +33,7 @@ namespace GameLogic.Pieces
             base.Move(targetPosition);
         }
 
-        private bool CanPerformEnPassant(Field field, int x)
+        private bool CanPerformEnPassant(Board field, int x)
         {
             if (!(_movementDirection == 1 && Position.Y == 4 ||
                 _movementDirection == -1 && Position.Y == 3))
@@ -48,7 +48,7 @@ namespace GameLogic.Pieces
                 pawn.AdvancedTwoCellsOnLastMove;
         }
 
-        protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Field field)
+        protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Board field)
         {
             var filteredPositions = FilterMovementForObstacles(_basicMovements.GetAllowedPositions(Position), field, false);
             var result = new List<IEnumerable<Position>>(filteredPositions);
@@ -75,7 +75,7 @@ namespace GameLogic.Pieces
             return result;
         }
 
-        public override bool IsTargetPositionAllowed(Field field, Position targetPosition)
+        public override bool IsTargetPositionAllowed(Board field, Position targetPosition)
         {
             if (!_basicMovements.IsTargetPositionAllowed(Position, targetPosition))
             {

@@ -3,12 +3,12 @@ using System.Text;
 
 namespace GameLogic 
 { 
-    internal class Field
+    internal class Board
     {
         private APiece?[] _cells;
         public APiece? LastMovedPiece { get; private set; }
 
-        internal Field()
+        internal Board()
         {
             _cells = new APiece[64];
         }

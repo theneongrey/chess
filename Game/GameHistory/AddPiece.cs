@@ -11,12 +11,12 @@ namespace GameLogic.GameHistory
             _piece = piece;
         }
 
-        internal override void Redo(Field field)
+        internal override void Redo(Board field)
         {
             field.AddPiece(_piece);
         }
 
-        internal override void Undo(Field field)
+        internal override void Undo(Board field)
         {
             field.RemovePiece(_piece);
         }

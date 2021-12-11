@@ -2,7 +2,7 @@
 {
     internal abstract class AGameMove
     {
-        internal abstract void Undo(Field field);
-        internal abstract void Redo(Field field);
+        internal abstract void Undo(Board field);
+        internal abstract void Redo(Board field);
     }
 }

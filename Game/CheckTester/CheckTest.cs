@@ -8,7 +8,7 @@ namespace GameLogic.CheckTester
         private static IBasicMovement _starMovement = new BasicMovementCollection(new DiagonalMovement(), new HorizontalVerticalMovement());
         private static IBasicMovement _jumpMovement = new JumpMovement();
 
-        public static bool WillKingBeInDanger(Field field, APiece piece, Position moveTo)
+        public static bool WillKingBeInDanger(Board field, APiece piece, Position moveTo)
         {
             var pieceCurrentPos = piece.Position;
             var pieceAtTargetcell = field.GetPieceAt(moveTo);
@@ -25,7 +25,7 @@ namespace GameLogic.CheckTester
             return result;
         }
 
-        public static bool IsKingInDanger(Field field, PieceColor currentTurn)
+        public static bool IsKingInDanger(Board field, PieceColor currentTurn)
         {
             var currentTurnKing = field.GetPiecesByTypeAndColor<KingPiece>(currentTurn).FirstOrDefault();
             if (currentTurnKing == null)
@@ -36,7 +36,7 @@ namespace GameLogic.CheckTester
             return IsKingInDanger(field, currentTurnKing);
         }
 
-        private static bool IsKingInDanger(Field field, KingPiece king)
+        private static bool IsKingInDanger(Board field, KingPiece king)
         {
             if (CanKingBeAttackedByAKnight(field, king))
             {
@@ -51,7 +51,7 @@ namespace GameLogic.CheckTester
             return false;
         }
 
-        private static bool CanKingBeAttackedByAnotherPiece(Field field, KingPiece king)
+        private static bool CanKingBeAttackedByAnotherPiece(Board field, KingPiece king)
         {
             var positions = _starMovement.GetAllowedPositions(king.Position);
             foreach (var positionCollection in positions)
@@ -69,7 +69,7 @@ namespace GameLogic.CheckTester
             return false;
         }
 
-        private static bool CanKingBeAttackedByAKnight(Field field, KingPiece king)
+        private static bool CanKingBeAttackedByAKnight(Board field, KingPiece king)
         {
             var possiblePositions = _jumpMovement.GetAllowedPositions(king.Position);
 

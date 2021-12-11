@@ -13,13 +13,13 @@ namespace GameLogic.Pieces
             PieceType = color == PieceColor.White ? ColoredPieces.WhiteQueen : ColoredPieces.BlackQueen;
         }
 
-        protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Field field)
+        protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Board field)
         {
             var filteredPositions = FilterMovementForObstacles(_basicMovements.GetAllowedPositions(Position), field);
             return filteredPositions;
         }
 
-        public override bool IsTargetPositionAllowed(Field field, Position targetPosition)
+        public override bool IsTargetPositionAllowed(Board field, Position targetPosition)
         {
             // check if target position is valid move
             if (!_basicMovements.IsTargetPositionAllowed(Position, targetPosition))

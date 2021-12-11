@@ -2,6 +2,6 @@
 {
     internal interface IFieldParser
     {
-        public Field CreateField(string input);
+        public Board CreateField(string input);
     }
 }

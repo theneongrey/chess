@@ -15,7 +15,7 @@ namespace GameLogic.Pieces
             Color = color;
         }
 
-        protected IEnumerable<IEnumerable<Position>> FilterMovementForObstacles(IEnumerable<IEnumerable<Position>> movements, Field field, bool canCaptureEnemyField = true)
+        protected IEnumerable<IEnumerable<Position>> FilterMovementForObstacles(IEnumerable<IEnumerable<Position>> movements, Board field, bool canCaptureEnemyField = true)
         {
             var result = new List<List<Position>>();
             foreach (var positionCollection in movements)
@@ -58,7 +58,7 @@ namespace GameLogic.Pieces
             return result;
         }
 
-        protected abstract IEnumerable<IEnumerable<Position>> GetAllowedPositions(Field field);
+        protected abstract IEnumerable<IEnumerable<Position>> GetAllowedPositions(Board field);
 
         /// <summary>
         /// Checks if moving to target position is allowed. Avoids checking for kings threads
@@ -66,15 +66,15 @@ namespace GameLogic.Pieces
         /// <param name="field">Current field</param>
         /// <param name="targetPosition">Wished target position</param>
         /// <returns>Is target position allowed</returns>
-        public abstract bool IsTargetPositionAllowed(Field field, Position targetPosition);
+        public abstract bool IsTargetPositionAllowed(Board field, Position targetPosition);
 
-        public IEnumerable<Position> GetAllowedMoves(Field field)
+        public IEnumerable<Position> GetAllowedMoves(Board field)
         {
             var nonCheckTestAllowedMoves = CollectAllowedPositions(GetAllowedPositions(field));
             return nonCheckTestAllowedMoves.Where(p => !CheckTest.WillKingBeInDanger(field, this, p));
         }
 
-        public bool CanMove(Field field)
+        public bool CanMove(Board field)
         {
             var nonCheckTestAllowedMoves = CollectAllowedPositions(GetAllowedPositions(field));
             return nonCheckTestAllowedMoves.Any(p => !CheckTest.WillKingBeInDanger(field, this, p));
@@ -86,7 +86,7 @@ namespace GameLogic.Pieces
         /// <param name="field">Current field</param>
         /// <param name="targetPosition">Wished target position</param>
         /// <returns>Is move allowed</returns>
-        public bool IsMoveAllowed(Field field, Position targetPosition)
+        public bool IsMoveAllowed(Board field, Position targetPosition)
         {
             return IsTargetPositionAllowed(field, targetPosition) && !CheckTest.WillKingBeInDanger(field, this, targetPosition);
         }

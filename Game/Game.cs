@@ -9,7 +9,7 @@ namespace GameLogic
 {
     public class Game
     {
-        private Field _field;
+        private Board _field;
         private PieceColor _colorsTurn;
         private GameState _state;
         private APiece? _selectedPiece;

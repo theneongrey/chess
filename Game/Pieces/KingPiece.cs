@@ -13,7 +13,7 @@ namespace GameLogic.Pieces
             PieceType = color == PieceColor.White ? ColoredPieces.WhiteKing : ColoredPieces.BlackKing;
         }
 
-        private bool IsLeftCastlingPossible(Field field)
+        private bool IsLeftCastlingPossible(Board field)
         {
             var row = Position.Y;
             var leftRook = field.GetPieceAt(new Position(0, row));
@@ -34,7 +34,7 @@ namespace GameLogic.Pieces
             return true;
         }
 
-        private bool IsRightCastlingPossible(Field field)
+        private bool IsRightCastlingPossible(Board field)
         {
             var row = Position.Y;
             var leftRook = field.GetPieceAt(new Position(0, row));
@@ -53,7 +53,7 @@ namespace GameLogic.Pieces
             return true;
         }
 
-        protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Field field)
+        protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Board field)
         {
             var filteredPositions = FilterMovementForObstacles(_basicMovements.GetAllowedPositions(Position), field);
             var allowedPositions = new List<IEnumerable<Position>>(filteredPositions);
@@ -72,7 +72,7 @@ namespace GameLogic.Pieces
             return allowedPositions;
         }
 
-        public override bool IsTargetPositionAllowed(Field field, Position targetPosition)
+        public override bool IsTargetPositionAllowed(Board field, Position targetPosition)
         {
             if (!_basicMovements.IsTargetPositionAllowed(Position, targetPosition))
             {

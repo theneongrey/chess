@@ -18,7 +18,7 @@ namespace GameLogic.Test.FieldTest
 --------
 --------
 ----k---";
-            var field = new Field();
+            var field = new Board();
             field.AddPiece(new KingPiece(new Position(4, 0), PieceColor.White));
             field.AddPiece(new KingPiece(new Position(4, 7), PieceColor.Black));
 

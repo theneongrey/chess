@@ -19,9 +19,9 @@ rnbqkbnr";
         /// <param name="input">Simple input. - defines an empty cell. A white piece is defined by a small case letter. A black piece is defined by an upper case letter. Empty space is only allowed at the beginning or the end of a row. The field must not contain any other character.</param>
         /// <returns>A set up field</returns>
         /// <exception cref="FieldParserException">When simple input is not defined properly</exception>
-        public Field CreateField(string input)
+        public Board CreateField(string input)
         {
-            var result = new Field();
+            var result = new Board();
             var rows = input.Trim().Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (rows.Length != 8)
@@ -58,7 +58,7 @@ rnbqkbnr";
             };
         }
 
-        private void AssignRows(Field field, string[] rows)
+        private void AssignRows(Board field, string[] rows)
         {
             for (int y = 0; y < rows.Length; y++)
             {
