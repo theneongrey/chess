@@ -4,7 +4,7 @@
     {
         public int X { get; }
         public int Y { get; }
-        public int AsCellIndex { get; }
+        internal int AsCellIndex { get; }
 
         public Position(int x, int y)
         {

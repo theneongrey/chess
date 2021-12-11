@@ -53,23 +53,30 @@ namespace GameLogic.InternPieces
             var filteredPositions = FilterMovementForObstacles(_basicMovements.GetAllowedPositions(Position), board, false);
             var result = new List<IEnumerable<Position>>(filteredPositions);
 
-            var leftCornerPiece = board.GetPieceAt(new Position(Position.X - 1, Position.Y + _movementDirection));
-            var rightCornerPiece = board.GetPieceAt(new Position(Position.X + 1, Position.Y + _movementDirection));
-            if (leftCornerPiece != null && leftCornerPiece.Color != Color)
+            if (Position.X != 0)
             {
-                result.Add(new[] { leftCornerPiece.Position });
+                var leftCornerPiece = board.GetPieceAt(new Position(Position.X - 1, Position.Y + _movementDirection));
+                if (leftCornerPiece != null && leftCornerPiece.Color != Color)
+                {
+                    result.Add(new[] { leftCornerPiece.Position });
+                }
+                if (CanPerformEnPassant(board, Position.X - 1))
+                {
+                    result.Add(new[] { new Position(Position.X - 1, Position.Y + _movementDirection) });
+                }
             }
-            if (rightCornerPiece != null && rightCornerPiece.Color != Color)
+
+            if (Position.X != 7)
             {
-                result.Add(new[] { rightCornerPiece.Position });
-            }
-            if (Position.X > 0 && CanPerformEnPassant(board, Position.X - 1))
-            {
-                result.Add(new[] { new Position(Position.X - 1, Position.Y + _movementDirection) });
-            }
-            if (Position.X < 7 && CanPerformEnPassant(board, Position.X + 1))
-            {
-                result.Add(new[] { new Position(Position.X + 1, Position.Y + _movementDirection) });
+                var rightCornerPiece = board.GetPieceAt(new Position(Position.X + 1, Position.Y + _movementDirection));
+                if (rightCornerPiece != null && rightCornerPiece.Color != Color)
+                {
+                    result.Add(new[] { rightCornerPiece.Position });
+                }
+                if (CanPerformEnPassant(board, Position.X + 1))
+                {
+                    result.Add(new[] { new Position(Position.X + 1, Position.Y + _movementDirection) });
+                }
             }
 
             return result;

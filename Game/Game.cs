@@ -95,12 +95,15 @@ namespace GameLogic
             return piece.GetAllowedMoves(_board);
         }
 
-        public void SelectPiece(Position from)
+        public Piece? SelectPiece(Position from)
         {
             if (IsGameRunning)
             {
                 _selectedPiece = GetPieceIfItsPlayersTurn(from);
+                return _selectedPiece?.PieceType;
             }
+
+            return null;
         }
 
         private APiece? GetCapturedPiece(APiece piece, Position to)
@@ -268,6 +271,11 @@ namespace GameLogic
             }
 
             return board;
+        }
+
+        public Piece? GetPieceAtCell(Position position)
+        {
+            return _board.GetPieceAt(position)?.PieceType;
         }
 
         public override string ToString()

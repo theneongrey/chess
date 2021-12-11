@@ -5,7 +5,11 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameLogic", "Game\GameLogic.csproj", "{96855340-2DDB-44C3-9FB8-A359B60103A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLogic.Test", "GameLogic.Test\GameLogic.Test.csproj", "{86F98179-F296-4631-A927-F36EEA2A3C30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameLogic.Test", "GameLogic.Test\GameLogic.Test.csproj", "{86F98179-F296-4631-A927-F36EEA2A3C30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameParser", "GameParser\GameParser.csproj", "{1CF62F15-9776-45D3-904A-D9166A69525C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameParser.Test", "GameParser.Test\GameParser.Test.csproj", "{67D6AAD3-B865-462A-8461-B42014DE5ADB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{86F98179-F296-4631-A927-F36EEA2A3C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86F98179-F296-4631-A927-F36EEA2A3C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86F98179-F296-4631-A927-F36EEA2A3C30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CF62F15-9776-45D3-904A-D9166A69525C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CF62F15-9776-45D3-904A-D9166A69525C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CF62F15-9776-45D3-904A-D9166A69525C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CF62F15-9776-45D3-904A-D9166A69525C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67D6AAD3-B865-462A-8461-B42014DE5ADB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67D6AAD3-B865-462A-8461-B42014DE5ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67D6AAD3-B865-462A-8461-B42014DE5ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67D6AAD3-B865-462A-8461-B42014DE5ADB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
