@@ -1,4 +1,4 @@
-﻿using GameLogic.Pieces;
+﻿using GameLogic.InternPieces;
 
 namespace GameLogic.GameHistory
 {

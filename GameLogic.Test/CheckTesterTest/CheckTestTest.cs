@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using GameLogic.CheckTester;
 using GameLogic.FieldParser;
-using GameLogic.Pieces;
+using GameLogic.InternPieces;
 using Xunit;
 
 namespace GameLogic.Test.CheckTesterTest

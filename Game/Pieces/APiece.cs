@@ -1,6 +1,6 @@
 ﻿using GameLogic.CheckTester;
 
-namespace GameLogic.Pieces
+namespace GameLogic.InternPieces
 {
     internal abstract class APiece
     {

@@ -1,6 +1,6 @@
 ﻿using GameLogic.BasicMovements;
 
-namespace GameLogic.Pieces
+namespace GameLogic.InternPieces
 {
     internal class KingPiece : APiece
     {

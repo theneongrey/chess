@@ -15,6 +15,16 @@
         }
     }
 
+    public class Pieces
+    {
+        public static Piece Queen { get; } = new Piece("q");
+        public static Piece Rook { get; } = new Piece("r");
+        public static Piece Knight { get; } = new Piece("n");
+        public static Piece Bishop { get; } = new Piece("b");
+        public static Piece Pawn { get; } = new Piece("p");
+        public static Piece King { get; } = new Piece("k");
+    }
+
     public class TradablePieces
     {
         public static Piece Queen { get; } = new Piece("q");

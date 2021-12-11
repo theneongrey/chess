@@ -1,5 +1,5 @@
 ﻿using GameLogic.BasicMovements;
-using GameLogic.Pieces;
+using GameLogic.InternPieces;
 
 namespace GameLogic.CheckTester
 {

@@ -1,7 +1,7 @@
 ﻿using GameLogic.CheckTester;
 using GameLogic.FieldParser;
 using GameLogic.GameHistory;
-using GameLogic.Pieces;
+using GameLogic.InternPieces;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("GameLogic.Test")]
@@ -253,6 +253,21 @@ namespace GameLogic
             _state = GameState.GameRunning;
 
             return true;
+        }
+
+        public Piece?[][] GetBoard()
+        {
+            var board = new Piece?[8][];
+            for (var y = 0; y < board.Length; y++)
+            {
+                board[y] = new Piece[8];
+                for (var x = 0; x < board[y].Length; x++)
+                {
+                    board[y][x] = _field.GetPieceAt(new Position(x, y))?.PieceType;
+                }
+            }
+
+            return board;
         }
     }
 }

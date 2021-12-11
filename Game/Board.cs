@@ -1,4 +1,4 @@
-﻿using GameLogic.Pieces;
+﻿using GameLogic.InternPieces;
 using System.Text;
 
 namespace GameLogic 
