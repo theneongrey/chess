@@ -148,12 +148,6 @@ namespace GameLogic
             _gameHistory.AddAndRunMove(_field, move);
         }
 
-        private void ReplacePiece(APiece selectedPiece, APiece piece)
-        {
-            PerformMove(new RemovePiece(selectedPiece));
-            PerformMove(new AddPiece(piece));
-        }
-
         private bool HandleCasteling(APiece piece, Position to)
         {
             if (piece.WasMoved)
@@ -237,7 +231,7 @@ namespace GameLogic
             return true;
         }
 
-        public bool PerformPieceSelection(Piece @type)
+        public bool PerformPromotion(Piece @type)
         {
             var pieceAssignment = new Dictionary<Piece, Func<APiece>>()
             {
@@ -254,7 +248,7 @@ namespace GameLogic
                 return false;
             }
 
-            ReplacePiece(_selectedPiece!, piece.Invoke());
+            PerformMove(new PromotePiece(_selectedPiece!, piece.Invoke()));
             SwapTurns();
             _state = GameState.GameRunning;
 
