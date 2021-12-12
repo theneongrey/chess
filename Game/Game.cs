@@ -28,13 +28,23 @@ namespace GameLogic
 
         public bool IsCheckPending { get; private set; }
 
-        public Game()
+        public Game() : this(SimpleBoardParser.DefaultLayout)
+        {
+        }
+
+        private Game(string board)
         {
             var parser = new SimpleBoardParser();
-            _board = parser.CreateBoard(SimpleBoardParser.DefaultLayout);
+            _board = parser.CreateBoard(board);
             _colorsTurn = PieceColor.White;
             _state = GameState.GameRunning;
             _gameHistory = new GameStack();
+
+        }
+
+        public static Game FromString(string board)
+        {
+            return new Game(board);
         }
 
         private APiece? GetPieceIfItsPlayersTurn(Position cell)
