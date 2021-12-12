@@ -7,6 +7,8 @@ namespace GameLogic.GameHistory
         private APiece _king;
         private Position _to;
 
+        public bool IsQueenCasteling => _to.X == 2;
+
         public GameMoveCasteling(APiece king, Position to)
         {
             _king = king;

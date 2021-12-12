@@ -203,9 +203,9 @@ namespace GameLogic
                     {
                         PerformMove(new GameMoveRemovePiece(capturedPiece));
                     }
+                    PerformMove(new GameMoveMovePiece(piece, to));
                 }
 
-                PerformMove(new GameMoveMovePiece(piece, to));
 
                 return true;
             }
@@ -232,7 +232,15 @@ namespace GameLogic
                 {
                     SwapTurns();
                     IsCheckPending = CheckTest.IsKingInDanger(_board, _colorsTurn);
+                    if (IsCheckPending)
+                    {
+                        PerformMove(new GameMoveCheck());
+                    }
                 }
+            }
+            else
+            {
+                PerformMove(new GameMoveCheckMate());
             }
 
             return true;
@@ -289,7 +297,7 @@ namespace GameLogic
 
         public string ToFullAlgebraicNotation()
         {
-            return _gameHistory.ToString()!;
+            return FullAlgebraicNotationOutput.GameStackToString(_gameHistory);
         }
     }
 }

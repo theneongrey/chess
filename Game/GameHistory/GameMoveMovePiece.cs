@@ -4,25 +4,26 @@ namespace GameLogic.GameHistory
 {
     internal class GameMoveMovePiece : AGameMove
     {
-        private Position _from;
-        private Position _to;
+        public Position From { get; private set; }
+        public Position To { get; private set; }
+        public string PieceIdentifier => _piece.PieceType.Identifier;
         private APiece _piece;
 
         internal GameMoveMovePiece(APiece piece, Position to)
         {
-            _from = piece.Position;
-            _to = to;
+            From = piece.Position;
+            To = to;
             _piece = piece;
         }
 
         internal override void Redo(Board board)
         {
-            board.MovePieceTo(_piece, _to);
+            board.MovePieceTo(_piece, To);
         }
 
         internal override void Undo(Board board)
         {
-            board.MovePieceTo(_piece, _from);
+            board.MovePieceTo(_piece, From);
         }
     }
 }

@@ -7,6 +7,8 @@ namespace GameLogic.GameHistory
         private APiece _pawn;
         private APiece _newPiece;
 
+        public string PromotedPieceIdentifier => _newPiece.PieceType.Identifier;
+
         public GameMovePromotePiece(APiece pawn, APiece newPiece)
         {
             _pawn = pawn;

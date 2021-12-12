@@ -6,7 +6,7 @@ namespace GameParser.Test
     public class FullAlgebraicNotationParserTest
     {
         [Fact]
-        public void Test1()
+        public void AfterParsing_BoardShouldBeSet()
         {
             var input = @"1.f2-f4     e7-e5
 2.f4xe5     d7-d6
