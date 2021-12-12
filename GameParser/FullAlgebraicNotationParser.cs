@@ -8,23 +8,23 @@ namespace GameParser
     {
         private bool _isWhiteTurn;
         private IPieceMapper _pieceMapper;
+        private Game _game;
 
-        private FullAlgebraicNotationParser(IPieceMapper pieceMapper)
+        private FullAlgebraicNotationParser(IPieceMapper pieceMapper, Game game, bool isWhiteTurn = true)
         {
-            _isWhiteTurn = true;
+            _isWhiteTurn = isWhiteTurn;
             _pieceMapper = pieceMapper;
+            _game = game;
         }
 
         private Game Parse(string notation)
         {
-            Game game = new Game();
-
             var steps = SplitSteps(notation);
             var moves = GetSingleMoves(steps);
 
-            PerformeMoves(game, moves);
+            PerformeMoves(moves);
 
-            return game;
+            return _game;
         }
 
         private Position? GetCoordinatesByName(string name)
@@ -93,7 +93,7 @@ namespace GameParser
             return result;
         }
 
-        private void PerformeMove(Game game, string move)
+        private void PerformeMove(string move)
         {
             Position? from;
             Position? to;
@@ -145,7 +145,7 @@ namespace GameParser
                     throw new InvalidDataException($"Move {move} is not valid. Could not parse target cell position.");
                 }
 
-                var pieceAtCell = game.SelectPiece(from.Value);
+                var pieceAtCell = _game.SelectPiece(from.Value);
                 if (pieceAtCell == null || pieceAtCell.Identifier.ToUpper() != piece.Identifier)
                 {
                     throw new InvalidDataException($"Move {move} is not valid. The piece at {from} is not a {piece.Identifier}");
@@ -155,7 +155,7 @@ namespace GameParser
                 {
                     throw new InvalidDataException($"Move {move} is not valid. It's the wrong turn.");
                 }
-                if (!game.TryMove(to.Value))
+                if (!_game.TryMove(to.Value))
                 {
                     throw new InvalidDataException($"Move {move} is not valid. {piece.Identifier} at {from} can not move to {to}.");
                 }
@@ -168,20 +168,20 @@ namespace GameParser
                         throw new InvalidDataException($"Move {move} is not valid. The given promotion is not valid");
                     }
 
-                    game.PerformPromotion(_pieceMapper.GetPieceByName(lastChar));
+                    _game.PerformPromotion(_pieceMapper.GetPieceByName(lastChar));
                 }
-                if (lastChar == '#' && !game.IsGameOver)
+                if (lastChar == '#' && !_game.IsGameOver)
                 {
                     throw new InvalidDataException($"Game should be over but it isn't.");
                 }
             }
         }
 
-        private void PerformeMoves(Game game, List<string> moves)
+        private void PerformeMoves(List<string> moves)
         {
             foreach (var move in moves)
             {
-                PerformeMove(game, move);
+                PerformeMove(move);
                 _isWhiteTurn = !_isWhiteTurn;
             }
         }
@@ -193,7 +193,18 @@ namespace GameParser
 
         public static Game GetGameFromNotation(string notation, IPieceMapper pieceMapper)
         {
-            var parser = new FullAlgebraicNotationParser(pieceMapper);
+            var parser = new FullAlgebraicNotationParser(pieceMapper, new Game());
+            return parser.Parse(notation);
+        }
+
+        public static Game ContinueGameFromNotation(string board, string notation, bool isWhiteTurn)
+        {
+            return ContinueGameFromNotation(board, notation, isWhiteTurn, new EnglishPieceMapper());
+        }
+
+        public static Game ContinueGameFromNotation(string board, string notation, bool isWhiteTurn, IPieceMapper pieceMapper)
+        {
+            var parser = new FullAlgebraicNotationParser(pieceMapper, Game.FromString(board), isWhiteTurn);
             return parser.Parse(notation);
         }
     }
