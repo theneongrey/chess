@@ -21,14 +21,24 @@
         }
     }
 
+    public class GamePieceIdentifier
+    {
+        public const string Queen = "Q";
+        public const string Rook = "R";
+        public const string Knight = "N";
+        public const string Bishop = "B";
+        public const string Pawn = "P";
+        public const string King = "K";
+    }
+
     public class Pieces
     {
-        public static Piece Queen { get; } = new Piece("Q");
-        public static Piece Rook { get; } = new Piece("R");
-        public static Piece Knight { get; } = new Piece("N");
-        public static Piece Bishop { get; } = new Piece("B");
-        public static Piece Pawn { get; } = new Piece("P");
-        public static Piece King { get; } = new Piece("K");
+        public static Piece Queen { get; } = new Piece(GamePieceIdentifier.Queen);
+        public static Piece Rook { get; } = new Piece(GamePieceIdentifier.Rook);
+        public static Piece Knight { get; } = new Piece(GamePieceIdentifier.Knight);
+        public static Piece Bishop { get; } = new Piece(GamePieceIdentifier.Bishop);
+        public static Piece Pawn { get; } = new Piece(GamePieceIdentifier.Pawn);
+        public static Piece King { get; } = new Piece(GamePieceIdentifier.King);
     }
 
     public class TradablePieces
@@ -41,18 +51,18 @@
 
     public class GamePieces
     {
-        public static GamePiece WhiteQueen { get; } = new GamePiece(Pieces.Queen.Identifier, true);
-        public static GamePiece WhiteRook { get; } = new GamePiece(Pieces.Rook.Identifier, true);
-        public static GamePiece WhiteKnight { get; } = new GamePiece(Pieces.Knight.Identifier, true);
-        public static GamePiece WhiteBishop { get; } = new GamePiece(Pieces.Bishop.Identifier, true);
-        public static GamePiece WhiteKing { get; } = new GamePiece(Pieces.King.Identifier, true);
-        public static GamePiece WhitePawn { get; } = new GamePiece(Pieces.Pawn.Identifier, true);
-        public static GamePiece BlackQueen { get; } = new GamePiece(Pieces.Queen.Identifier, false);
-        public static GamePiece BlackRook { get; } = new GamePiece(Pieces.Rook.Identifier, false);
-        public static GamePiece BlackKnight { get; } = new GamePiece(Pieces.Knight.Identifier, false);
-        public static GamePiece BlackBishop { get; } = new GamePiece(Pieces.Bishop.Identifier, false);
-        public static GamePiece BlackKing { get; } = new GamePiece(Pieces.King.Identifier, false);
-        public static GamePiece BlackPawn { get; } = new GamePiece(Pieces.Pawn.Identifier, false);
+        public static GamePiece WhiteQueen { get; } = new GamePiece(GamePieceIdentifier.Queen, true);
+        public static GamePiece WhiteRook { get; } = new GamePiece(GamePieceIdentifier.Rook, true);
+        public static GamePiece WhiteKnight { get; } = new GamePiece(GamePieceIdentifier.Knight, true);
+        public static GamePiece WhiteBishop { get; } = new GamePiece(GamePieceIdentifier.Bishop, true);
+        public static GamePiece WhiteKing { get; } = new GamePiece(GamePieceIdentifier.King, true);
+        public static GamePiece WhitePawn { get; } = new GamePiece(GamePieceIdentifier.Pawn, true);
+        public static GamePiece BlackQueen { get; } = new GamePiece(GamePieceIdentifier.Queen, false);
+        public static GamePiece BlackRook { get; } = new GamePiece(GamePieceIdentifier.Rook, false);
+        public static GamePiece BlackKnight { get; } = new GamePiece(GamePieceIdentifier.Knight, false);
+        public static GamePiece BlackBishop { get; } = new GamePiece(GamePieceIdentifier.Bishop, false);
+        public static GamePiece BlackKing { get; } = new GamePiece(GamePieceIdentifier.King, false);
+        public static GamePiece BlackPawn { get; } = new GamePiece(GamePieceIdentifier.Pawn, false);
     }
 
 }
