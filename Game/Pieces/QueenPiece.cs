@@ -5,12 +5,12 @@ namespace GameLogic.InternPieces
     internal class QueenPiece : APiece
     {
         private IBasicMovement _basicMovements;
-        public override Piece PieceType { get; }
+        public override GamePiece PieceType { get; }
 
         public QueenPiece(Position startPosition, PieceColor color) : base(startPosition, color)
         {
             _basicMovements = new BasicMovementCollection(new DiagonalMovement(), new HorizontalVerticalMovement());
-            PieceType = color == PieceColor.White ? ColoredPieces.WhiteQueen : ColoredPieces.BlackQueen;
+            PieceType = color == PieceColor.White ? GamePieces.WhiteQueen : GamePieces.BlackQueen;
         }
 
         protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Board board)
