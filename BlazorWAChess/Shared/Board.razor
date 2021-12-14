@@ -1,0 +1,23 @@
+﻿@using BlazorWAChess.ViewModel
+@using GameLogic
+<table id="chessboard">
+    @for (var y = 7; y >= 0; y--)
+    {
+        <tr>
+        @for (var x = 0; x < 7; x++)
+        {
+            <td><Cell DataContext="@Game.Cells[y][x]" /></td>
+        }
+        </tr>
+    }
+</table>
+
+@code {
+    private Game _gameModel { get; } = new Game();
+    public GameVM Game { get; } = new GameVM();
+
+    protected override void OnInitialized()
+    {
+        Game.Update(_gameModel);
+    }
+}

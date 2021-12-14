@@ -1,0 +1,10 @@
+﻿@using BlazorWAChess.ViewModel
+<div>
+    @DataContext!.ToString()
+</div>
+
+@code 
+{
+    [Parameter]
+    public CellVM? DataContext { get; set; }
+}
