@@ -146,12 +146,12 @@ namespace GameParser
                 }
 
                 var pieceAtCell = _game.SelectPiece(from.Value);
-                if (pieceAtCell == null || pieceAtCell.Identifier.ToUpper() != piece.Identifier)
+                if (pieceAtCell == null || pieceAtCell.Identifier != piece.Identifier)
                 {
                     throw new InvalidDataException($"Move {move} is not valid. The piece at {from} is not a {piece.Identifier}");
                 }
-                if (char.IsLower(pieceAtCell.Identifier[0]) && !_isWhiteTurn ||
-                    char.IsUpper(pieceAtCell.Identifier[0]) && _isWhiteTurn)
+                if (pieceAtCell.IsWhite && !_isWhiteTurn ||
+                    !pieceAtCell.IsWhite && _isWhiteTurn)
                 {
                     throw new InvalidDataException($"Move {move} is not valid. It's the wrong turn.");
                 }

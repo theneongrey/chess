@@ -17,7 +17,7 @@ namespace GameLogic.GameHistory
                 throw new InvalidDataException("GameMoveMovePiece is the only type that should be possible here.");
             }
 
-            var piece = movePiece.PieceIdentifier.ToUpper();
+            var piece = movePiece.PieceIdentifier;
             if (piece == Pieces.Pawn.Identifier)
             {
                 piece = string.Empty;

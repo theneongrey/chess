@@ -6,7 +6,7 @@ namespace GameLogic.InternPieces
     {
         private IBasicMovement _basicMovements;
         private int _movementDirection;
-        public override Piece PieceType { get; }
+        public override GamePiece PieceType { get; }
         public bool AdvancedTwoCellsOnLastMove { get; private set; }
 
         public PawnPiece(Position startPosition, PieceColor color) : base(startPosition, color)
@@ -24,7 +24,7 @@ namespace GameLogic.InternPieces
             }
 
             _basicMovements = new DefaultPawnMovement(pawnDirection);
-            PieceType = color == PieceColor.White ? ColoredPieces.WhitePawn : ColoredPieces.BlackPawn;
+            PieceType = color == PieceColor.White ? GamePieces.WhitePawn : GamePieces.BlackPawn;
         }
 
         public override void Move(Position targetPosition)

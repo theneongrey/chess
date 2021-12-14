@@ -7,7 +7,7 @@ namespace GameLogic.InternPieces
         public Position Position { get; private set; }
         public bool WasMoved { get; private set; }
         public PieceColor Color { get; private set; }
-        public abstract Piece PieceType { get; }
+        public abstract GamePiece PieceType { get; }
 
         protected APiece(Position startPosition, PieceColor color)
         {
@@ -104,7 +104,7 @@ namespace GameLogic.InternPieces
 
         public override string ToString()
         {
-            return PieceType.Identifier;
+            return PieceType.ColoredIdentifier;
         }
     }
 }

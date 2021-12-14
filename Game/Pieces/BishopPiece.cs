@@ -5,12 +5,12 @@ namespace GameLogic.InternPieces
     internal class BishopPiece : APiece
     {
         private IBasicMovement _basicMovements;
-        public override Piece PieceType { get; }
+        public override GamePiece PieceType { get; }
 
         public BishopPiece(Position startPosition, PieceColor color) : base(startPosition, color)
         {
             _basicMovements = new DiagonalMovement();
-            PieceType = color == PieceColor.White ? ColoredPieces.WhiteBishop : ColoredPieces.BlackBishop;
+            PieceType = color == PieceColor.White ? GamePieces.WhiteBishop : GamePieces.BlackBishop;
         }
 
         protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Board board)

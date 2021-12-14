@@ -105,7 +105,7 @@ namespace GameLogic
             return piece.GetAllowedMoves(_board);
         }
 
-        public Piece? SelectPiece(Position from)
+        public GamePiece? SelectPiece(Position from)
         {
             if (IsGameRunning)
             {
@@ -270,12 +270,12 @@ namespace GameLogic
             return true;
         }
 
-        public Piece?[][] GetBoard()
+        public GamePiece?[][] GetBoard()
         {
-            var board = new Piece?[8][];
+            var board = new GamePiece?[8][];
             for (var y = 0; y < board.Length; y++)
             {
-                board[y] = new Piece[8];
+                board[y] = new GamePiece[8];
                 for (var x = 0; x < board[y].Length; x++)
                 {
                     board[y][x] = _board.GetPieceAt(new Position(x, y))?.PieceType;

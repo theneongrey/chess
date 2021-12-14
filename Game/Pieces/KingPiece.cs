@@ -5,12 +5,12 @@ namespace GameLogic.InternPieces
     internal class KingPiece : APiece
     {
         private IBasicMovement _basicMovements;
-        public override Piece PieceType { get; }
+        public override GamePiece PieceType { get; }
 
         public KingPiece(Position startPosition, PieceColor color) : base(startPosition, color)
         {
             _basicMovements = new BasicMovementCollection(new DiagonalMovement(1), new HorizontalVerticalMovement(1));
-            PieceType = color == PieceColor.White ? ColoredPieces.WhiteKing : ColoredPieces.BlackKing;
+            PieceType = color == PieceColor.White ? GamePieces.WhiteKing : GamePieces.BlackKing;
         }
 
         private bool IsLeftCastlingPossible(Board board)
