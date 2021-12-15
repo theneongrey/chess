@@ -4,9 +4,9 @@
     @for (var y = 7; y >= 0; y--)
     {
         <tr>
-        @for (var x = 0; x < 7; x++)
+        @for (var x = 0; x < 8; x++)
         {
-            <td><Cell DataContext="@Game.Cells[y][x]" /></td>
+            <td><Cell CellModel="@Game!.Cells[y,x]" GameModel="@Game" OnStyleChanged="OnCellChanged" /></td>
         }
         </tr>
     }
@@ -14,10 +14,16 @@
 
 @code {
     private Game _gameModel { get; } = new Game();
-    public GameVM Game { get; } = new GameVM();
+    public GameVM? Game { get; private set; }
 
     protected override void OnInitialized()
     {
-        Game.Update(_gameModel);
+        Game = new GameVM(_gameModel);
+        Game.Update();
+    }
+
+    private void OnCellChanged()
+    {
+        StateHasChanged();
     }
 }

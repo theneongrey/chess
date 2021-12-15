@@ -1,10 +1,23 @@
 ﻿@using BlazorWAChess.ViewModel
-<div>
-    @DataContext!.ToString()
+@using GameLogic
+<div class="@CellModel!.CellClass" @onclick="Click">
+    <div class="@CellModel!.PieceClass">
+        @CellModel!.Icon
+    </div>
 </div>
 
 @code 
 {
     [Parameter]
-    public CellVM? DataContext { get; set; }
+    public CellVM? CellModel { get; set; }
+    [Parameter]
+    public GameVM? GameModel { get; set; }
+    [Parameter]
+    public EventCallback OnStyleChanged { get; set; }
+
+    public void Click()
+    {
+        GameModel!.CellOnClick(CellModel!.X, CellModel!.Y);
+        OnStyleChanged.InvokeAsync();
+    }
 }
