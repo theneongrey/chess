@@ -6,7 +6,7 @@
         <tr>
         @for (var x = 0; x < 8; x++)
         {
-            <td><Cell CellModel="@Game!.Cells[y,x]" GameModel="@Game" OnStyleChanged="OnCellChanged" /></td>
+            <td><Cell CellModel="@Game!.Cells[y,x]" GameModel="@Game" OnBoardChanged="OnBoardChanged" /></td>
         }
         </tr>
     }
@@ -22,8 +22,14 @@
         Game.Update();
     }
 
-    private void OnCellChanged()
+    private void OnBoardChanged(bool pieceMoved)
     {
+        if (pieceMoved)
+        {
+            Game!.Update();
+        }
         StateHasChanged();
     }
 }
+
+

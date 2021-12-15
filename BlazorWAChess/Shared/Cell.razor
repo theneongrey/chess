@@ -13,11 +13,11 @@
     [Parameter]
     public GameVM? GameModel { get; set; }
     [Parameter]
-    public EventCallback OnStyleChanged { get; set; }
+    public EventCallback<bool> OnBoardChanged { get; set; }
 
     public void Click()
     {
-        GameModel!.CellOnClick(CellModel!.X, CellModel!.Y);
-        OnStyleChanged.InvokeAsync();
+        var pieceMoved = GameModel!.CellOnClick(CellModel!.X, CellModel!.Y);
+        OnBoardChanged.InvokeAsync(pieceMoved);
     }
 }

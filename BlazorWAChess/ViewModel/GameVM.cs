@@ -5,7 +5,6 @@ namespace BlazorWAChess.ViewModel
     public class GameVM
     {
         private Game _game;
-        private bool _isPieceSelected;
         public CellVM[,] Cells { get; private set; }
 
         public GameVM(Game game)
@@ -56,14 +55,13 @@ namespace BlazorWAChess.ViewModel
             return result;
         }
 
-        public void CellOnClick(int x, int y)
+        public bool CellOnClick(int x, int y)
         {
             var position = new Position(x, y);
 
-            if (!_isPieceSelected)
+            if (!_game.IsPieceSelected)
             {
                 var selectedPiece = _game.SelectPiece(position);
-                _isPieceSelected = selectedPiece != null;
 
                 var selectedCell = SelectCell(x, y);
                 
@@ -81,9 +79,11 @@ namespace BlazorWAChess.ViewModel
                 if (_game.TryMove(position))
                 {
                     DeselectCells();
-                    _isPieceSelected = false;
+                    return true;
                 }
             }
+
+            return false;
         }
 
         private void UpdateCells()
