@@ -17,6 +17,7 @@ namespace GameLogic
 
         public bool IsGameRunning => _state == GameState.GameRunning;
         public bool IsPromotionPending => _state == GameState.PromotionPending;
+        public bool IsPieceSelected => _selectedPiece != null;
 
         public bool IsGameOver => _state switch
             {
