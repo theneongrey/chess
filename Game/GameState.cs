@@ -1,4 +1,4 @@
 ﻿namespace GameLogic
 {
-    public enum GameState { GameRunning, PieceSelection, Draw, WhiteWon, BlackWon }
+    public enum GameState { GameRunning, PromotionPending, Draw, WhiteWon, BlackWon }
 }

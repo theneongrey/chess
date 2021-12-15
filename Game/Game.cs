@@ -16,7 +16,7 @@ namespace GameLogic
         private GameStack _gameHistory;
 
         public bool IsGameRunning => _state == GameState.GameRunning;
-        public bool IsPieceSelectionActive => _state == GameState.PieceSelection;
+        public bool IsPromotionPending => _state == GameState.PromotionPending;
 
         public bool IsGameOver => _state switch
             {
@@ -79,7 +79,7 @@ namespace GameLogic
                 (pawn.Position.Y == 0 ||
                 pawn.Position.Y == 7))
             {
-                _state = GameState.PieceSelection;
+                _state = GameState.PromotionPending;
             }
         }
 
@@ -228,7 +228,7 @@ namespace GameLogic
             {
                 CheckForPieceSelection();
 
-                if (!IsPieceSelectionActive)
+                if (!IsPromotionPending)
                 {
                     SwapTurns();
                     IsCheckPending = CheckTest.IsKingInDanger(_board, _colorsTurn);
