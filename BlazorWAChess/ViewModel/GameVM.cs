@@ -4,39 +4,96 @@ namespace BlazorWAChess.ViewModel
 {
     public class GameVM
     {
-        public CellVM[][] Cells { get; private set; }
+        private Game _game;
+        private bool _isPieceSelected;
+        public CellVM[,] Cells { get; private set; }
 
-        public GameVM()
+        public GameVM(Game game)
         {
-            Cells = new CellVM[8][];
+            _game = game;
+            Cells = new CellVM[8,8];
             CreateCells();
         }
 
         private void CreateCells()
         {
-            for (var y = 0; y < Cells.Length; y++)
+            for (var y = 0; y < 8; y++)
             {
-                Cells[y] = new CellVM[8];
-                for (var x = 0; x < Cells[y].Length; x++)
+                for (var x = 0; x < 8; x++)
                 {
-                    Cells[y][x] = new CellVM();
+                    Cells[y,x] = new CellVM(x, y);
                 }
             }
         }
 
-        public void Update(Game game)
+        public void Update()
         {
-            UpdateCells(game);
+            UpdateCells();
         }
 
-        private void UpdateCells(Game game)
+        private CellVM? DeselectCells()
         {
-            var currentCells = game.GetBoard();
+            return SelectCell(-1, -1);
+        }
+
+        private CellVM? SelectCell(int x, int y)
+        {
+            CellVM? result = null;
+            foreach (var cell in Cells)
+            {
+                if (cell.X == x && cell.Y == y)
+                {
+                    result = cell;
+                    cell.ToggleSelected();
+                }
+                else
+                {
+                    cell.Deselect();
+                    cell.UnHighlight();
+                }
+            }
+
+            return result;
+        }
+
+        public void CellOnClick(int x, int y)
+        {
+            var position = new Position(x, y);
+
+            if (!_isPieceSelected)
+            {
+                var selectedPiece = _game.SelectPiece(position);
+                _isPieceSelected = selectedPiece != null;
+
+                var selectedCell = SelectCell(x, y);
+                
+                if (selectedCell != null && selectedCell.IsSelected)
+                {
+                    var allowedMoves = _game.GetMovesForCell(position);
+                    foreach (var move in allowedMoves)
+                    {
+                        Cells[move.Y, move.X].Highlight();
+                    }
+                }
+            } 
+            else
+            {
+                if (_game.TryMove(position))
+                {
+                    DeselectCells();
+                    _isPieceSelected = false;
+                }
+            }
+        }
+
+        private void UpdateCells()
+        {
+            var currentCells = _game.GetBoard();
             for (var y = 0; y < currentCells.Length; y++)
             {
                 for (var x = 0; x < currentCells[y].Length; x++)
                 {
-                    Cells[y][x].Update(currentCells[y][x]);
+                    Cells[y,x].Update(currentCells[y][x]);
                 }
             }
         }
