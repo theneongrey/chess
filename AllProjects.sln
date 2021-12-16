@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameLogic", "Game\GameLogic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameLogic.Test", "GameLogic.Test\GameLogic.Test.csproj", "{86F98179-F296-4631-A927-F36EEA2A3C30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameParser", "GameParser\GameParser.csproj", "{1CF62F15-9776-45D3-904A-D9166A69525C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameParser", "GameParser\GameParser.csproj", "{1CF62F15-9776-45D3-904A-D9166A69525C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameParser.Test", "GameParser.Test\GameParser.Test.csproj", "{67D6AAD3-B865-462A-8461-B42014DE5ADB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameParser.Test", "GameParser.Test\GameParser.Test.csproj", "{67D6AAD3-B865-462A-8461-B42014DE5ADB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWAChess", "BlazorWAChess\BlazorWAChess.csproj", "{AB4D154E-CD1F-422E-B690-8F5272A7AD04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{67D6AAD3-B865-462A-8461-B42014DE5ADB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67D6AAD3-B865-462A-8461-B42014DE5ADB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67D6AAD3-B865-462A-8461-B42014DE5ADB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB4D154E-CD1F-422E-B690-8F5272A7AD04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB4D154E-CD1F-422E-B690-8F5272A7AD04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB4D154E-CD1F-422E-B690-8F5272A7AD04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB4D154E-CD1F-422E-B690-8F5272A7AD04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
