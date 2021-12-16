@@ -133,8 +133,8 @@ namespace GameLogic
 
             // endposition makes sense for an enpassant and targetpositon is empty
             var pawnMovementDirection = pawn.Color == PieceColor.White ? 1 : -1;
-            if (pawnMovementDirection == 1 && pawn.Position.Y == 5 ||
-                pawnMovementDirection == -1 && pawn.Position.Y == 2 &&
+            if (pawnMovementDirection == 1 && to.Y == 5 ||
+                pawnMovementDirection == -1 && to.Y == 2 &&
                 _board.GetPieceAt(to) == null)
             {
                 return _board.GetPieceAt(new Position(to.X, to.Y - pawnMovementDirection));
@@ -206,7 +206,6 @@ namespace GameLogic
                     }
                     PerformMove(new GameMoveMovePiece(piece, to));
                 }
-
 
                 return true;
             }
