@@ -55,31 +55,46 @@ namespace BlazorWAChess.ViewModel
             return result;
         }
 
-        public bool CellOnClick(int x, int y)
+        private bool SelectPiece(Position position)
         {
-            var position = new Position(x, y);
-
-            if (!_game.IsPieceSelected)
+            var selectedPiece = _game.SelectPiece(position);
+            if (selectedPiece != null)
             {
-                var selectedPiece = _game.SelectPiece(position);
+                SelectCell(position.X, position.Y);
 
-                var selectedCell = SelectCell(x, y);
-                
-                if (selectedCell != null && selectedCell.IsSelected)
+                if (Cells[position.X, position.Y].IsSelected)
                 {
                     var allowedMoves = _game.GetMovesForCell(position);
                     foreach (var move in allowedMoves)
                     {
                         Cells[move.Y, move.X].Highlight();
                     }
-                }
-            } 
+                }                             
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool CellOnClick(int x, int y)
+        {
+            var position = new Position(x, y);
+
+            if (!_game.IsPieceSelected)
+            {
+                SelectPiece(position);
+            }
             else
             {
                 if (_game.TryMove(position))
                 {
                     DeselectCells();
                     return true;
+                }
+                else
+                {
+                    SelectPiece(position);
                 }
             }
 
