@@ -1,0 +1,18 @@
+﻿@using GameLogic
+<div>
+    @foreach(var move in _moves)
+    {
+        <div>@move</div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Game? GameModel { get; set; }
+    private IEnumerable<string> _moves = new string[0];
+
+    public void UpdateMoves()
+    {
+        _moves = GameModel.ToFullAlgebraicNotationArray();
+    }
+}

@@ -6,27 +6,33 @@
         <tr>
         @for (var x = 0; x < 8; x++)
         {
-            <td><Cell CellModel="@Game!.Cells[y,x]" GameModel="@Game" OnBoardChanged="OnBoardChanged" /></td>
+            <td><Cell CellModel="@_game!.Cells[y,x]" GameModel="@_game" OnBoardChanged="OnBoardChanged" /></td>
         }
         </tr>
     }
 </table>
 
 @code {
-    private Game _gameModel { get; } = new Game();
-    public GameVM? Game { get; private set; }
+    private GameVM? _game;
+
+    [Parameter]
+    public EventCallback OnMoveMade { get; set; }
+
+    [Parameter]
+    public Game? GameModel {get; set;}
 
     protected override void OnInitialized()
     {
-        Game = new GameVM(_gameModel);
-        Game.Update();
+        _game = new GameVM(GameModel!);
+        _game.Update();
     }
 
     private void OnBoardChanged(bool pieceMoved)
     {
         if (pieceMoved)
         {
-            Game!.Update();
+            _game!.Update();
+            OnMoveMade.InvokeAsync();
         }
         StateHasChanged();
     }

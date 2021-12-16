@@ -62,7 +62,7 @@ namespace BlazorWAChess.ViewModel
             {
                 SelectCell(position.X, position.Y);
 
-                if (Cells[position.X, position.Y].IsSelected)
+                if (Cells[position.Y, position.X].IsSelected)
                 {
                     var allowedMoves = _game.GetMovesForCell(position);
                     foreach (var move in allowedMoves)

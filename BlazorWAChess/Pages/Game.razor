@@ -2,4 +2,21 @@
 
 <PageTitle>Blazor Chess</PageTitle>
 
-<Board />
+<div>
+    <div class="board">
+        <Board GameModel="@_gameModel" OnMoveMade="@OnMoveMade"/>
+    </div>
+    <div class="moves">
+        <Moves @ref="MoveOverview" GameModel="@_gameModel" />
+    </div>
+</div>
+
+@code {
+    private GameLogic.Game _gameModel { get; } = new GameLogic.Game();
+    private Moves? MoveOverview;
+
+    public void OnMoveMade()
+    {
+        MoveOverview!.UpdateMoves();
+    }
+}
