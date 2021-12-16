@@ -304,5 +304,10 @@ namespace GameLogic
         {
             return FullAlgebraicNotationOutput.GameStackToString(_gameHistory);
         }
+
+        public IEnumerable<string> ToFullAlgebraicNotationArray()
+        {
+            return FullAlgebraicNotationOutput.GameStackToStringArray(_gameHistory);
+        }
     }
 }

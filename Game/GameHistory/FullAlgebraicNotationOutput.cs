@@ -31,11 +31,12 @@ namespace GameLogic.GameHistory
             return char.ConvertFromUtf32('a' + pos.X) + (pos.Y + 1).ToString();
         }
 
-        public static string GameStackToString(GameStack gameStack)
+        public static IEnumerable<string> GameStackToStringArray(GameStack gameStack)
         {
             var moves = gameStack.Moves;
             var step = 1;
-            var output = new StringBuilder();
+            var output = new List<string>();
+            var moveAsString = new StringBuilder();
             var isWhiteTurn = true;
             var wasPieceRemoved = false;
 
@@ -47,31 +48,48 @@ namespace GameLogic.GameHistory
                         wasPieceRemoved = true;
                         continue;
                     case GameMovePromotePiece promotedPiece:
-                        output.Append(promotedPiece.PromotedPieceIdentifier);
+                        moveAsString.Append(promotedPiece.PromotedPieceIdentifier);
                         continue;
                     case GameMoveCheck _:
-                        output.Append("+");
+                        moveAsString.Append("+");
                         continue;
                     case GameMoveCheckMate _:
-                        output.Append("#");
+                        moveAsString.Append("#");
                         continue;
                 }
 
                 if (isWhiteTurn)
                 {
-                    output.Append($"{Environment.NewLine}{step}.{MoveToString(move, wasPieceRemoved)}");
+                    if (moveAsString.Length > 0)
+                    {
+                        output.Add(moveAsString.ToString());
+                        moveAsString.Clear();
+                    }
+
+                    moveAsString.Append($"{step}.{MoveToString(move, wasPieceRemoved)}");
                     step++;
                     isWhiteTurn = false;
                 }
                 else
                 {
-                    output.Append($" {MoveToString(move, wasPieceRemoved)}");
+                    moveAsString.Append($" {MoveToString(move, wasPieceRemoved)}");
                     isWhiteTurn = true;
                 }
                 wasPieceRemoved = false;
             }
 
-            return output.ToString().Trim();
+            if (moveAsString.Length > 0)
+            {
+                output.Add(moveAsString.ToString());
+            }
+
+            return output;
+        }
+
+        public static string GameStackToString(GameStack gameStack)
+        {
+            var moves = GameStackToStringArray(gameStack);
+            return string.Join(Environment.NewLine, moves);
         }
     }
 }
