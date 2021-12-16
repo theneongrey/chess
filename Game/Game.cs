@@ -291,6 +291,11 @@ namespace GameLogic
             return _board.GetPieceAt(position)?.PieceType;
         }
 
+        public void UnselectPiece()
+        {
+            _selectedPiece = null;
+        }
+
         public override string ToString()
         {
             return _board.ToString();
