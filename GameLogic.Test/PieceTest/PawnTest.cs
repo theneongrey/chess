@@ -309,13 +309,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(5, 5)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(5, 4));
-
-            Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<PawnPiece>(boardLayout, expectedMoves, new Position(5, 4));
         }
 
         [Fact]
@@ -335,13 +329,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(2, 2)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(2, 3));
-
-            Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<PawnPiece>(boardLayout, expectedMoves, new Position(2, 3));
         }
 
         [Fact]
@@ -358,19 +346,11 @@ namespace GameLogic.Test.PieceTest
 
             var performedMoves = new[]
             {
-                new Position(4,2),
-                new Position(4,3),
+                new Position(4, 2),
+                new Position(4, 3),
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(4, 1));
-
-            Assert.IsType<PawnPiece>(pawn);
-            foreach (var move in performedMoves)
-            {
-                pawn!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<PawnPiece>(boardLayout, new Position(4, 1), performedMoves);
         }
 
         [Fact]
@@ -385,12 +365,12 @@ namespace GameLogic.Test.PieceTest
                                          p-pppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(1, 2));
+            var performedMoves = new[]
+            {
+                new Position(1, 3),
+            };
 
-            Assert.IsType<PawnPiece>(pawn);
-            pawn!.IsMoveAllowed(board, new Position(1, 3)).Should().BeTrue();
+            MoveAreAllowed<PawnPiece>(boardLayout, new Position(1, 2), performedMoves);
         }
 
         [Fact]
@@ -405,12 +385,12 @@ namespace GameLogic.Test.PieceTest
                                          pppppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(4, 1));
+            var performedMoves = new[]
+            {
+                new Position(4, 2),
+            };
 
-            Assert.IsType<PawnPiece>(pawn);
-            pawn!.IsMoveAllowed(board, new Position(4, 2)).Should().BeTrue();
+            MoveAreAllowed<PawnPiece>(boardLayout, new Position(4, 1), performedMoves);
         }
 
 
@@ -426,12 +406,12 @@ namespace GameLogic.Test.PieceTest
                                          pppppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(4, 1));
+            var performedMoves = new[]
+            {
+                new Position(4, 3),
+            };
 
-            Assert.IsType<PawnPiece>(pawn);
-            pawn!.IsMoveAllowed(board, new Position(4, 3)).Should().BeFalse();
+            MoveAreNotAllowed<PawnPiece>(boardLayout, new Position(4, 1), performedMoves);
         }
 
         [Fact]
@@ -448,19 +428,11 @@ namespace GameLogic.Test.PieceTest
 
             var performedMoves = new[]
             {
-                new Position(4,2),
-                new Position(4,3),
+                new Position(4, 2),
+                new Position(4, 3),
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(4, 1));
-
-            Assert.IsType<PawnPiece>(pawn);
-            foreach (var move in performedMoves)
-            {
-                pawn!.IsMoveAllowed(board, move).Should().BeFalse();
-            }
+            MoveAreNotAllowed<PawnPiece>(boardLayout, new Position(4, 1), performedMoves);
         }
 
         [Fact]
@@ -475,12 +447,12 @@ namespace GameLogic.Test.PieceTest
                                          p-pppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(1, 2));
+            var performedMoves = new[]
+            {
+                new Position(1, 3),
+            };
 
-            Assert.IsType<PawnPiece>(pawn);
-            pawn!.IsMoveAllowed(board, new Position(1, 3)).Should().BeFalse();
+            MoveAreNotAllowed<PawnPiece>(boardLayout, new Position(1, 2), performedMoves);
         }
 
         [Fact]
@@ -502,15 +474,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(6, 3)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(5, 2));
-
-            Assert.IsType<PawnPiece>(pawn);
-            foreach (var move in performedMoves)
-            {
-                pawn!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<PawnPiece>(boardLayout, new Position(5, 2), performedMoves);
         }
 
         [Fact]
@@ -532,15 +496,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(3, 4)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(2, 5));
-
-            Assert.IsType<PawnPiece>(pawn);
-            foreach (var move in performedMoves)
-            {
-                pawn!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<PawnPiece>(boardLayout, new Position(2, 5), performedMoves);
         }
 
         [Fact]

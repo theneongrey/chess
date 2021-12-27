@@ -33,5 +33,35 @@ namespace GameLogic.Test.PieceTest
         {
             AllowedMoves<PieceType>(boardLayout, Array.Empty<Position>(), initialPosition);
         }
+
+        private void CheckMovesAllowed<PieceType>(string boardLayout, Position piecePosition, IEnumerable<Position> moves, bool isAllowed)
+        {
+            var simpleStringLayoutParser = new SimpleBoardParser();
+            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
+            var bishop = board.GetPieceAt(piecePosition);
+
+            Assert.IsType<PieceType>(bishop);
+            foreach (var move in moves)
+            {
+                if (isAllowed)
+                {
+                    bishop!.IsMoveAllowed(board, move).Should().BeTrue();
+                }
+                else
+                {
+                    bishop!.IsMoveAllowed(board, move).Should().BeFalse();
+                }
+            }
+        }
+
+        protected void MoveAreAllowed<PieceType>(string boardLayout, Position piecePosition, IEnumerable<Position> moves)
+        {
+            CheckMovesAllowed<PieceType>(boardLayout, piecePosition, moves, true);
+        }
+
+        protected void MoveAreNotAllowed<PieceType>(string boardLayout, Position piecePosition, IEnumerable<Position> moves)
+        {
+            CheckMovesAllowed<PieceType>(boardLayout, piecePosition, moves, false);
+        }
     }
 }

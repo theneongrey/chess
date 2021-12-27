@@ -84,15 +84,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(6,5)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var knight = board.GetPieceAt(new Position(4, 4));
-
-            Assert.IsType<KnightPiece>(knight);
-            foreach (var move in performedMoves)
-            {
-                knight!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<KnightPiece>(boardLayout, new Position(4, 4), performedMoves);
         }
 
         [Fact]
@@ -118,15 +110,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(6, 5)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var knight = board.GetPieceAt(new Position(4, 4));
-
-            Assert.IsType<KnightPiece>(knight);
-            foreach (var move in performedMoves)
-            {
-                knight!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<KnightPiece>(boardLayout, new Position(4, 4), performedMoves);
         }
 
         [Fact]
@@ -140,13 +124,13 @@ namespace GameLogic.Test.PieceTest
                                          ---p----
                                          ----p---
                                          -------p";
-            
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var knight = board.GetPieceAt(new Position(4, 4));
 
-            Assert.IsType<KnightPiece>(knight);
-            knight!.IsMoveAllowed(board, new Position(3, 2)).Should().BeFalse();
+            var performedMoves = new[]
+            {
+                new Position(3, 2)
+            };
+
+            MoveAreNotAllowed<KnightPiece>(boardLayout, new Position(4, 4), performedMoves);
         }
     }
 }
