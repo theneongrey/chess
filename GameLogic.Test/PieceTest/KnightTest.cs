@@ -5,7 +5,7 @@ using Xunit;
 
 namespace GameLogic.Test.PieceTest
 {
-    public class KnightTest
+    public class KnightTest : PieceTest
     {
         [Fact]
         public void AllowedMovesWithNoObstacles()
@@ -31,13 +31,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(6,5)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var knight = board.GetPieceAt(new Position(4, 4));
-
-            Assert.IsType<KnightPiece>(knight);
-            var actualMoves = knight!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<KnightPiece>(boardLayout, expectedMoves, new Position(4, 4));
         }
 
         [Fact]
@@ -63,13 +57,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(6,5)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var bishop = board.GetPieceAt(new Position(4, 4));
-
-            Assert.IsType<KnightPiece>(bishop);
-            var actualMoves = bishop!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<KnightPiece>(boardLayout, expectedMoves, new Position(4, 4));
         }
 
         [Fact]

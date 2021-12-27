@@ -1,11 +1,12 @@
 ﻿using FluentAssertions;
 using GameLogic.BoardParser;
 using GameLogic.InternPieces;
+using System;
 using Xunit;
 
 namespace GameLogic.Test.PieceTest
 {
-    public class PawnTest
+    public class PawnTest : PieceTest
     {
         [Fact]
         public void AllowedStartMovesWithNoObstacle()
@@ -25,13 +26,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(4,3),
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(4, 1));
-
-            Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<PawnPiece>(boardLayout, expectedMoves, new Position(4, 1));
         }
 
         [Fact]
@@ -51,13 +46,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(1,3)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(1, 2));
-
-            Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<PawnPiece>(boardLayout, expectedMoves, new Position(1, 2));
         }
 
         [Fact]
@@ -77,13 +66,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(4,2),
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(4, 1));
-
-            Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<PawnPiece>(boardLayout, expectedMoves, new Position(4, 1));
         }
 
         [Fact]
@@ -98,13 +81,7 @@ namespace GameLogic.Test.PieceTest
                                          pppppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(4, 1));
-
-            Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(board);
-            actualMoves.Should().BeEmpty();
+            AllowedMoves<PawnPiece>(boardLayout, Array.Empty<Position>(), new Position(4, 1));
         }
 
         [Fact]
@@ -119,13 +96,7 @@ namespace GameLogic.Test.PieceTest
                                          p-pppppp
                                          rnbqkbnr";
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(1, 2));
-
-            Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(board);
-            actualMoves.Should().BeEmpty();
+            AllowedMoves<PawnPiece>(boardLayout, Array.Empty<Position>(), new Position(1, 2));
         }
 
         [Fact]
@@ -235,13 +206,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(6, 3)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(5, 2));
-
-            Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<PawnPiece>(boardLayout, expectedMoves, new Position(5, 2));
         }
 
         [Fact]
@@ -263,13 +228,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(3, 4)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var pawn = board.GetPieceAt(new Position(2, 5));
-
-            Assert.IsType<PawnPiece>(pawn);
-            var actualMoves = pawn!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<PawnPiece>(boardLayout, expectedMoves, new Position(2, 5));
         }
 
         [Fact]

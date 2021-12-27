@@ -5,7 +5,7 @@ using Xunit;
 
 namespace GameLogic.Test.PieceTest
 {
-    public class RookTest
+    public class RookTest : PieceTest
     {
         [Fact]
         public void AllowedMovesWithNoObstacles()
@@ -37,13 +37,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(3, 7)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var rook = board.GetPieceAt(new Position(3, 4));
-
-            Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<RookPiece>(boardLayout, expectedMoves, new Position(3, 4));
         }
 
         [Fact]
@@ -73,13 +67,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(4, 6)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var rook = board.GetPieceAt(new Position(4, 4));
-
-            Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<RookPiece>(boardLayout, expectedMoves, new Position(4, 4));
         }
 
         [Fact]
