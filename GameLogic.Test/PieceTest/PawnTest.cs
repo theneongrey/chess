@@ -6,7 +6,7 @@ using Xunit;
 
 namespace GameLogic.Test.PieceTest
 {
-    public class PawnTest : PieceTest
+    public class PawnTest : APieceTest
     {
         [Fact]
         public void AllowedStartMovesWithNoObstacle()
@@ -81,7 +81,7 @@ namespace GameLogic.Test.PieceTest
                                          pppppppp
                                          rnbqkbnr";
 
-            AllowedMoves<PawnPiece>(boardLayout, Array.Empty<Position>(), new Position(4, 1));
+            NoAllowedMoves<PawnPiece>(boardLayout, new Position(4, 1));
         }
 
         [Fact]
@@ -96,7 +96,7 @@ namespace GameLogic.Test.PieceTest
                                          p-pppppp
                                          rnbqkbnr";
 
-            AllowedMoves<PawnPiece>(boardLayout, Array.Empty<Position>(), new Position(1, 2));
+            NoAllowedMoves<PawnPiece>(boardLayout, new Position(1, 2));
         }
 
         [Fact]

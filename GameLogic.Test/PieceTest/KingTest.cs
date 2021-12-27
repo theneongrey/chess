@@ -5,7 +5,7 @@ using Xunit;
 
 namespace GameLogic.Test.PieceTest
 {
-    public class KingTest : PieceTest
+    public class KingTest : APieceTest
     {
         [Fact]
         public void AllowedMovesForWhiteWithCastelingLeftAndRight()

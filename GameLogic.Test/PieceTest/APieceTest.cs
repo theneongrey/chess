@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using GameLogic.BoardParser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -7,7 +8,7 @@ using Xunit;
 namespace GameLogic.Test.PieceTest
 {
 
-    public abstract class PieceTest
+    public abstract class APieceTest
     {
         protected void AllowedMoves<PieceType>(string boardLayout, IEnumerable<Position> expectedMoves, Position initialPosition)
         {
@@ -26,6 +27,11 @@ namespace GameLogic.Test.PieceTest
             {
                 actualMoves.Should().BeEmpty();
             }
+        }
+
+        protected void NoAllowedMoves<PieceType>(string boardLayout, Position initialPosition)
+        {
+            AllowedMoves<PieceType>(boardLayout, Array.Empty<Position>(), initialPosition);
         }
     }
 }

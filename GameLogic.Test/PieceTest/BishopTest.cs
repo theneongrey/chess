@@ -5,7 +5,7 @@ using Xunit;
 
 namespace GameLogic.Test.PieceTest
 {
-    public class BishopTest : PieceTest
+    public class BishopTest : APieceTest
     {
         [Fact]
         public void AllowedMovesWithNoObstacles()
