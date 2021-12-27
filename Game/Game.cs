@@ -169,20 +169,16 @@ namespace GameLogic
                 return false;
             }
 
-            if (piece is KingPiece)
+            if (piece is KingPiece king)
             {
                 if (to.X - piece.Position.X == 2)
                 {
-                    return _board.GetPieceAt(new Position(7, piece.Position.Y)) is RookPiece rook && rook.IsCastlingPossible(_board);
+                    return _board.GetPieceAt(new Position(7, piece.Position.Y)) is RookPiece && king.IsKingSideCastlelingPossible(_board);
                 }
                 else if (piece.Position.X - to.X == 2)
                 {
-                    return _board.GetPieceAt(new Position(0, piece.Position.Y)) is RookPiece rook && rook.IsCastlingPossible(_board);
+                    return _board.GetPieceAt(new Position(0, piece.Position.Y)) is RookPiece && king.IsQueenSideCastlelingPossible(_board);
                 }
-            }
-            else if (piece is RookPiece rook && to.X == 4)
-            {
-                return rook.IsCastlingPossible(_board);
             }
 
             return false;

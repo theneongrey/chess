@@ -13,34 +13,10 @@ namespace GameLogic.InternPieces
             PieceType = color == PieceColor.White ? GamePieces.WhiteRook : GamePieces.BlackRook;
         }
 
-        public bool IsCastlingPossible(Board board)
-        {
-            var pieceAtKingPosition = board.GetPieceAt(new Position(4, Position.Y));
-            if (pieceAtKingPosition is KingPiece king && !king.WasMoved)
-            {
-                var direction = king.Position.X < Position.X ? -1 : 1;
-                for (var x = Position.X + direction; x != 4; x += direction)
-                {
-                    if (!board.IsCellEmpty(new Position(x, Position.Y)))
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
         protected override IEnumerable<IEnumerable<Position>> GetAllowedPositions(Board board)
         {
             var filteredPositions = FilterMovementForObstacles(_basicMovements.GetAllowedPositions(Position), board);
             var allowedPositions = new List<IEnumerable<Position>>(filteredPositions);
-            if (!WasMoved && IsCastlingPossible(board))
-            {
-                allowedPositions.Add(new[] { new Position(4, Position.Y) });
-            }
 
             return allowedPositions;
         }
@@ -71,8 +47,7 @@ namespace GameLogic.InternPieces
             }
 
             // check if cell is taken or if casteling is possible
-            return board.GetPieceAt(targetPosition)?.Color != Color || 
-                (targetPosition.X == 4 && targetPosition.Y == Position.Y && IsCastlingPossible(board));
+            return board.GetPieceAt(targetPosition)?.Color != Color;
         }
     }
 }
