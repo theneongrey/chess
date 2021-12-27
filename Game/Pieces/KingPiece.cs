@@ -13,7 +13,7 @@ namespace GameLogic.InternPieces
             PieceType = color == PieceColor.White ? GamePieces.WhiteKing : GamePieces.BlackKing;
         }
 
-        private bool IsLeftCastlingPossible(Board board)
+        public bool IsQueenSideCastlelingPossible(Board board)
         {
             var row = Position.Y;
             var leftRook = board.GetPieceAt(new Position(0, row));
@@ -34,7 +34,7 @@ namespace GameLogic.InternPieces
             return true;
         }
 
-        private bool IsRightCastlingPossible(Board board)
+        public bool IsKingSideCastlelingPossible(Board board)
         {
             var row = Position.Y;
             var leftRook = board.GetPieceAt(new Position(0, row));
@@ -59,11 +59,11 @@ namespace GameLogic.InternPieces
             var allowedPositions = new List<IEnumerable<Position>>(filteredPositions);
             if (!WasMoved)
             {
-                if (IsLeftCastlingPossible(board)) 
+                if (IsQueenSideCastlelingPossible(board)) 
                 { 
                     allowedPositions.Add(new[] { new Position(2, Position.Y) });
                 }
-                if (IsRightCastlingPossible(board))
+                if (IsKingSideCastlelingPossible(board))
                 {
                     allowedPositions.Add(new[] { new Position(6, Position.Y) });
                 }
@@ -80,11 +80,11 @@ namespace GameLogic.InternPieces
                 {
                     if (targetPosition.X == 2)
                     {
-                        return IsLeftCastlingPossible(board);
+                        return IsQueenSideCastlelingPossible(board);
                     }
                     if (targetPosition.X == 6)
                     {
-                        return IsRightCastlingPossible(board);
+                        return IsKingSideCastlelingPossible(board);
                     }
                 }
 
