@@ -5,7 +5,7 @@ using Xunit;
 
 namespace GameLogic.Test.PieceTest
 {
-    public class QueenTest
+    public class QueenTest : APieceTest
     {
         [Fact]
         public void AllowedMovesWithNoObstacles()
@@ -50,13 +50,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(0, 7)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var queen = board.GetPieceAt(new Position(3, 4));
-
-            Assert.IsType<QueenPiece>(queen);
-            var actualMoves = queen!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<QueenPiece>(boardLayout, expectedMoves, new Position(3, 4));
         }
 
         [Fact]
@@ -90,13 +84,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(0, 7)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var queen = board.GetPieceAt(new Position(3, 4));
-
-            Assert.IsType<QueenPiece>(queen);
-            var actualMoves = queen!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<QueenPiece>(boardLayout, expectedMoves, new Position(3, 4));
         }
 
         [Fact]
@@ -142,15 +130,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(0, 7)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var queen = board.GetPieceAt(new Position(3, 4));
-
-            Assert.IsType<QueenPiece>(queen);
-            foreach (var move in performedMoves)
-            {
-                queen!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<QueenPiece>(boardLayout, new Position(3, 4), performedMoves);
         }
 
         [Fact]
@@ -184,15 +164,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(0, 7)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var queen = board.GetPieceAt(new Position(3, 4));
-
-            Assert.IsType<QueenPiece>(queen);
-            foreach (var move in performedMoves)
-            {
-                queen!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<QueenPiece>(boardLayout, new Position(3, 4), performedMoves);
         }
 
         [Fact]
@@ -219,15 +191,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(6, 7)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var queen = board.GetPieceAt(new Position(3, 4));
-
-            Assert.IsType<QueenPiece>(queen);
-            foreach (var move in performedMoves)
-            {
-                queen!.IsMoveAllowed(board, move).Should().BeFalse();
-            }
+            MoveAreNotAllowed<QueenPiece>(boardLayout, new Position(3, 4), performedMoves);
         }
     }
 }

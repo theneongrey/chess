@@ -5,7 +5,7 @@ using Xunit;
 
 namespace GameLogic.Test.PieceTest
 {
-    public class BishopTest
+    public class BishopTest : APieceTest
     {
         [Fact]
         public void AllowedMovesWithNoObstacles()
@@ -36,13 +36,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(1,7)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var bishop = board.GetPieceAt(new Position(4, 4));
-
-            Assert.IsType<BishopPiece>(bishop);
-            var actualMoves = bishop!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<BishopPiece>(boardLayout, expectedMoves, new Position(4, 4));
         }
 
         [Fact]
@@ -68,13 +62,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(1,7)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var bishop = board.GetPieceAt(new Position(4, 4));
-
-            Assert.IsType<BishopPiece>(bishop);
-            var actualMoves = bishop!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<BishopPiece>(boardLayout, expectedMoves, new Position(4, 4));
         }
 
         [Fact]
@@ -106,15 +94,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(1, 7)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var bishop = board.GetPieceAt(new Position(4, 4));
-
-            Assert.IsType<BishopPiece>(bishop);
-            foreach (var move in performedMoves)
-            {
-                bishop!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<BishopPiece>(boardLayout, new Position(4, 4), performedMoves);
         }
 
         [Fact]
@@ -140,15 +120,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(1, 7)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var bishop = board.GetPieceAt(new Position(4, 4));
-
-            Assert.IsType<BishopPiece>(bishop);
-            foreach (var move in performedMoves)
-            {
-                bishop!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<BishopPiece>(boardLayout, new Position(4, 4), performedMoves);
         }
 
         [Fact]
@@ -172,15 +144,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(7, 7)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var bishop = board.GetPieceAt(new Position(4, 4));
-
-            Assert.IsType<BishopPiece>(bishop);
-            foreach (var move in performedMoves)
-            {
-                bishop!.IsMoveAllowed(board, move).Should().BeFalse();
-            }
+            MoveAreNotAllowed<BishopPiece>(boardLayout, new Position(4, 4), performedMoves);
         }
     }
 }

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace GameLogic.Test.PieceTest
 {
-    public class KingTest
+    public class KingTest : APieceTest
     {
         [Fact]
         public void AllowedMovesForWhiteWithCastelingLeftAndRight()
@@ -29,14 +29,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(6,0)
             };
 
-
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 0));
-
-            Assert.IsType<KingPiece>(king);
-            var actualMoves = king!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<KingPiece>(boardLayout, expectedMoves, new Position(4, 0));
         }
 
         [Fact]
@@ -61,13 +54,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(6,7)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 7));
-
-            Assert.IsType<KingPiece>(king);
-            var actualMoves = king!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<KingPiece>(boardLayout, expectedMoves, new Position(4, 7));
         }
 
         [Fact]
@@ -89,14 +76,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(5,1)
             };
 
-
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 0));
-
-            Assert.IsType<KingPiece>(king);
-            var actualMoves = king!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<KingPiece>(boardLayout, expectedMoves, new Position(4, 0));
         }
 
         [Fact]
@@ -118,13 +98,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(5,6)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 7));
-
-            Assert.IsType<KingPiece>(king);
-            var actualMoves = king!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<KingPiece>(boardLayout, expectedMoves, new Position(4, 7));
         }
 
         [Fact]
@@ -147,14 +121,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(5,1)
             };
 
-
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 0));
-
-            Assert.IsType<KingPiece>(king);
-            var actualMoves = king!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<KingPiece>(boardLayout, expectedMoves, new Position(4, 0));
         }
 
         [Fact]
@@ -177,13 +144,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(5,6)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 7));
-
-            Assert.IsType<KingPiece>(king);
-            var actualMoves = king!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<KingPiece>(boardLayout, expectedMoves, new Position(4, 7));
         }
 
         [Fact]
@@ -210,13 +171,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(5,4)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 3));
-
-            Assert.IsType<KingPiece>(king);
-            var actualMoves = king!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<KingPiece>(boardLayout, expectedMoves, new Position(4, 3));
         }
 
         [Fact]
@@ -241,13 +196,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(5,4)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 3));
-
-            Assert.IsType<KingPiece>(king);
-            var actualMoves = king!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<KingPiece>(boardLayout, expectedMoves, new Position(4, 3));
         }
 
         [Fact]
@@ -272,15 +221,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(6, 0)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 0));
-
-            Assert.IsType<KingPiece>(king);
-            foreach (var move in performedMoves)
-            {
-                king!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<KingPiece>(boardLayout, new Position(4, 0), performedMoves);
         }
 
         [Fact]
@@ -305,15 +246,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(6, 7)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 7));
-
-            Assert.IsType<KingPiece>(king);
-            foreach (var move in performedMoves)
-            {
-                king!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<KingPiece>(boardLayout, new Position(4, 7), performedMoves);
         }
 
         [Fact]
@@ -328,13 +261,13 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          r-b-kb-r";
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 0));
+            var performedMoves = new[]
+            {
+                new Position(2, 0),
+                new Position(6, 0)
+            };
 
-            Assert.IsType<KingPiece>(king);
-            king!.IsMoveAllowed(board, new Position(2, 0)).Should().BeFalse();
-            king!.IsMoveAllowed(board, new Position(6, 0)).Should().BeFalse();
+            MoveAreNotAllowed<KingPiece>(boardLayout, new Position(4, 0), performedMoves);
         }
 
         [Fact]
@@ -349,13 +282,13 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          r-b-kb-r";
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 7));
+            var performedMoves = new[]
+            {
+                new Position(2, 7),
+                new Position(6, 7)
+            };
 
-            Assert.IsType<KingPiece>(king);
-            king!.IsMoveAllowed(board, new Position(2, 7)).Should().BeFalse();
-            king!.IsMoveAllowed(board, new Position(6, 7)).Should().BeFalse();
+            MoveAreNotAllowed<KingPiece>(boardLayout, new Position(4, 7), performedMoves);
         }
 
         [Fact]
@@ -370,13 +303,13 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          ----k--p";
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 0));
+            var performedMoves = new[]
+            {
+                new Position(2, 0),
+                new Position(6, 0)
+            };
 
-            Assert.IsType<KingPiece>(king);
-            king!.IsMoveAllowed(board, new Position(2, 0)).Should().BeFalse();
-            king!.IsMoveAllowed(board, new Position(6, 0)).Should().BeFalse();
+            MoveAreNotAllowed<KingPiece>(boardLayout, new Position(4, 0), performedMoves);
         }
 
         [Fact]
@@ -403,15 +336,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(5, 4)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 3));
-
-            Assert.IsType<KingPiece>(king);
-            foreach (var move in performedMoves)
-            {
-                king!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<KingPiece>(boardLayout, new Position(4, 3), performedMoves);
         }
 
         [Fact]
@@ -436,15 +361,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(5, 4)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 3));
-
-            Assert.IsType<KingPiece>(king);
-            foreach (var move in performedMoves)
-            {
-                king!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<KingPiece>(boardLayout, new Position(4, 3), performedMoves);
         }
 
         [Fact]
@@ -459,12 +376,12 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          -------p";
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var king = board.GetPieceAt(new Position(4, 3));
+            var performedMoves = new[]
+            {
+                new Position(4, 4)
+            };
 
-            Assert.IsType<KingPiece>(king);
-            king!.IsMoveAllowed(board, new Position(4, 4)).Should().BeFalse();
+            MoveAreNotAllowed<KingPiece>(boardLayout, new Position(4, 3), performedMoves);
         }
     }
 }

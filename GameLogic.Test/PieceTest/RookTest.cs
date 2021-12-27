@@ -5,7 +5,7 @@ using Xunit;
 
 namespace GameLogic.Test.PieceTest
 {
-    public class RookTest
+    public class RookTest : APieceTest
     {
         [Fact]
         public void AllowedMovesWithNoObstacles()
@@ -37,13 +37,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(3, 7)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var rook = board.GetPieceAt(new Position(3, 4));
-
-            Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<RookPiece>(boardLayout, expectedMoves, new Position(3, 4));
         }
 
         [Fact]
@@ -73,13 +67,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(4, 6)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var rook = board.GetPieceAt(new Position(4, 4));
-
-            Assert.IsType<RookPiece>(rook);
-            var actualMoves = rook!.GetAllowedMoves(board);
-            actualMoves.Should().HaveSameCount(expectedMoves).And.Contain(expectedMoves);
+            AllowedMoves<RookPiece>(boardLayout, expectedMoves, new Position(4, 4));
         }
 
         [Fact]
@@ -93,10 +81,6 @@ namespace GameLogic.Test.PieceTest
                                          --------
                                          ----p---
                                          -------p";
-
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var rook = board.GetPieceAt(new Position(3, 4));
 
             var performedMoves = new[]
             {
@@ -116,11 +100,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(3, 7)
             };
 
-            Assert.IsType<RookPiece>(rook);
-            foreach (var move in performedMoves)
-            {
-                rook!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<RookPiece>(boardLayout, new Position(3, 4), performedMoves);
         }
 
         [Fact]
@@ -150,15 +130,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(4, 6)
             };
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var rook = board.GetPieceAt(new Position(4, 4));
-
-            Assert.IsType<RookPiece>(rook);
-            foreach (var move in performedMoves)
-            {
-                rook!.IsMoveAllowed(board, move).Should().BeTrue();
-            }
+            MoveAreAllowed<RookPiece>(boardLayout, new Position(4, 4), performedMoves);
         }
 
         [Fact]
@@ -173,10 +145,6 @@ namespace GameLogic.Test.PieceTest
                                          ----p---
                                          -------p";
 
-            var simpleStringLayoutParser = new SimpleBoardParser();
-            var board = simpleStringLayoutParser.CreateBoard(boardLayout);
-            var rook = board.GetPieceAt(new Position(4, 4));
-
             var performedMoves = new[]
             {
                 new Position(4, 0),
@@ -188,11 +156,7 @@ namespace GameLogic.Test.PieceTest
                 new Position(7, 4)
             };
 
-            Assert.IsType<RookPiece>(rook);
-            foreach (var move in performedMoves)
-            {
-                rook!.IsMoveAllowed(board, move).Should().BeFalse();
-            }
+            MoveAreNotAllowed<RookPiece>(boardLayout, new Position(4, 4), performedMoves);
         }
     }
 }
