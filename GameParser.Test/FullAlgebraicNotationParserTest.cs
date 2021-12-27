@@ -1,4 +1,5 @@
 using FluentAssertions;
+using GameLogic;
 using Xunit;
 
 namespace GameParser.Test
@@ -28,6 +29,23 @@ rnbqkb-r";
             var actualBoard = game.ToString();
 
             actualBoard.Should().Be(expectedBoard);
+        }
+
+        [Fact]
+        public void AfterCastelingOnQueenSide_RookShouldEndOnX3()
+        {
+            var input = @"1.d2-d4 d7-d6
+2.Bc1-f4 e7-e6
+3.Qd1-d3 c7-c6
+4.Nb1-a3 b7-b6
+5.O-O-O";
+
+            var game = FullAlgebraicNotationParser.GetGameFromNotation(input);
+            game.GetPieceAtCell(new Position(0, 0)).Should().BeNull();
+            game.GetPieceAtCell(new Position(1, 0)).Should().BeNull();
+            game.GetPieceAtCell(new Position(2, 0)).Should().Be(GamePieces.WhiteKing);
+            game.GetPieceAtCell(new Position(3, 0)).Should().Be(GamePieces.WhiteRook);
+            game.GetPieceAtCell(new Position(4, 0)).Should().BeNull();
         }
     }
 }
