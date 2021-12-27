@@ -75,14 +75,7 @@ namespace GameParser
                 }
                 else if (moves.Length == 1)
                 {
-                    if (moves[0].EndsWith("++") || moves[0][^1] == '#')
-                    {
-                        result.Add(moves[0]);
-                    }
-                    else
-                    {
-                        throw new InvalidDataException($"Move {step} is not valid");
-                    }
+                    result.Add(moves[0]);
                 }
                 else
                 {
@@ -97,27 +90,33 @@ namespace GameParser
         {
             Position? from;
             Position? to;
+            Piece piece = Pieces.Pawn;
+
 
             // perform castling right
             if (move.Trim() == "O-O")
             {
                 from = new Position(4, _isWhiteTurn ? 0 : 7);
                 to = new Position(6, _isWhiteTurn ? 0 : 7);
+                piece = Pieces.King;
             }
             // perform castling left
             else if (move.Trim() == "O-O-O")
             {
                 from = new Position(4, _isWhiteTurn ? 0 : 7);
                 to = new Position(2, _isWhiteTurn ? 0 : 7);
+                piece = Pieces.King;
             }
             else
             {
+                // check if move or capture
                 string[] fromTo = move.Split('-', StringSplitOptions.RemoveEmptyEntries);
                 if (fromTo.Length != 2)
                 {
                     fromTo = move.Split('x', StringSplitOptions.RemoveEmptyEntries);
                 }
 
+                // check if from and to exists
                 if (fromTo.Length != 2)
                 {
                     throw new InvalidDataException($"Move {move} is not valid");
@@ -126,7 +125,6 @@ namespace GameParser
                 var fromString = fromTo[0].Trim();
                 var toString = fromTo[1].Trim();
 
-                Piece piece = Pieces.Pawn;
                 if (char.IsUpper(fromString[0]))
                 {
                     piece = _pieceMapper.GetPieceByName(fromString[0]);
@@ -144,36 +142,47 @@ namespace GameParser
                 {
                     throw new InvalidDataException($"Move {move} is not valid. Could not parse target cell position.");
                 }
+            }
 
-                var pieceAtCell = _game.SelectPiece(from.Value);
-                if (pieceAtCell == null || pieceAtCell.Identifier != piece.Identifier)
-                {
-                    throw new InvalidDataException($"Move {move} is not valid. The piece at {from} is not a {piece.Identifier}");
-                }
-                if (pieceAtCell.IsWhite && !_isWhiteTurn ||
-                    !pieceAtCell.IsWhite && _isWhiteTurn)
-                {
-                    throw new InvalidDataException($"Move {move} is not valid. It's the wrong turn.");
-                }
-                if (!_game.TryMove(to.Value))
-                {
-                    throw new InvalidDataException($"Move {move} is not valid. {piece.Identifier} at {from} can not move to {to}.");
-                }
-                var lastChar = move[^1];
-                if (char.IsUpper(lastChar))
-                {
-                    if (piece.Identifier != _pieceMapper.PawnName || (to.Value.Y != 0 && to.Value.Y != 7) || 
-                        !_pieceMapper.AllowedPromotionPieces.Contains(lastChar))
-                    {
-                        throw new InvalidDataException($"Move {move} is not valid. The given promotion is not valid");
-                    }
+            // check if given piece is actual piece
+            var pieceAtCell = _game.SelectPiece(from.Value);
+            if (pieceAtCell == null || pieceAtCell.Identifier != piece.Identifier)
+            {
+                throw new InvalidDataException($"Move {move} is not valid. The piece at {from} is not a {piece.Identifier}");
+            }
 
-                    _game.PerformPromotion(_pieceMapper.GetPieceByName(lastChar));
-                }
-                if (lastChar == '#' && !_game.IsGameOver)
+            // check if piece corresponds to the current turn
+            if (pieceAtCell.IsWhite && !_isWhiteTurn ||
+                !pieceAtCell.IsWhite && _isWhiteTurn)
+            {
+                throw new InvalidDataException($"Move {move} is not valid. It's the wrong turn.");
+            }
+
+            // try to perform move
+            if (!_game.TryMove(to.Value))
+            {
+                throw new InvalidDataException($"Move {move} is not valid. {piece.Identifier} at {from} can not move to {to}.");
+            }
+
+            // special annotations
+            var lastChar = move[^1];
+
+            // promotion
+            if (char.IsUpper(lastChar) && lastChar != 'O') // O is for casteling only
+            {
+                if (piece.Identifier != _pieceMapper.PawnName || (to.Value.Y != 0 && to.Value.Y != 7) || 
+                    !_pieceMapper.AllowedPromotionPieces.Contains(lastChar))
                 {
-                    throw new InvalidDataException($"Game should be over but it isn't.");
+                    throw new InvalidDataException($"Move {move} is not valid. The given promotion is not valid");
                 }
+
+                _game.PerformPromotion(_pieceMapper.GetPieceByName(lastChar));
+            }
+
+
+            if (lastChar == '#' && !_game.IsGameOver)
+            {
+                throw new InvalidDataException($"Game should be over but it isn't.");
             }
         }
 
