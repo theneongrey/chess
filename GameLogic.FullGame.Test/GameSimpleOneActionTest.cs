@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
 
-namespace GameLogic.Test.GameTest
+namespace GameLogic.FullGame.Test.GameTest
 {
     public class GameSimpleOneActionTest
     {
