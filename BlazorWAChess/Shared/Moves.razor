@@ -1,6 +1,7 @@
-﻿@using GameLogic
+﻿@using BlazorWAChess.ViewModel
+@using GameLogic
 <div>
-    @foreach(var move in _moves)
+    @foreach(var move in GameModel!.Moves)
     {
         <div>@move</div>
     }
@@ -8,11 +9,5 @@
 
 @code {
     [Parameter]
-    public Game? GameModel { get; set; }
-    private IEnumerable<string> _moves = new string[0];
-
-    public void UpdateMoves()
-    {
-        _moves = GameModel.ToFullAlgebraicNotationArray();
-    }
+    public MovesVM? GameModel { get; set; }
 }

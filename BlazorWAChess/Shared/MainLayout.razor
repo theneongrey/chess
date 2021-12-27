@@ -1,7 +1,32 @@
-﻿@inherits LayoutComponentBase
+﻿@using BlazorWAChess.ViewModel
+@inherits LayoutComponentBase
 
 <div class="page">
     <main>
-        @Body
+        <div class="board">
+            <Board GameModel="@_gameVM" OnMoveMade="@OnMoveMade"/>
+        </div>
+        <div class="moves">
+            <Moves GameModel="@_movesVM" />
+        </div>
     </main>
 </div>
+
+@code {
+    private GameVM? _gameVM;
+    private Moves? MoveOverview;
+    private MovesVM? _movesVM;
+
+    protected override void OnInitialized()
+    {
+        var gameLogic = new GameLogic.Game();
+        _gameVM = new GameVM(gameLogic);
+        _gameVM.Update();
+        _movesVM = new MovesVM(gameLogic);
+    }
+
+    public void OnMoveMade()
+    {
+        _movesVM!.Update();
+    }
+}
