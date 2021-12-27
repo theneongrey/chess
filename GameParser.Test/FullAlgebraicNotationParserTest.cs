@@ -47,5 +47,20 @@ rnbqkb-r";
             game.GetPieceAtCell(new Position(3, 0)).Should().Be(GamePieces.WhiteRook);
             game.GetPieceAtCell(new Position(4, 0)).Should().BeNull();
         }
+
+        [Fact]
+        public void AfterCastelingOnKingSide_RookShouldEndOnX5()
+        {
+            var input = @"11.g2-g4 g7-g6
+2.Ng1-h3 f7-f5
+3.Bf1-g2 h7-h6
+4.O-O";
+
+            var game = FullAlgebraicNotationParser.GetGameFromNotation(input);
+            game.GetPieceAtCell(new Position(7, 0)).Should().BeNull();
+            game.GetPieceAtCell(new Position(6, 0)).Should().Be(GamePieces.WhiteKing);
+            game.GetPieceAtCell(new Position(5, 0)).Should().Be(GamePieces.WhiteRook);
+            game.GetPieceAtCell(new Position(4, 0)).Should().BeNull();
+        }
     }
 }
