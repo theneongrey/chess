@@ -1,0 +1,13 @@
+﻿@using BlazorWAChess.ViewModel
+@using GameLogic
+<div>
+    @foreach(var move in GameModel!.Moves)
+    {
+        <div>@move</div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public MovesVM? GameModel { get; set; }
+}

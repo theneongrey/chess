@@ -1,0 +1,20 @@
+﻿@using BlazorWAChess.ViewModel
+@using GameLogic
+<div class="@CellModel!.CellClass" @onclick="Click">
+    <div class="@CellModel!.PieceClass">
+        @CellModel!.Icon
+    </div>
+</div>
+
+@code 
+{
+    [Parameter]
+    public CellVM? CellModel { get; set; }
+    [Parameter]
+    public EventCallback<(int X, int Y)> OnCellClicked { get; set; }
+
+    public void Click()
+    {
+        OnCellClicked.InvokeAsync((CellModel!.X, CellModel!.Y));
+    }
+}

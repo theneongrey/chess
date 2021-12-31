@@ -1,0 +1,34 @@
+﻿@using BlazorWAChess.ViewModel
+@using GameLogic
+<table id="chessboard">
+    @for (var y = 7; y >= 0; y--)
+    {
+        <tr>
+        @for (var x = 0; x < 8; x++)
+        {
+            <td><Cell CellModel="@GameModel!.Cells[y,x]" OnCellClicked="OnCellClicked" /></td>
+        }
+        </tr>
+    }
+</table>
+
+@code {
+    [Parameter]
+    public EventCallback OnMoveMade { get; set; }
+
+    [Parameter]
+    public GameVM? GameModel {get; set;}
+
+    private void OnCellClicked((int X, int Y) position)
+    {
+        var pieceMoved = GameModel!.CellOnClick(position.X, position.Y);
+        if (pieceMoved)
+        {
+            GameModel!.Update();
+            OnMoveMade.InvokeAsync();
+        }
+        StateHasChanged();
+    }
+}
+
+
