@@ -1,0 +1,62 @@
+/* /Pages/Game.razor.rz.scp.css */
+.moves[b-wcoaa2srnf] {
+    float: right;
+}
+
+.board[b-wcoaa2srnf] {
+    float: right;
+}
+/* /Shared/Board.razor.rz.scp.css */
+table td[b-m7ovhaz1ob] {
+    height: 50px;
+    width: 50px;
+    background: #FFC680;
+}
+
+table tr:nth-child(odd) td:nth-child(even)[b-m7ovhaz1ob] {
+    background: #86442A;
+}
+
+table tr:nth-child(even) td:nth-child(odd)[b-m7ovhaz1ob] {
+    background: #86442A;
+}
+/* /Shared/Cell.razor.rz.scp.css */
+div[b-f0bi5zocjj] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+}
+
+div .selectedCell[b-f0bi5zocjj]{
+    background: #1189a4;
+}
+
+div .highlightedCell[b-f0bi5zocjj] {
+    background: #11a472;
+}
+
+div .whitePiece[b-f0bi5zocjj] {
+    color: #FFF;
+    user-select: none;
+}
+
+div .blackPiece[b-f0bi5zocjj] {
+    color: #000;
+    user-select: none;
+}
+/* /Shared/MainLayout.razor.rz.scp.css */
+.page[b-e2ro1zzibg] {
+    position: relative;
+    height: 100vh;
+}
+
+main[b-e2ro1zzibg] {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
