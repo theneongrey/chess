@@ -7,56 +7,68 @@
     float: right;
 }
 /* /Shared/Board.razor.rz.scp.css */
-table td[b-m7ovhaz1ob] {
-    height: 50px;
-    width: 50px;
+.chessboard[b-m7ovhaz1ob] {
+    display: grid;
+    grid-template-rows: repeat(8, 1fr);
+    aspect-ratio: 1/1;
+}
+
+.chessboard .board-row[b-m7ovhaz1ob] {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.chessboard div[b-m7ovhaz1ob] {
     background: #FFC680;
 }
 
-table tr:nth-child(odd) td:nth-child(even)[b-m7ovhaz1ob] {
+.chessboard .board-row:nth-child(odd) div:nth-child(even)[b-m7ovhaz1ob] {
     background: #86442A;
 }
 
-table tr:nth-child(even) td:nth-child(odd)[b-m7ovhaz1ob] {
+.chessboard .board-row:nth-child(even) div:nth-child(odd)[b-m7ovhaz1ob] {
     background: #86442A;
+}
+
+.chessboard .board-row div[b-m7ovhaz1ob] {
+    display: grid;
 }
 /* /Shared/Cell.razor.rz.scp.css */
-div[b-f0bi5zocjj] {
-    display: flex;
+.cell[b-f0bi5zocjj] {
+    display: grid;
     justify-content: center;
-    align-items: center;
-    width: 50px;
-    height: 50px;
+    align-content: center;
+    font-size: 6vw;
 }
 
-div .selectedCell[b-f0bi5zocjj]{
+.selectedCell[b-f0bi5zocjj]{
     background: #1189a4;
 }
 
-div .highlightedCell[b-f0bi5zocjj] {
+.highlightedCell[b-f0bi5zocjj] {
     background: #11a472;
 }
 
-div .whitePiece[b-f0bi5zocjj] {
+.whitePiece[b-f0bi5zocjj] {
     color: #FFF;
     user-select: none;
+    display: grid;
 }
 
-div .blackPiece[b-f0bi5zocjj] {
+.blackPiece[b-f0bi5zocjj] {
     color: #000;
     user-select: none;
 }
 /* /Shared/MainLayout.razor.rz.scp.css */
-.page[b-e2ro1zzibg] {
-    position: relative;
-    height: 100vh;
+main[b-e2ro1zzibg] {
+    display: grid;
+    grid-template-columns: 3fr 20ch;
 }
 
-main[b-e2ro1zzibg] {
-    margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+.moves[b-e2ro1zzibg] {
+    background: #DDD;
+}
+/* /Shared/Moves.razor.rz.scp.css */
+.moves[b-we74unigj1] {
+    margin: 0 0 0 1ch;
 }

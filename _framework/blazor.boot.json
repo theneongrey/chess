@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "BlazorWAChess.dll": "sha256-f5dqdnV+EQZEi5pDm2MCgAy2uER4ATFADs2+SotFr7U=",
+      "BlazorWAChess.dll": "sha256-p\/hryEhqxMp\/UO5icW3QSHdpSv7GjWP3bIbMUPJtEus=",
       "GameLogic.dll": "sha256-PuSqSo\/e00IjA44hhUc49FpqJ666M8UbMGANls+cOEw=",
       "Microsoft.AspNetCore.Components.dll": "sha256-Bs6SA4yKBuRDHUXnMz\/UPH0bI4o\/FiXjnOeBV9eMGF0=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-03tPHPLltVMpajn385JsGgoMHJ6OaFd9h1TdzU8e940=",
