@@ -1,13 +1,26 @@
-﻿table td {
-    height: 50px;
-    width: 50px;
+﻿.chessboard {
+    display: grid;
+    grid-template-rows: repeat(8, 1fr);
+    aspect-ratio: 1/1;
+}
+
+.chessboard .board-row {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+}
+
+.chessboard div {
     background: #FFC680;
 }
 
-table tr:nth-child(odd) td:nth-child(even) {
+.chessboard .board-row:nth-child(odd) div:nth-child(even) {
     background: #86442A;
 }
 
-table tr:nth-child(even) td:nth-child(odd) {
+.chessboard .board-row:nth-child(even) div:nth-child(odd) {
     background: #86442A;
+}
+
+.chessboard .board-row div {
+    display: grid;
 }
