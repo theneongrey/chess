@@ -1,16 +1,16 @@
 ﻿@using BlazorWAChess.ViewModel
 @using GameLogic
-<table id="chessboard">
+<div class="chessboard">
     @for (var y = 7; y >= 0; y--)
     {
-        <tr>
+        <div class="board-row">
         @for (var x = 0; x < 8; x++)
         {
-            <td><Cell CellModel="@GameModel!.Cells[y,x]" OnCellClicked="OnCellClicked" /></td>
+            <div><Cell CellModel="@GameModel!.Cells[y,x]" OnCellClicked="OnCellClicked" /></div>
         }
-        </tr>
+        </div>
     }
-</table>
+</div>
 
 @code {
     [Parameter]

@@ -1,6 +1,7 @@
 ﻿@using BlazorWAChess.ViewModel
 @using GameLogic
-<div class="@CellModel!.CellClass" @onclick="Click">
+
+<div class="@CellModel!.CellClass cell" @onclick="Click">
     <div class="@CellModel!.PieceClass">
         @CellModel!.Icon
     </div>
