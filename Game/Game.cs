@@ -29,6 +29,9 @@ namespace GameLogic
 
         public bool IsCheckPending { get; private set; }
 
+        public bool IsItWhitesTurn => _colorsTurn == PieceColor.White;
+        public bool IsItBlacksTurn => _colorsTurn == PieceColor.Black;
+
         public Game() : this(SimpleBoardParser.DefaultLayout)
         {
         }
