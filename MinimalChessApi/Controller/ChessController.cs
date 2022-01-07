@@ -122,7 +122,7 @@ namespace MinimalChessApi.Controller
             return new GameModel(cells, state, game.IsItWhitesTurn, game.IsCheckPending);
         }
 
-        public async Task<bool> MovePiece(string gameId, string from, string to)
+        public async Task<bool> MovePiece(string gameId, string fromCellName, string toCellName)
         {
             var game = GetGameFromFile(gameId);
             if (game == null)
@@ -130,8 +130,8 @@ namespace MinimalChessApi.Controller
                 return false;
             }
 
-            var fromPosition = PositionFromName(from);
-            var toPosition = PositionFromName(to);
+            var fromPosition = PositionFromName(fromCellName);
+            var toPosition = PositionFromName(toCellName);
 
             if (fromPosition == null || toPosition == null)
             {
@@ -150,6 +150,24 @@ namespace MinimalChessApi.Controller
             }
 
             return false;
+        }
+
+        public AllowedMoves? GetAllowedMoves(string gameId, string pieceCellName)
+        {
+            var game = GetGameFromFile(gameId);
+            if (game == null)
+            {
+                return null;
+            }
+
+            var piecePosition = PositionFromName(pieceCellName);
+            if (piecePosition == null)
+            {
+                return null;
+            }
+
+            var moves = game.GetMovesForCell(piecePosition.Value);
+            return new AllowedMoves(moves.Select(p => p.AsCellName()));
         }
     }
 }

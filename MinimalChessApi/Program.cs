@@ -24,13 +24,19 @@ app.MapPost("/game", ([FromServices] IChessController chessHandler) =>
 app.MapGet("/game", ([FromServices] IChessController chessHandler) =>
 {
     var games = chessHandler.GetGameReferences();
-    return games == null ? Results.NotFound() : Results.Ok(games);
+    return games == null ? Results.Problem() : Results.Ok(games);
 });
 
 app.MapGet("/game/{id}", ([FromServices] IChessController chessHandler, string id) =>
 {
     var game = chessHandler.GetGame(id);
     return game == null ? Results.NotFound() : Results.Ok(game);
+});
+
+app.MapGet("/game/allowed-moves/{id}/{piecePosition}", ([FromServices] IChessController chessHandler, string id, string piecePosition) =>
+{
+    var moves = chessHandler.GetAllowedMoves(id, piecePosition);
+    return moves == null ? Results.Problem() : Results.Ok(moves);
 });
 
 app.MapPut("/game/move/{id}/{from}/{to}", async ([FromServices] IChessController chessHandler, string id, string from, string to) =>

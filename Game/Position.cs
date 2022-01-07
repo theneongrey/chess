@@ -26,5 +26,10 @@
         {
             return $"X={X}, Y={Y}";
         }
+
+        public string AsCellName()
+        {
+            return char.ConvertFromUtf32('A' + X) + (Y + 1);
+        }
     }
 }
