@@ -4,12 +4,6 @@ using MinimalChessApi.Results;
 
 namespace MinimalChessApi
 {
-    // todo: 
-    // [ ] error handling
-    // [ ] include swagger
-    // [ ] move results to contract project
-    // [ ] continue to implement logic
-
     public class ChessHandling
     {
         private const string GameExtension = "game";
@@ -34,7 +28,7 @@ namespace MinimalChessApi
                 return null;
             }
 
-            var x = position[0] - 'a';
+            var x = char.ToLower(position[0]) - 'a';
             var y = position[1] - '1';
 
             try
@@ -57,17 +51,18 @@ namespace MinimalChessApi
             Directory.CreateDirectory(_targetPath);
         }
 
-        public IEnumerable<string> GetGames()
+        public IEnumerable<GameReferenceModel> GetGameReferences()
         {
             if (Directory.Exists(_targetPath))
             {
-                return Directory.GetFiles(_targetPath, $"*.{GameExtension}");
+                return Directory.GetFiles(_targetPath, $"*.{GameExtension}")
+                    .Select(f => new GameReferenceModel(Path.GetFileNameWithoutExtension(f)));
             }
 
-            return Enumerable.Empty<string>();
+            return Enumerable.Empty<GameReferenceModel>();
         }
 
-        public NewGameResult NewGame()
+        public GameReferenceModel NewGame()
         {
             var id = Guid.NewGuid().ToString();
             var filename = GetGameFilename(id);
@@ -79,10 +74,10 @@ namespace MinimalChessApi
 
             using var _ = File.Create(GetGameFilename(id));
 
-            return new NewGameResult(id);
+            return new GameReferenceModel(id);
         }
 
-        public BoardResult? GetBoard(string gameId)
+        public GameModel? GetBoard(string gameId)
         {
             var game = GetGame(gameId);
             if (game == null)
@@ -96,12 +91,16 @@ namespace MinimalChessApi
             {
                 foreach (var piece in pieceRow)
                 {
-                    cells.Append(piece?.Identifier ?? string.Empty);
-
+                    cells.Add(piece?.Identifier ?? string.Empty);
                 } 
             }
 
-            return new BoardResult(cells);
+            var state = game.IsGameOver ? "Over" :
+                        game.IsGameRunning ? "Running" :
+                        game.IsPromotionPending ? "Promotion" :
+                        "Unknown";
+
+            return new GameModel(cells, state, true, game.IsCheckPending);
         }
 
         private Game? GetGame(string gameId)
@@ -123,7 +122,7 @@ namespace MinimalChessApi
             return null;
         }
 
-        public bool MovePiece(string gameId, string from, string to)
+        public async Task<bool> MovePiece(string gameId, string from, string to)
         {
             var game = GetGame(gameId);
             if (game == null)
@@ -148,6 +147,7 @@ namespace MinimalChessApi
             {
                 return true;
             }
+            await File.WriteAllTextAsync(GetGameFilename(gameId), game.ToFullAlgebraicNotation());
 
             return false;
         }

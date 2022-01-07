@@ -146,7 +146,7 @@ namespace GameLogic
             return _board.GetPieceAt(to);
         }
 
-        internal bool IsCheckMate()
+        private bool IsCheckMate()
         {
             var pieces = _board.GetPiecesByColor(_colorsTurn == PieceColor.White ? PieceColor.Black : PieceColor.White);
             foreach (var piece in pieces)
