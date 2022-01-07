@@ -2,17 +2,17 @@
 using GameParser;
 using MinimalChessApi.Results;
 
-namespace MinimalChessApi
+namespace MinimalChessApi.Controller
 {
-    public class ChessHandling
+    public class ChessController : IChessController
     {
         private const string GameExtension = "game";
         private string _targetPath;
 
-        public ChessHandling(string targetPath)
+        public ChessController(string targetPath)
         {
             _targetPath = targetPath;
-            
+
             Clean();
         }
 
@@ -41,7 +41,7 @@ namespace MinimalChessApi
             }
         }
 
-        public void Clean()
+        private void Clean()
         {
             if (Directory.Exists(_targetPath))
             {
@@ -51,59 +51,7 @@ namespace MinimalChessApi
             Directory.CreateDirectory(_targetPath);
         }
 
-        public IEnumerable<GameReferenceModel> GetGameReferences()
-        {
-            if (Directory.Exists(_targetPath))
-            {
-                return Directory.GetFiles(_targetPath, $"*.{GameExtension}")
-                    .Select(f => new GameReferenceModel(Path.GetFileNameWithoutExtension(f)));
-            }
-
-            return Enumerable.Empty<GameReferenceModel>();
-        }
-
-        public GameReferenceModel NewGame()
-        {
-            var id = Guid.NewGuid().ToString();
-            var filename = GetGameFilename(id);
-
-            if (File.Exists(filename))
-            {
-                File.Delete(filename);
-            }
-
-            using var _ = File.Create(GetGameFilename(id));
-
-            return new GameReferenceModel(id);
-        }
-
-        public GameModel? GetBoard(string gameId)
-        {
-            var game = GetGame(gameId);
-            if (game == null)
-            {
-                return null;
-            }
-
-            var cells = new List<string>();
-            var pieces = game.GetBoard();
-            foreach (var pieceRow in pieces)
-            {
-                foreach (var piece in pieceRow)
-                {
-                    cells.Add(piece?.Identifier ?? string.Empty);
-                } 
-            }
-
-            var state = game.IsGameOver ? "Over" :
-                        game.IsGameRunning ? "Running" :
-                        game.IsPromotionPending ? "Promotion" :
-                        "Unknown";
-
-            return new GameModel(cells, state, true, game.IsCheckPending);
-        }
-
-        private Game? GetGame(string gameId)
+        private Game? GetGameFromFile(string gameId)
         {
             var filename = GetGameFilename(gameId);
             if (File.Exists(filename))
@@ -122,14 +70,66 @@ namespace MinimalChessApi
             return null;
         }
 
+        public GameReferenceModel NewGame()
+        {
+            var id = Guid.NewGuid().ToString();
+            var filename = GetGameFilename(id);
+
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+
+            using var _ = File.Create(GetGameFilename(id));
+
+            return new GameReferenceModel(id);
+        }
+
+        public IEnumerable<GameReferenceModel> GetGameReferences()
+        {
+            if (Directory.Exists(_targetPath))
+            {
+                return Directory.GetFiles(_targetPath, $"*.{GameExtension}")
+                    .Select(f => new GameReferenceModel(Path.GetFileNameWithoutExtension(f)));
+            }
+
+            return Enumerable.Empty<GameReferenceModel>();
+        }
+
+        public GameModel? GetGame(string gameId)
+        {
+            var game = GetGameFromFile(gameId);
+            if (game == null)
+            {
+                return null;
+            }
+
+            var cells = new List<string>();
+            var pieces = game.GetBoard();
+            foreach (var pieceRow in pieces)
+            {
+                foreach (var piece in pieceRow)
+                {
+                    cells.Add(piece?.Identifier ?? string.Empty);
+                }
+            }
+
+            var state = game.IsGameOver ? "Over" :
+                        game.IsGameRunning ? "Running" :
+                        game.IsPromotionPending ? "Promotion" :
+                        "Unknown";
+
+            return new GameModel(cells, state, game.IsItWhitesTurn, game.IsCheckPending);
+        }
+
         public async Task<bool> MovePiece(string gameId, string from, string to)
         {
-            var game = GetGame(gameId);
+            var game = GetGameFromFile(gameId);
             if (game == null)
             {
                 return false;
             }
-            
+
             var fromPosition = PositionFromName(from);
             var toPosition = PositionFromName(to);
 
@@ -145,9 +145,9 @@ namespace MinimalChessApi
 
             if (game.TryMove(toPosition.Value))
             {
+                await File.WriteAllTextAsync(GetGameFilename(gameId), game.ToFullAlgebraicNotation());
                 return true;
             }
-            await File.WriteAllTextAsync(GetGameFilename(gameId), game.ToFullAlgebraicNotation());
 
             return false;
         }
