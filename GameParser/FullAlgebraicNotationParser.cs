@@ -45,7 +45,6 @@ namespace GameParser
             {
                 return null;
             }
-
         }
 
         private string[] SplitSteps(string stepSequence)
