@@ -1,4 +1,4 @@
-﻿using MinimalChessApi.Results;
+﻿using MinimalChessApi.Model;
 
 namespace MinimalChessApi.Controller
 {
