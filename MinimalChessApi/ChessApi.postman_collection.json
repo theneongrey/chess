@@ -1,0 +1,149 @@
+{
+	"info": {
+		"_postman_id": "c0e6785e-f2ef-4596-8816-fa7e4691ded0",
+		"name": "Chess api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "New Game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://{{BaseUrl}}/game",
+					"protocol": "https",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"game"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Board",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{BaseUrl}}/game/:gameId",
+					"protocol": "https",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"game",
+						":gameId"
+					],
+					"variable": [
+						{
+							"key": "gameId",
+							"value": "{{GameId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Boards",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{BaseUrl}}/game",
+					"protocol": "https",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"game"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Allowed Moves",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://{{BaseUrl}}/game/allowed-moves/:gameId/:pieceCellName",
+					"protocol": "https",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"game",
+						"allowed-moves",
+						":gameId",
+						":pieceCellName"
+					],
+					"variable": [
+						{
+							"key": "gameId",
+							"value": "{{GameId}}"
+						},
+						{
+							"key": "pieceCellName",
+							"value": "A2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Move",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "https://{{BaseUrl}}/game/move/:gameId/:fromCellName/:toCellName",
+					"protocol": "https",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"game",
+						"move",
+						":gameId",
+						":fromCellName",
+						":toCellName"
+					],
+					"variable": [
+						{
+							"key": "gameId",
+							"value": "{{GameId}}"
+						},
+						{
+							"key": "fromCellName",
+							"value": "A2",
+							"description": "pawn"
+						},
+						{
+							"key": "toCellName",
+							"value": "A4",
+							"description": "to cells forward"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "GameId",
+			"value": "gameId"
+		},
+		{
+			"key": "BaseUrl",
+			"value": "url"
+		}
+	]
+}
