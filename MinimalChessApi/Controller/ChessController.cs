@@ -16,7 +16,7 @@ namespace MinimalChessApi.Controller
             Clean();
         }
 
-        private string GetGameFilename(string gameId)
+        private string GetGameFilename(Guid gameId)
         {
             return Path.Combine(_targetPath, $"{gameId}.{GameExtension}");
         }
@@ -51,7 +51,7 @@ namespace MinimalChessApi.Controller
             Directory.CreateDirectory(_targetPath);
         }
 
-        private Game? GetGameFromFile(string gameId)
+        private Game? GetGameFromFile(Guid gameId)
         {
             var filename = GetGameFilename(gameId);
             if (File.Exists(filename))
@@ -72,7 +72,7 @@ namespace MinimalChessApi.Controller
 
         public GameReferenceModel NewGame()
         {
-            var id = Guid.NewGuid().ToString();
+            var id = Guid.NewGuid();
             var filename = GetGameFilename(id);
 
             if (File.Exists(filename))
@@ -90,13 +90,23 @@ namespace MinimalChessApi.Controller
             if (Directory.Exists(_targetPath))
             {
                 return Directory.GetFiles(_targetPath, $"*.{GameExtension}")
-                    .Select(f => new GameReferenceModel(Path.GetFileNameWithoutExtension(f)));
+                    .Select(f =>
+                    {
+                        var fileName = Path.GetFileNameWithoutExtension(f);
+                        if (Guid.TryParse(fileName, out var guid))
+                        {
+                            return new GameReferenceModel(guid);
+                        }
+                        return null;
+                    }
+                    )
+                    .Where(f => f is not null)!;
             }
 
             return Enumerable.Empty<GameReferenceModel>();
         }
 
-        public GameModel? GetGame(string gameId)
+        public GameModel? GetGame(Guid gameId)
         {
             var game = GetGameFromFile(gameId);
             if (game == null)
@@ -122,7 +132,7 @@ namespace MinimalChessApi.Controller
             return new GameModel(cells, state, game.IsItWhitesTurn, game.IsCheckPending);
         }
 
-        public async Task<bool> MovePiece(string gameId, string fromCellName, string toCellName)
+        public async Task<bool> MovePiece(Guid gameId, string fromCellName, string toCellName)
         {
             var game = GetGameFromFile(gameId);
             if (game == null)
@@ -152,7 +162,7 @@ namespace MinimalChessApi.Controller
             return false;
         }
 
-        public AllowedMoves? GetAllowedMoves(string gameId, string pieceCellName)
+        public AllowedMoves? GetAllowedMoves(Guid gameId, string pieceCellName)
         {
             var game = GetGameFromFile(gameId);
             if (game == null)
