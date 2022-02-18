@@ -1,0 +1,44 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiChessClient.MainPage"
+             xmlns:converter="clr-namespace:MauiChessClient.Converter"
+             BackgroundColor="{DynamicResource SecondaryColor}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:CellToBrushConverter x:Key="CellToBrushConverter">
+                <converter:CellToBrushConverter.BrightBrush>
+                    <SolidColorBrush Color="{DynamicResource BrightChessCell}" />
+                </converter:CellToBrushConverter.BrightBrush>
+                <converter:CellToBrushConverter.DarkBrush>
+                    <SolidColorBrush Color="{DynamicResource DarkChessCell}" />
+                </converter:CellToBrushConverter.DarkBrush>
+            </converter:CellToBrushConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid ColumnDefinitions="Auto,*" Background="Red" SizeChanged="CollectionView_SizeChanged">
+        <CollectionView Grid.Column="0"
+                        x:Name="Board"
+                        ItemsSource="{Binding Cells}" SizeChanged="CollectionView_SizeChanged"
+                        ItemSizingStrategy="MeasureFirstItem"
+                        VerticalOptions="Center">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="8"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Grid.Row="{Binding Y}" Grid.Column="{Binding X}"
+                          Background="{Binding Converter={StaticResource CellToBrushConverter}}" HeightRequest="{Binding Size}">
+                        <Label Text="{Binding Value}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <ScrollView Grid.Column="1">
+            <StackLayout>
+
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
