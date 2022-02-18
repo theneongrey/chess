@@ -25,19 +25,19 @@ namespace MinimalChessApi.API
 
         private static IResult GetGameById(IChessController chessController, string id)
         {
-            var game = chessController.GetGame(id);
+            var game = chessController.GetGame(new Guid(id));
             return game == null ? Results.NotFound() : Results.Ok(game);
         }
 
         private static IResult GetAllowedMoves(IChessController chessController, string id, string pieceCellName)
         {
-            var moves = chessController.GetAllowedMoves(id, pieceCellName);
+            var moves = chessController.GetAllowedMoves(new Guid(id), pieceCellName);
             return moves == null ? Results.Problem() : Results.Ok(moves);
         }
 
         private static async Task<IResult> MovePiece(IChessController chessController, string id, string fromCellName, string toCellName)
         {
-            if (await chessController.MovePiece(id, fromCellName, toCellName))
+            if (await chessController.MovePiece(new Guid(id), fromCellName, toCellName))
             {
                 return Results.Ok();
             }
