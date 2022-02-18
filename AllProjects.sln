@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWAChess", "BlazorWACh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinimalChessApi", "MinimalChessApi\MinimalChessApi.csproj", "{8148ED9A-7976-4883-A6E8-8CDAA6536268}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessApiConsoleClient", "ChessApiConsoleClient\ChessApiConsoleClient.csproj", "{BA44A06C-D66F-4453-9C02-D0F5D6102DFE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{8148ED9A-7976-4883-A6E8-8CDAA6536268}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8148ED9A-7976-4883-A6E8-8CDAA6536268}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8148ED9A-7976-4883-A6E8-8CDAA6536268}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA44A06C-D66F-4453-9C02-D0F5D6102DFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA44A06C-D66F-4453-9C02-D0F5D6102DFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA44A06C-D66F-4453-9C02-D0F5D6102DFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA44A06C-D66F-4453-9C02-D0F5D6102DFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
