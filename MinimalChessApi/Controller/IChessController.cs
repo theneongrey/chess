@@ -1,13 +1,13 @@
-﻿using MinimalChessApi.Model;
+﻿using ChessApiContract.Response;
 
 namespace MinimalChessApi.Controller
 {
     public interface IChessController
     {
-        GameReferenceModel NewGame();
-        IEnumerable<GameReferenceModel> GetGameReferences();
-        GameModel? GetGame(Guid gameId);
-        Task<bool> MovePiece(Guid gameId, string fromCellName, string toCellName);
-        AllowedMoves? GetAllowedMoves(Guid id, string pieceCellName);
+        NewGameResponse NewGame();
+        GameListResponse GetGameList();
+        GetGameResponse GetGame(Guid gameId);
+        Task<MovePieceResponse> MovePiece(Guid gameId, string fromCellName, string toCellName);
+        AllowedMovesResponse GetAllowedMoves(Guid id, string pieceCellName);
     }
 }

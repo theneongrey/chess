@@ -19,6 +19,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinimalChessApi", "MinimalC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessApiConsoleClient", "ChessApiConsoleClient\ChessApiConsoleClient.csproj", "{BA44A06C-D66F-4453-9C02-D0F5D6102DFE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessApiClient", "ChessApiClient\ChessApiClient.csproj", "{AA741F9E-955B-4CDB-9992-D712115CC8C7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{FE626AAF-B83F-4F41-B88F-99BD65D1A2AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessApiContract", "ChessApiContract\ChessApiContract.csproj", "{D12E98DD-9CCC-490D-AA99-948E4463E694}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,9 +63,22 @@ Global
 		{BA44A06C-D66F-4453-9C02-D0F5D6102DFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA44A06C-D66F-4453-9C02-D0F5D6102DFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA44A06C-D66F-4453-9C02-D0F5D6102DFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA741F9E-955B-4CDB-9992-D712115CC8C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA741F9E-955B-4CDB-9992-D712115CC8C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA741F9E-955B-4CDB-9992-D712115CC8C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA741F9E-955B-4CDB-9992-D712115CC8C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D12E98DD-9CCC-490D-AA99-948E4463E694}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D12E98DD-9CCC-490D-AA99-948E4463E694}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D12E98DD-9CCC-490D-AA99-948E4463E694}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D12E98DD-9CCC-490D-AA99-948E4463E694}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8148ED9A-7976-4883-A6E8-8CDAA6536268} = {FE626AAF-B83F-4F41-B88F-99BD65D1A2AA}
+		{AA741F9E-955B-4CDB-9992-D712115CC8C7} = {FE626AAF-B83F-4F41-B88F-99BD65D1A2AA}
+		{D12E98DD-9CCC-490D-AA99-948E4463E694} = {FE626AAF-B83F-4F41-B88F-99BD65D1A2AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C06250C8-EAC4-44FE-B3E2-B7BE2C4DE1D9}

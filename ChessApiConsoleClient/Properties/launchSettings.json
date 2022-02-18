@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ChessApiConsoleClient": {
+      "commandName": "Project",
+      "commandLineArgs": "new"
+    }
+  }
+}
