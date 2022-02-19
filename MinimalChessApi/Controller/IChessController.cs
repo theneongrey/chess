@@ -4,10 +4,10 @@ namespace MinimalChessApi.Controller
 {
     public interface IChessController
     {
-        NewGameResponse NewGame();
-        GameListResponse GetGameList();
-        GetGameResponse GetGame(Guid gameId);
-        Task<MovePieceResponse> MovePiece(Guid gameId, string fromCellName, string toCellName);
-        AllowedMovesResponse GetAllowedMoves(Guid id, string pieceCellName);
+        Task<NewGameResponse> NewGameAsync();
+        Task<GameListResponse> GetGameListAsync();
+        Task<GetGameResponse> GetGameAsync(Guid gameId);
+        Task<MovePieceResponse> MovePieceAsync(Guid gameId, string fromCellName, string toCellName);
+        Task<AllowedMovesResponse> GetAllowedMovesAsync(Guid id, string pieceCellName);
     }
 }

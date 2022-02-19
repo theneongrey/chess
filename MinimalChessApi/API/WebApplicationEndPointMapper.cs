@@ -5,9 +5,9 @@ namespace MinimalChessApi.API
 {
     public static class WebApplicationEndPointMapper
     {
-        private static IResult NewGame(IChessController chessController)
+        private static async Task<IResult> NewGameAsync(IChessController chessController)
         {
-            var result = chessController.NewGame();
+            var result = await chessController.NewGameAsync();
             if (result.WasSuccessful)
             {
                 return Results.Created($"/game/{result.GameId}", result);
@@ -15,9 +15,9 @@ namespace MinimalChessApi.API
             return Results.Problem(result.Error);
         }
 
-        private static IResult GetGameReferences(IChessController chessController)
+        private static async Task<IResult> GetGameReferencesAsync(IChessController chessController)
         {
-            var result = chessController.GetGameList();
+            var result = await chessController.GetGameListAsync();
             if (result.WasSuccessful)
             {
                 return Results.Ok(result);
@@ -25,9 +25,9 @@ namespace MinimalChessApi.API
             return Results.Problem(result.Error);
         }
 
-        private static IResult GetGameById(IChessController chessController, string id)
+        private static async Task<IResult> GetGameByIdAsync(IChessController chessController, string id)
         {
-            var result = chessController.GetGame(new Guid(id));
+            var result = await chessController.GetGameAsync(new Guid(id));
             if (result.WasSuccessful)
             {
                 return Results.Ok(result);
@@ -35,9 +35,9 @@ namespace MinimalChessApi.API
             return Results.Problem(result.Error);
         }
 
-        private static IResult GetAllowedMoves(IChessController chessController, string id, string pieceCellName)
+        private static async Task<IResult> GetAllowedMovesAsync(IChessController chessController, string id, string pieceCellName)
         {
-            var result = chessController.GetAllowedMoves(new Guid(id), pieceCellName);
+            var result = await chessController.GetAllowedMovesAsync(new Guid(id), pieceCellName);
             if (result.WasSuccessful)
             {
                 return Results.Ok(result);
@@ -45,9 +45,9 @@ namespace MinimalChessApi.API
             return Results.Problem(result.Error);
         }
 
-        private static async Task<IResult> MovePiece(IChessController chessController, string id, string fromCellName, string toCellName)
+        private static async Task<IResult> MovePieceAsync(IChessController chessController, string id, string fromCellName, string toCellName)
         {
-            var result = await chessController.MovePiece(new Guid(id), fromCellName, toCellName);
+            var result = await chessController.MovePieceAsync(new Guid(id), fromCellName, toCellName);
             if (result.WasSuccessful)
             {
                 return Results.Ok(result);
@@ -58,11 +58,11 @@ namespace MinimalChessApi.API
         public static void MapEndPoints(this WebApplication app)
         {
             app.MapGet("/", () => "Hello Chess!");
-            app.MapPost($"/{Calls.NewGame}", NewGame);
-            app.MapGet($"/{Calls.GameList}", GetGameReferences);
-            app.MapGet($"/{Calls.GameById}/{{id}}", GetGameById);
-            app.MapGet($"/{Calls.AllowedMoves}/{{id}}/{{pieceCellName}}", GetAllowedMoves);
-            app.MapPut($"/{Calls.MovePiece}/{{id}}/{{fromCellName}}/{{toCellName}}", MovePiece);
+            app.MapPost($"/{Calls.NewGame}", NewGameAsync);
+            app.MapGet($"/{Calls.GameList}", GetGameReferencesAsync);
+            app.MapGet($"/{Calls.GameById}/{{id}}", GetGameByIdAsync);
+            app.MapGet($"/{Calls.AllowedMoves}/{{id}}/{{pieceCellName}}", GetAllowedMovesAsync);
+            app.MapPut($"/{Calls.MovePiece}/{{id}}/{{fromCellName}}/{{toCellName}}", MovePieceAsync);
         }
     }
 }
