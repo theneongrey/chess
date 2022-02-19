@@ -1,4 +1,5 @@
-﻿using MinimalChessApi.Controller;
+﻿using ChessApiContract;
+using MinimalChessApi.Controller;
 
 namespace MinimalChessApi.API
 {
@@ -6,55 +7,62 @@ namespace MinimalChessApi.API
     {
         private static IResult NewGame(IChessController chessController)
         {
-            try
+            var result = chessController.NewGame();
+            if (result.WasSuccessful)
             {
-                var game = chessController.NewGame();
-                return Results.Created($"/game/{game.GameId}", game);
+                return Results.Created($"/game/{result.GameId}", result);
             }
-            catch
-            {
-                return Results.Problem();
-            }
+            return Results.Problem(result.Error);
         }
 
         private static IResult GetGameReferences(IChessController chessController)
         {
-            var games = chessController.GetGameReferences();
-            return games == null ? Results.Problem() : Results.Ok(games);
+            var result = chessController.GetGameList();
+            if (result.WasSuccessful)
+            {
+                return Results.Ok(result);
+            }
+            return Results.Problem(result.Error);
         }
 
         private static IResult GetGameById(IChessController chessController, string id)
         {
-            var game = chessController.GetGame(new Guid(id));
-            return game == null ? Results.NotFound() : Results.Ok(game);
+            var result = chessController.GetGame(new Guid(id));
+            if (result.WasSuccessful)
+            {
+                return Results.Ok(result);
+            }
+            return Results.Problem(result.Error);
         }
 
         private static IResult GetAllowedMoves(IChessController chessController, string id, string pieceCellName)
         {
-            var moves = chessController.GetAllowedMoves(new Guid(id), pieceCellName);
-            return moves == null ? Results.Problem() : Results.Ok(moves);
+            var result = chessController.GetAllowedMoves(new Guid(id), pieceCellName);
+            if (result.WasSuccessful)
+            {
+                return Results.Ok(result);
+            }
+            return Results.Problem(result.Error);
         }
 
         private static async Task<IResult> MovePiece(IChessController chessController, string id, string fromCellName, string toCellName)
         {
-            if (await chessController.MovePiece(new Guid(id), fromCellName, toCellName))
+            var result = await chessController.MovePiece(new Guid(id), fromCellName, toCellName);
+            if (result.WasSuccessful)
             {
-                return Results.Ok();
+                return Results.Ok(result);
             }
-            else
-            {
-                return Results.Problem();
-            }
+            return Results.Problem(result.Error);
         }
 
         public static void MapEndPoints(this WebApplication app)
         {
             app.MapGet("/", () => "Hello Chess!");
-            app.MapPost("/game", NewGame);
-            app.MapGet("/game", GetGameReferences);
-            app.MapGet("/game/{id}", GetGameById);
-            app.MapGet("/game/allowed-moves/{id}/{pieceCellName}", GetAllowedMoves);
-            app.MapPut("/game/move/{id}/{fromCellName}/{toCellName}", MovePiece);
+            app.MapPost($"/{Calls.NewGame}", NewGame);
+            app.MapGet($"/{Calls.GameList}", GetGameReferences);
+            app.MapGet($"/{Calls.GameById}/{{id}}", GetGameById);
+            app.MapGet($"/{Calls.AllowedMoves}/{{id}}/{{pieceCellName}}", GetAllowedMoves);
+            app.MapPut($"/{Calls.MovePiece}/{{id}}/{{fromCellName}}/{{toCellName}}", MovePiece);
         }
     }
 }

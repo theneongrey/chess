@@ -1,6 +1,6 @@
-﻿using GameLogic;
+﻿using ChessApiContract.Response;
+using GameLogic;
 using GameParser;
-using MinimalChessApi.Model;
 
 namespace MinimalChessApi.Controller
 {
@@ -70,48 +70,53 @@ namespace MinimalChessApi.Controller
             return null;
         }
 
-        public GameReferenceModel NewGame()
+        public NewGameResponse NewGame()
         {
             var id = Guid.NewGuid();
             var filename = GetGameFilename(id);
 
-            if (File.Exists(filename))
+            try
             {
-                File.Delete(filename);
+                if (File.Exists(filename))
+                {
+                    File.Delete(filename);
+                }
+
+                using var _ = File.Create(GetGameFilename(id));
+                return NewGameResponse.RespondSuccess(id);
             }
-
-            using var _ = File.Create(GetGameFilename(id));
-
-            return new GameReferenceModel(id);
+            catch
+            {
+                return NewGameResponse.RespondError("Could not create a new game");
+            }
         }
 
-        public IEnumerable<GameReferenceModel> GetGameReferences()
+        public GameListResponse GetGameList()
         {
             if (Directory.Exists(_targetPath))
             {
-                return Directory.GetFiles(_targetPath, $"*.{GameExtension}")
-                    .Select(f =>
+                var result = new List<Guid>();
+                foreach (var file in Directory.GetFiles(_targetPath, $"*.{GameExtension}"))
+                {
+                    var guidCandidate = Path.GetFileNameWithoutExtension(file);
+                    if (Guid.TryParse(guidCandidate, out var guid))
                     {
-                        var fileName = Path.GetFileNameWithoutExtension(f);
-                        if (Guid.TryParse(fileName, out var guid))
-                        {
-                            return new GameReferenceModel(guid);
-                        }
-                        return null;
+                        result.Add(guid);
                     }
-                    )
-                    .Where(f => f is not null)!;
+                }
+
+                return GameListResponse.RespondSuccess(result);
             }
 
-            return Enumerable.Empty<GameReferenceModel>();
+            return GameListResponse.RespondError("Could not load games");
         }
 
-        public GameModel? GetGame(Guid gameId)
+        public GetGameResponse GetGame(Guid gameId)
         {
             var game = GetGameFromFile(gameId);
             if (game == null)
             {
-                return null;
+                return GetGameResponse.RespondError($"Game \"{gameId}\" could not be loaded");
             }
 
             var cells = new List<string>();
@@ -120,7 +125,7 @@ namespace MinimalChessApi.Controller
             {
                 foreach (var piece in pieceRow)
                 {
-                    cells.Add(piece?.Identifier ?? string.Empty);
+                    cells.Add(piece?.ColoredIdentifier ?? string.Empty);
                 }
             }
 
@@ -129,55 +134,71 @@ namespace MinimalChessApi.Controller
                         game.IsPromotionPending ? "Promotion" :
                         "Unknown";
 
-            return new GameModel(cells, state, game.IsItWhitesTurn, game.IsCheckPending);
+            return GetGameResponse.RespondSuccess(cells, state, game.IsItWhitesTurn, game.IsCheckPending);
         }
 
-        public async Task<bool> MovePiece(Guid gameId, string fromCellName, string toCellName)
+        public async Task<MovePieceResponse> MovePiece(Guid gameId, string fromCellName, string toCellName)
         {
             var game = GetGameFromFile(gameId);
             if (game == null)
             {
-                return false;
+                return MovePieceResponse.RespondError($"Game \"{gameId}\" could not be loaded");
             }
 
             var fromPosition = PositionFromName(fromCellName);
             var toPosition = PositionFromName(toCellName);
 
-            if (fromPosition == null || toPosition == null)
+            if (fromPosition == null)
             {
-                return false;
+                return MovePieceResponse.RespondError($"\"From\" position \"{fromPosition}\" could not be interpreted");
+            }
+            if (toPosition == null)
+            {
+                return MovePieceResponse.RespondError($"\"To\" \"{toPosition}\" position could not be interpreted");
             }
 
             if (game.SelectPiece(fromPosition.Value) == null)
             {
-                return false;
+                return MovePieceResponse.RespondError($"There is no valid piece at \"from\" position \"{fromPosition}\""); ;
             }
 
             if (game.TryMove(toPosition.Value))
             {
-                await File.WriteAllTextAsync(GetGameFilename(gameId), game.ToFullAlgebraicNotation());
-                return true;
+                try
+                {
+                    await File.WriteAllTextAsync(GetGameFilename(gameId), game.ToFullAlgebraicNotation());
+                    return MovePieceResponse.RespondSuccess();
+                }
+                catch
+                {
+                    return MovePieceResponse.RespondError("Could not update game");
+                }
             }
 
-            return false;
+            return MovePieceResponse.RespondError("Illegal move"); ;
         }
 
-        public AllowedMoves? GetAllowedMoves(Guid gameId, string pieceCellName)
+        public AllowedMovesResponse GetAllowedMoves(Guid gameId, string pieceCellName)
         {
             var game = GetGameFromFile(gameId);
             if (game == null)
             {
-                return null;
+                return AllowedMovesResponse.RespondError($"Game \"{gameId}\" could not be loaded");
             }
 
             var piecePosition = PositionFromName(pieceCellName);
             if (piecePosition == null)
             {
-                return null;
+                return AllowedMovesResponse.RespondError($"Given position \"{pieceCellName}\" could not be interpreted");
+            }
+
+            if (game.SelectPiece(piecePosition.Value) == null)
+            {
+                return AllowedMovesResponse.RespondError($"There is no valid piece at given position \"{piecePosition}\"");
             }
 
             var moves = game.GetMovesForCell(piecePosition.Value);
-            return new AllowedMoves(moves.Select(p => p.AsCellName()));
+            return AllowedMovesResponse.RespondSuccess(moves.Select(p => p.AsCellName()));
         }
     }
 }

@@ -1,0 +1,25 @@
+{
+  "profiles": {
+    "WSL": {
+      "commandName": "WSL2",
+      "environmentVariables": {},
+      "distributionName": ""
+    },
+    "New game": {
+      "commandName": "Project",
+      "commandLineArgs": "new"
+    },
+    "Show game": {
+      "commandName": "Project",
+      "commandLineArgs": "show --game 52fed006-87bc-49ed-b01c-22ceef8d0fe1"
+    },
+    "Show allowed": {
+      "commandName": "Project",
+      "commandLineArgs": "allowed --game 52fed006-87bc-49ed-b01c-22ceef8d0fe1 --cell A2 "
+    },
+    "Move piece": {
+      "commandName": "Project",
+      "commandLineArgs": "move --game 52fed006-87bc-49ed-b01c-22ceef8d0fe1 --from A2 --to A4"
+    }
+  }
+}
