@@ -1,10 +1,18 @@
-﻿namespace ChessApiContract.Response;
+﻿using System.Text.Json.Serialization;
 
-public record NewGameResponse : IGameResponse
-{ 
-    public bool WasSuccessful { get; }
-    public string Error { get; }
-    public Guid GameId { get; }
+namespace ChessApiContract.Response;
+
+public record NewGameResponse : IGameResponse<NewGameResponse>
+{
+    public bool WasSuccessful { get; init; }
+    public string? Error { get; init; }
+    public Guid GameId { get; init; }
+
+    [JsonConstructor]
+    public NewGameResponse()
+    {
+
+    }
 
     private NewGameResponse(bool wasSuccessful, string error, Guid gameId)
     {

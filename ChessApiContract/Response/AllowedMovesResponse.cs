@@ -1,10 +1,19 @@
-﻿namespace ChessApiContract.Response;
+﻿using System.Text.Json.Serialization;
 
-public record AllowedMovesResponse : IGameResponse
+namespace ChessApiContract.Response;
+
+public record AllowedMovesResponse : IGameResponse<AllowedMovesResponse>
 {
-    public bool WasSuccessful { get; }
-    public string Error { get; }
-    public IEnumerable<string> Positions { get; }
+    public bool WasSuccessful { get; init; }
+    public string Error { get; init; }
+    public IEnumerable<string> Positions { get; init; }
+
+
+    [JsonConstructor]
+    public AllowedMovesResponse()
+    {
+
+    }
 
     private AllowedMovesResponse(bool wasSuccessFull, string error, IEnumerable<string> positions)
     {

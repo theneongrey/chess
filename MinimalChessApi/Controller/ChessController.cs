@@ -95,13 +95,13 @@ namespace MinimalChessApi.Controller
         {
             if (Directory.Exists(_targetPath))
             {
-                var result = new List<string>();
+                var result = new List<Guid>();
                 foreach (var file in Directory.GetFiles(_targetPath, $"*.{GameExtension}"))
                 {
                     var guidCandidate = Path.GetFileNameWithoutExtension(file);
-                    if (Guid.TryParse(guidCandidate, out var _))
+                    if (Guid.TryParse(guidCandidate, out var guid))
                     {
-                        result.Add(guidCandidate);
+                        result.Add(guid);
                     }
                 }
 
@@ -116,7 +116,7 @@ namespace MinimalChessApi.Controller
             var game = GetGameFromFile(gameId);
             if (game == null)
             {
-                return GetGameResponse.RespondError("Game could not be loaded");
+                return GetGameResponse.RespondError($"Game \"{gameId}\" could not be loaded");
             }
 
             var cells = new List<string>();
@@ -125,7 +125,7 @@ namespace MinimalChessApi.Controller
             {
                 foreach (var piece in pieceRow)
                 {
-                    cells.Add(piece?.Identifier ?? string.Empty);
+                    cells.Add(piece?.ColoredIdentifier ?? string.Empty);
                 }
             }
 
@@ -142,7 +142,7 @@ namespace MinimalChessApi.Controller
             var game = GetGameFromFile(gameId);
             if (game == null)
             {
-                return MovePieceResponse.RespondError("Game could not be loaded");
+                return MovePieceResponse.RespondError($"Game \"{gameId}\" could not be loaded");
             }
 
             var fromPosition = PositionFromName(fromCellName);
@@ -150,16 +150,16 @@ namespace MinimalChessApi.Controller
 
             if (fromPosition == null)
             {
-                return MovePieceResponse.RespondError("\"From\" position could not be interpreted");
+                return MovePieceResponse.RespondError($"\"From\" position \"{fromPosition}\" could not be interpreted");
             }
             if (toPosition == null)
             {
-                return MovePieceResponse.RespondError("\"To\" position could not be interpreted");
+                return MovePieceResponse.RespondError($"\"To\" \"{toPosition}\" position could not be interpreted");
             }
 
             if (game.SelectPiece(fromPosition.Value) == null)
             {
-                return MovePieceResponse.RespondError("There is no valid piece at \"from\" position"); ;
+                return MovePieceResponse.RespondError($"There is no valid piece at \"from\" position \"{fromPosition}\""); ;
             }
 
             if (game.TryMove(toPosition.Value))
@@ -183,18 +183,18 @@ namespace MinimalChessApi.Controller
             var game = GetGameFromFile(gameId);
             if (game == null)
             {
-                return AllowedMovesResponse.RespondError("Game could not be loaded");
+                return AllowedMovesResponse.RespondError($"Game \"{gameId}\" could not be loaded");
             }
 
             var piecePosition = PositionFromName(pieceCellName);
             if (piecePosition == null)
             {
-                return AllowedMovesResponse.RespondError("Given position could not be interpreted");
+                return AllowedMovesResponse.RespondError($"Given position \"{pieceCellName}\" could not be interpreted");
             }
 
             if (game.SelectPiece(piecePosition.Value) == null)
             {
-                return AllowedMovesResponse.RespondError("There is no valid piece at given position");
+                return AllowedMovesResponse.RespondError($"There is no valid piece at given position \"{piecePosition}\"");
             }
 
             var moves = game.GetMovesForCell(piecePosition.Value);

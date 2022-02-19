@@ -1,18 +1,27 @@
-﻿namespace ChessApiContract.Response;
+﻿using System.Text.Json.Serialization;
 
-public record GameListResponse : IGameResponse
+namespace ChessApiContract.Response;
+
+public record GameListResponse : IGameResponse<GameListResponse>
 {
-    public bool WasSuccessful { get; }
-    public string Error { get; }
-    public IEnumerable<string> Games { get; }
+    public bool WasSuccessful { get; init; }
+    public string? Error { get; init; }
+    public IEnumerable<Guid>? Games { get; init; }
 
-    private GameListResponse(bool wasSuccessful, string error, IEnumerable<string> games)
+
+    [JsonConstructor]
+    public GameListResponse()
     {
-        WasSuccessful = true;
-        Error = string.Empty;
+        
+    }
+
+    private GameListResponse(bool wasSuccessful, string error, IEnumerable<Guid> games)
+    {
+        WasSuccessful = wasSuccessful;
+        Error = error;
         Games = games;
     }
 
-    public static GameListResponse RespondError(string error) => new GameListResponse(false, error, Array.Empty<string>());
-    public static GameListResponse RespondSuccess(IEnumerable<string> games) => new GameListResponse(true, string.Empty, games);
+    public static GameListResponse RespondError(string error) => new GameListResponse(false, error, Array.Empty<Guid>());
+    public static GameListResponse RespondSuccess(IEnumerable<Guid> games) => new GameListResponse(true, string.Empty, games);
 }
