@@ -1,24 +1,17 @@
 ﻿using ChessApiContract.Response;
 using GameLogic;
 using GameParser;
+using MinimalChessApi.Services;
 
 namespace MinimalChessApi.Controller
 {
     public class ChessController : IChessController
     {
-        private const string GameExtension = "game";
-        private string _targetPath;
+        private IGameStoreService _gameStore;
 
-        public ChessController(string targetPath)
+        public ChessController(IGameStoreService gameStore)
         {
-            _targetPath = targetPath;
-
-            Clean();
-        }
-
-        private string GetGameFilename(Guid gameId)
-        {
-            return Path.Combine(_targetPath, $"{gameId}.{GameExtension}");
+            _gameStore = gameStore;
         }
 
         private Position? PositionFromName(string position)
@@ -41,80 +34,45 @@ namespace MinimalChessApi.Controller
             }
         }
 
-        private void Clean()
+        private async Task<Game?> GetGameFromIdAsync(Guid gameId)
         {
-            if (Directory.Exists(_targetPath))
+            var gameContent = await _gameStore.LoadGameAsync(gameId);
+            if (gameContent is not null)
             {
-                Directory.Delete(_targetPath, true);
-            }
-
-            Directory.CreateDirectory(_targetPath);
-        }
-
-        private Game? GetGameFromFile(Guid gameId)
-        {
-            var filename = GetGameFilename(gameId);
-            if (File.Exists(filename))
-            {
-                try
-                {
-                    var game = FullAlgebraicNotationParser.GetGameFromNotation(File.ReadAllText(filename));
-                    return game;
-                }
-                catch
-                {
-                    return null;
-                }
+                return FullAlgebraicNotationParser.GetGameFromNotation(gameContent);
             }
 
             return null;
         }
 
-        public NewGameResponse NewGame()
+        public async Task<NewGameResponse> NewGameAsync()
         {
             var id = Guid.NewGuid();
-            var filename = GetGameFilename(id);
-
-            try
+            if (await _gameStore.SaveGameAsync(id, string.Empty))
             {
-                if (File.Exists(filename))
-                {
-                    File.Delete(filename);
-                }
-
-                using var _ = File.Create(GetGameFilename(id));
                 return NewGameResponse.RespondSuccess(id);
             }
-            catch
+            else
             {
                 return NewGameResponse.RespondError("Could not create a new game");
             }
         }
 
-        public GameListResponse GetGameList()
+        public async Task<GameListResponse> GetGameListAsync()
         {
-            if (Directory.Exists(_targetPath))
+            var games = await _gameStore.GetGamesAsync();
+            if (games is not null)
             {
-                var result = new List<Guid>();
-                foreach (var file in Directory.GetFiles(_targetPath, $"*.{GameExtension}"))
-                {
-                    var guidCandidate = Path.GetFileNameWithoutExtension(file);
-                    if (Guid.TryParse(guidCandidate, out var guid))
-                    {
-                        result.Add(guid);
-                    }
-                }
-
-                return GameListResponse.RespondSuccess(result);
+                return GameListResponse.RespondSuccess(games);
             }
 
             return GameListResponse.RespondError("Could not load games");
         }
 
-        public GetGameResponse GetGame(Guid gameId)
+        public async Task<GetGameResponse> GetGameAsync(Guid gameId)
         {
-            var game = GetGameFromFile(gameId);
-            if (game == null)
+            var game = await GetGameFromIdAsync(gameId);
+            if (game is null)
             {
                 return GetGameResponse.RespondError($"Game \"{gameId}\" could not be loaded");
             }
@@ -137,10 +95,10 @@ namespace MinimalChessApi.Controller
             return GetGameResponse.RespondSuccess(cells, state, game.IsItWhitesTurn, game.IsCheckPending);
         }
 
-        public async Task<MovePieceResponse> MovePiece(Guid gameId, string fromCellName, string toCellName)
+        public async Task<MovePieceResponse> MovePieceAsync(Guid gameId, string fromCellName, string toCellName)
         {
-            var game = GetGameFromFile(gameId);
-            if (game == null)
+            var game = await GetGameFromIdAsync(gameId);
+            if (game is null)
             {
                 return MovePieceResponse.RespondError($"Game \"{gameId}\" could not be loaded");
             }
@@ -148,51 +106,48 @@ namespace MinimalChessApi.Controller
             var fromPosition = PositionFromName(fromCellName);
             var toPosition = PositionFromName(toCellName);
 
-            if (fromPosition == null)
+            if (fromPosition is null)
             {
                 return MovePieceResponse.RespondError($"\"From\" position \"{fromPosition}\" could not be interpreted");
             }
-            if (toPosition == null)
+            if (toPosition is null)
             {
                 return MovePieceResponse.RespondError($"\"To\" \"{toPosition}\" position could not be interpreted");
             }
 
-            if (game.SelectPiece(fromPosition.Value) == null)
+            if (game.SelectPiece(fromPosition.Value) is null)
             {
                 return MovePieceResponse.RespondError($"There is no valid piece at \"from\" position \"{fromPosition}\""); ;
             }
 
             if (game.TryMove(toPosition.Value))
             {
-                try
+                if (await _gameStore.SaveGameAsync(gameId, game.ToFullAlgebraicNotation()))
                 {
-                    await File.WriteAllTextAsync(GetGameFilename(gameId), game.ToFullAlgebraicNotation());
                     return MovePieceResponse.RespondSuccess();
                 }
-                catch
-                {
-                    return MovePieceResponse.RespondError("Could not update game");
-                }
+                
+                return MovePieceResponse.RespondError("Could not update game");
             }
 
             return MovePieceResponse.RespondError("Illegal move"); ;
         }
 
-        public AllowedMovesResponse GetAllowedMoves(Guid gameId, string pieceCellName)
+        public async Task<AllowedMovesResponse> GetAllowedMovesAsync(Guid gameId, string pieceCellName)
         {
-            var game = GetGameFromFile(gameId);
-            if (game == null)
+            var game = await GetGameFromIdAsync(gameId);
+            if (game is null)
             {
                 return AllowedMovesResponse.RespondError($"Game \"{gameId}\" could not be loaded");
             }
 
             var piecePosition = PositionFromName(pieceCellName);
-            if (piecePosition == null)
+            if (piecePosition is null)
             {
                 return AllowedMovesResponse.RespondError($"Given position \"{pieceCellName}\" could not be interpreted");
             }
 
-            if (game.SelectPiece(piecePosition.Value) == null)
+            if (game.SelectPiece(piecePosition.Value) is null)
             {
                 return AllowedMovesResponse.RespondError($"There is no valid piece at given position \"{piecePosition}\"");
             }
