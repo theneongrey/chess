@@ -1,4 +1,6 @@
 ﻿using ChessApiContract;
+using ChessApiContract.Request;
+using Microsoft.AspNetCore.Mvc;
 using MinimalChessApi.Controller;
 
 namespace MinimalChessApi.API
@@ -45,9 +47,9 @@ namespace MinimalChessApi.API
             return Results.Problem(result.Error);
         }
 
-        private static async Task<IResult> MovePieceAsync(IChessController chessController, string id, string fromCellName, string toCellName)
+        private static async Task<IResult> MovePieceAsync(IChessController chessController, string id, [FromBody] MoveRequest move)
         {
-            var result = await chessController.MovePieceAsync(new Guid(id), fromCellName, toCellName);
+            var result = await chessController.MovePieceAsync(new Guid(id), move.FromCellName, move.ToCellName);
             if (result.WasSuccessful)
             {
                 return Results.Ok(result);
@@ -62,7 +64,7 @@ namespace MinimalChessApi.API
             app.MapGet($"/{Calls.GameList}", GetGameReferencesAsync);
             app.MapGet($"/{Calls.GameById}/{{id}}", GetGameByIdAsync);
             app.MapGet($"/{Calls.AllowedMoves}/{{id}}/{{pieceCellName}}", GetAllowedMovesAsync);
-            app.MapPut($"/{Calls.MovePiece}/{{id}}/{{fromCellName}}/{{toCellName}}", MovePieceAsync);
+            app.MapPut($"/{Calls.MovePiece}/{{id}}", MovePieceAsync);
         }
     }
 }

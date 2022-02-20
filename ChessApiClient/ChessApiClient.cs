@@ -1,6 +1,8 @@
 ﻿using ChessApiContract.Response;
 using ChessApiContract;
 using System.Text.Json;
+using ChessApiContract.Request;
+using System.Text;
 
 namespace ChessApiClient
 {
@@ -73,7 +75,11 @@ namespace ChessApiClient
 
         public Task<MovePieceResponse> MovePieceAsync(Guid gameId, string fromCellName, string toCellName)
         {
-            return PerformRequest<MovePieceResponse>(new HttpRequestMessage(HttpMethod.Put, $"/{Calls.MovePiece}/{gameId}/{fromCellName}/{toCellName}"));
+            var message = new HttpRequestMessage(HttpMethod.Put, $"/{Calls.MovePiece}/{gameId}");
+            var content = new StringContent(JsonSerializer.Serialize(new MoveRequest(fromCellName, toCellName)), Encoding.UTF8, "application/json");
+            message.Content = content;
+
+            return PerformRequest<MovePieceResponse>(message);
         }
 
         public Task<AllowedMovesResponse> GetAllowedMovesAsync(Guid gameId, string pieceCellName)
