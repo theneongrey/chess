@@ -102,8 +102,17 @@
 			"request": {
 				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"FromCellName\" : \"A2\",\r\n    \"ToCellName\" : \"A4\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "https://{{BaseUrl}}/game/move/:gameId/:fromCellName/:toCellName",
+					"raw": "https://{{BaseUrl}}/game/move/:gameId",
 					"protocol": "https",
 					"host": [
 						"{{BaseUrl}}"
@@ -111,24 +120,12 @@
 					"path": [
 						"game",
 						"move",
-						":gameId",
-						":fromCellName",
-						":toCellName"
+						":gameId"
 					],
 					"variable": [
 						{
 							"key": "gameId",
 							"value": "{{GameId}}"
-						},
-						{
-							"key": "fromCellName",
-							"value": "A2",
-							"description": "pawn"
-						},
-						{
-							"key": "toCellName",
-							"value": "A4",
-							"description": "to cells forward"
 						}
 					]
 				}

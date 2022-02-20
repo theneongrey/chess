@@ -24,7 +24,7 @@ namespace ChessApiConsoleClient.Commands
             if (result.WasSuccessful)
             {
                 Console.WriteLine("Available games:");
-                foreach (var game in result.Games)
+                foreach (var game in result.Games!)
                 {
                     Console.WriteLine(game);
                 }
@@ -103,7 +103,7 @@ namespace ChessApiConsoleClient.Commands
             if (result.WasSuccessful)
             {
                 Console.WriteLine($"Available moves for {cell}:");
-                foreach (var position in result.Positions)
+                foreach (var position in result.Positions!)
                 {
                     Console.WriteLine(position);
                 }

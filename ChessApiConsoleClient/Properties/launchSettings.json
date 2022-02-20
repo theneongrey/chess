@@ -1,10 +1,5 @@
 {
   "profiles": {
-    "WSL": {
-      "commandName": "WSL2",
-      "environmentVariables": {},
-      "distributionName": ""
-    },
     "New game": {
       "commandName": "Project",
       "commandLineArgs": "new"
@@ -19,7 +14,7 @@
     },
     "Move piece": {
       "commandName": "Project",
-      "commandLineArgs": "move --game 52fed006-87bc-49ed-b01c-22ceef8d0fe1 --from A2 --to A4"
+      "commandLineArgs": "move --game 02249431-b802-4b65-80ea-f670e0c58be9 --from A2 --to A4"
     }
   }
 }

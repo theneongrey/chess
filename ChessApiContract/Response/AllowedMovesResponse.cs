@@ -5,8 +5,8 @@ namespace ChessApiContract.Response;
 public record AllowedMovesResponse : IGameResponse<AllowedMovesResponse>
 {
     public bool WasSuccessful { get; init; }
-    public string Error { get; init; }
-    public IEnumerable<string> Positions { get; init; }
+    public string? Error { get; init; }
+    public IEnumerable<string>? Positions { get; init; }
 
 
     [JsonConstructor]
