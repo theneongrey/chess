@@ -10,6 +10,17 @@ builder.Services.AddSingleton<IGameStoreService>(i =>
     ActivatorUtilities.CreateInstance<FileStoreService>(i, GameStateDirectory)
 );
 
+#region Swagger services
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+#endregion
+
 var app = builder.Build();
+
+#region Swagger middleware
+app.UseSwagger();
+app.UseSwaggerUI();
+#endregion
+
 app.MapEndPoints();
 app.Run();

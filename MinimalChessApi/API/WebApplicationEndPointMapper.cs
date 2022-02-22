@@ -1,5 +1,6 @@
 ﻿using ChessApiContract;
 using ChessApiContract.Request;
+using ChessApiContract.Response;
 using Microsoft.AspNetCore.Mvc;
 using MinimalChessApi.Controller;
 
@@ -17,7 +18,7 @@ namespace MinimalChessApi.API
             return Results.Problem(result.Error);
         }
 
-        private static async Task<IResult> GetGameReferencesAsync(IChessController chessController)
+        private static async Task<IResult> GetGameListAsync(IChessController chessController)
         {
             var result = await chessController.GetGameListAsync();
             if (result.WasSuccessful)
@@ -59,12 +60,27 @@ namespace MinimalChessApi.API
 
         public static void MapEndPoints(this WebApplication app)
         {
-            app.MapGet("/", () => "Hello Chess!");
-            app.MapPost($"/{Calls.NewGame}", NewGameAsync);
-            app.MapGet($"/{Calls.GameList}", GetGameReferencesAsync);
-            app.MapGet($"/{Calls.GameById}/{{id}}", GetGameByIdAsync);
-            app.MapGet($"/{Calls.AllowedMoves}/{{id}}/{{pieceCellName}}", GetAllowedMovesAsync);
-            app.MapPut($"/{Calls.MovePiece}/{{id}}", MovePieceAsync);
+            app.Map("/", () => Results.Redirect("/swagger"));
+
+            app.MapPost($"/{Calls.NewGame}", NewGameAsync)
+                .Produces<NewGameResponse>()
+                .ProducesProblem(500);
+
+            app.MapGet($"/{Calls.GameList}", GetGameListAsync)
+                .Produces<GameListResponse>()
+                .ProducesProblem(500);
+            
+            app.MapGet($"/{Calls.GameById}/{{id}}", GetGameByIdAsync)
+                .Produces<GetGameResponse>()
+                .ProducesProblem(500);
+
+            app.MapGet($"/{Calls.AllowedMoves}/{{id}}/{{pieceCellName}}", GetAllowedMovesAsync)
+                .Produces<AllowedMovesResponse>()
+                .ProducesProblem(500);
+
+            app.MapPut($"/{Calls.MovePiece}/{{id}}", MovePieceAsync)
+                .Produces<MovePieceResponse>()
+                .ProducesProblem(500);
         }
     }
 }

@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ChessApiContract\ChessApiContract.csproj" />
     <ProjectReference Include="..\GameParser\GameParser.csproj" />
     <ProjectReference Include="..\Game\GameLogic.csproj" />
