@@ -1,13 +1,17 @@
-﻿namespace MinimalChessApi.Services
+﻿using System.IO.Abstractions;
+
+namespace MinimalChessApi.Services
 {
     public class FileStoreService : IGameStoreService
     {
         private string _targetPath;
         private const string GameExtension = "game";
+        private IFileSystem _fileSystem;
 
-        public FileStoreService(string targetPath)
+        public FileStoreService(IFileSystem fileSystem, string targetPath)
         {
             _targetPath = targetPath;
+            _fileSystem = fileSystem;
 
             // it's only for testing, so don't spam everything with files.
             // create a clean dir every time
@@ -15,12 +19,12 @@
         }
         private Task SetupCleanTargetDir()
         {
-            if (Directory.Exists(_targetPath))
+            if (_fileSystem.Directory.Exists(_targetPath))
             {
-                Directory.Delete(_targetPath, true);
+                _fileSystem.Directory.Delete(_targetPath, true);
             }
 
-            Directory.CreateDirectory(_targetPath);
+            _fileSystem.Directory.CreateDirectory(_targetPath);
 
             return Task.CompletedTask;
         }
@@ -33,11 +37,11 @@
         public Task<string?> LoadGameAsync(Guid gameId)
         {
             var filename = GetGameFilename(gameId);
-            if (File.Exists(filename))
+            if (_fileSystem.File.Exists(filename))
             {
                 try
                 {
-                    return File.ReadAllTextAsync(filename)!;
+                    return _fileSystem.File.ReadAllTextAsync(filename)!;
                 }
                 catch { }
             }
@@ -50,7 +54,7 @@
             try
             {
                 var filename = GetGameFilename(gameId);
-                await File.WriteAllTextAsync(filename, game);
+                await _fileSystem.File.WriteAllTextAsync(filename, game);
                 return true;
             }
             catch
@@ -61,10 +65,10 @@
 
         public Task<List<Guid>?> GetGamesAsync()
         {
-            if (Directory.Exists(_targetPath))
+            if (_fileSystem.Directory.Exists(_targetPath))
             {
                 var result = new List<Guid>();
-                foreach (var file in Directory.GetFiles(_targetPath, $"*.{GameExtension}"))
+                foreach (var file in _fileSystem.Directory.GetFiles(_targetPath, $"*.{GameExtension}"))
                 {
                     var guidCandidate = Path.GetFileNameWithoutExtension(file);
                     if (Guid.TryParse(guidCandidate, out var guid))
