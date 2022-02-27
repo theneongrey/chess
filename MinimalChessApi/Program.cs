@@ -1,11 +1,13 @@
 using MinimalChessApi.API;
 using MinimalChessApi.Controller;
 using MinimalChessApi.Services;
+using System.IO.Abstractions;
 
 const string GameStateDirectory = "_games";
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<IChessController, ChessController>();
+builder.Services.AddSingleton<IFileSystem, FileSystem>();
 builder.Services.AddSingleton<IGameStoreService>(i => 
     ActivatorUtilities.CreateInstance<FileStoreService>(i, GameStateDirectory)
 );
@@ -24,3 +26,5 @@ app.UseSwaggerUI();
 
 app.MapEndPoints();
 app.Run();
+
+public partial class Program { };

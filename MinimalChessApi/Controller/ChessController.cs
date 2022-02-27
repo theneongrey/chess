@@ -108,16 +108,16 @@ namespace MinimalChessApi.Controller
 
             if (fromPosition is null)
             {
-                return MovePieceResponse.RespondError($"\"From\" position \"{fromPosition}\" could not be interpreted");
+                return MovePieceResponse.RespondError($"\"From\" position \"{fromCellName}\" could not be interpreted");
             }
             if (toPosition is null)
             {
-                return MovePieceResponse.RespondError($"\"To\" \"{toPosition}\" position could not be interpreted");
+                return MovePieceResponse.RespondError($"\"To\" position \"{toCellName}\" could not be interpreted");
             }
 
             if (game.SelectPiece(fromPosition.Value) is null)
             {
-                return MovePieceResponse.RespondError($"There is no valid piece at \"from\" position \"{fromPosition}\""); ;
+                return MovePieceResponse.RespondError($"There is no valid piece at \"from\" position \"{fromCellName}\""); ;
             }
 
             if (game.TryMove(toPosition.Value))
@@ -149,7 +149,7 @@ namespace MinimalChessApi.Controller
 
             if (game.SelectPiece(piecePosition.Value) is null)
             {
-                return AllowedMovesResponse.RespondError($"There is no valid piece at given position \"{piecePosition}\"");
+                return AllowedMovesResponse.RespondError($"There is no valid piece at given position \"{pieceCellName}\"");
             }
 
             var moves = game.GetMovesForCell(piecePosition.Value);
