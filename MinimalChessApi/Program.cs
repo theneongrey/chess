@@ -26,3 +26,5 @@ app.UseSwaggerUI();
 
 app.MapEndPoints();
 app.Run();
+
+public partial class Program { };
