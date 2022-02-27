@@ -11,19 +11,25 @@ namespace MinimalChessApi.Test.Unit
 {
     public class ChessControllerTest
     {
+        private IGameStoreService _storeServiceMock;
+        private ChessController _sut;
+
+        public ChessControllerTest()
+        {
+            _storeServiceMock = Substitute.For<IGameStoreService>();
+            _sut = new ChessController(_storeServiceMock);
+        }
+
         #region new game
         [Fact]
         public async Task NewGame_WithValidStoreService_ReturnsValidGame()
         {
             // Arrange
-            var storeServiceMock = Substitute.For<IGameStoreService>();
             Guid gameGuid = default;
-            storeServiceMock.SaveGameAsync(Arg.Do<Guid>(guid => gameGuid = guid), Arg.Any<string>()).Returns(true);
-
-            var sut = new ChessController(storeServiceMock);
+            _storeServiceMock.SaveGameAsync(Arg.Do<Guid>(guid => gameGuid = guid), Arg.Any<string>()).Returns(true);
 
             // Act
-            var newGameResult = await sut.NewGameAsync();
+            var newGameResult = await _sut.NewGameAsync();
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -36,13 +42,10 @@ namespace MinimalChessApi.Test.Unit
         public async Task NewGame_WithInvalidStoreService_ReturnsErrorMessage()
         {
             // Arrange
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.SaveGameAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(false);
-
-            var sut = new ChessController(storeServiceMock);
+            _storeServiceMock.SaveGameAsync(Arg.Any<Guid>(), Arg.Any<string>()).Returns(false);
 
             // Act
-            var newGameResult = await sut.NewGameAsync();
+            var newGameResult = await _sut.NewGameAsync();
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -57,13 +60,10 @@ namespace MinimalChessApi.Test.Unit
         public async Task GetGameList_WithNoGames_ReturnsEmptyGameList()
         {
             // Arrange
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.GetGamesAsync().Returns(new List<Guid>());
-
-            var sut = new ChessController(storeServiceMock);
+            _storeServiceMock.GetGamesAsync().Returns(new List<Guid>());
 
             // Act
-            var newGameResult = await sut.GetGameListAsync();
+            var newGameResult = await _sut.GetGameListAsync();
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -82,13 +82,10 @@ namespace MinimalChessApi.Test.Unit
                             new Guid("ad90b4bc-27cb-455f-8439-bc2318ae656a")
                         };
 
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.GetGamesAsync().Returns(games);
-
-            var sut = new ChessController(storeServiceMock);
+            _storeServiceMock.GetGamesAsync().Returns(games);
 
             // Act
-            var newGameResult = await sut.GetGameListAsync();
+            var newGameResult = await _sut.GetGameListAsync();
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -103,13 +100,10 @@ namespace MinimalChessApi.Test.Unit
         public async Task GetGameList_WithBrokenStoreService_ReturnsError()
         {
             // Arrange
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.GetGamesAsync().Returns(null as List<Guid>);
-
-            var sut = new ChessController(storeServiceMock);
+            _storeServiceMock.GetGamesAsync().Returns(null as List<Guid>);
 
             // Act
-            var newGameResult = await sut.GetGameListAsync();
+            var newGameResult = await _sut.GetGameListAsync();
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -136,13 +130,10 @@ namespace MinimalChessApi.Test.Unit
             "P", "P", "P", "P", "P", "P", "P", "P",
             "R", "N", "B", "Q", "K", "B", "N", "R" };
 
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
-
-            var sut = new ChessController(storeServiceMock);
+            _storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
 
             // Act
-            var newGameResult = await sut.GetGameAsync(gameId);
+            var newGameResult = await _sut.GetGameAsync(gameId);
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -169,13 +160,10 @@ namespace MinimalChessApi.Test.Unit
             "P", "P", "P", "P", "P", "P", "P", "P",
             "R", "N", "B", "Q", "K", "B", "N", "R" };
 
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns("1.a2-a4");
-
-            var sut = new ChessController(storeServiceMock);
+            _storeServiceMock.LoadGameAsync(gameId).Returns("1.a2-a4");
 
             // Act
-            var newGameResult = await sut.GetGameAsync(gameId);
+            var newGameResult = await _sut.GetGameAsync(gameId);
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -202,15 +190,13 @@ namespace MinimalChessApi.Test.Unit
             "P", "P", "P", "P", "", "P", "P", "P",
             "R", "N", "B", "Q", "K", "", "N", "R" };
 
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(@"1.f2-f4 e7-e6
+            _storeServiceMock.LoadGameAsync(gameId).Returns(@"1.f2-f4 e7-e6
 2.Ng1-h3 Bf8-e7
 3.a2-a4 Be7-h4+");
 
-            var sut = new ChessController(storeServiceMock);
-
+            
             // Act
-            var newGameResult = await sut.GetGameAsync(gameId);
+            var newGameResult = await _sut.GetGameAsync(gameId);
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -227,13 +213,10 @@ namespace MinimalChessApi.Test.Unit
         {
             // Arrange
             var gameId = new Guid("3bc2693e-7d86-443e-a807-e6baea67bfba");
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(null as string);
-
-            var sut = new ChessController(storeServiceMock);
+            _storeServiceMock.LoadGameAsync(gameId).Returns(null as string);
 
             // Act
-            var newGameResult = await sut.GetGameAsync(gameId);
+            var newGameResult = await _sut.GetGameAsync(gameId);
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -254,14 +237,11 @@ namespace MinimalChessApi.Test.Unit
         {
             // Arrange
             var gameId = new Guid("3bc2693e-7d86-443e-a807-e6baea67bfba");
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
-            storeServiceMock.SaveGameAsync(gameId, Arg.Any<string>()).Returns(true);
-
-            var sut = new ChessController(storeServiceMock);
+            _storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
+            _storeServiceMock.SaveGameAsync(gameId, Arg.Any<string>()).Returns(true);
 
             // Act
-            var newGameResult = await sut.MovePieceAsync(gameId, "A2", "A4");
+            var newGameResult = await _sut.MovePieceAsync(gameId, "A2", "A4");
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -274,14 +254,11 @@ namespace MinimalChessApi.Test.Unit
         {
             // Arrange
             var gameId = new Guid("3bc2693e-7d86-443e-a807-e6baea67bfba");
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(null as string);
-            storeServiceMock.SaveGameAsync(gameId, Arg.Any<string>()).Returns(true);
-
-            var sut = new ChessController(storeServiceMock);
+            _storeServiceMock.LoadGameAsync(gameId).Returns(null as string);
+            _storeServiceMock.SaveGameAsync(gameId, Arg.Any<string>()).Returns(true);
 
             // Act
-            var newGameResult = await sut.MovePieceAsync(gameId, "A2", "A4");
+            var newGameResult = await _sut.MovePieceAsync(gameId, "A2", "A4");
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -294,15 +271,13 @@ namespace MinimalChessApi.Test.Unit
         {
             // Arrange
             var gameId = new Guid("3bc2693e-7d86-443e-a807-e6baea67bfba");
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
-            storeServiceMock.SaveGameAsync(gameId, Arg.Any<string>()).Returns(true);
+            _storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
+            _storeServiceMock.SaveGameAsync(gameId, Arg.Any<string>()).Returns(true);
 
-            var sut = new ChessController(storeServiceMock);
             var from = "X0";
 
             // Act
-            var newGameResult = await sut.MovePieceAsync(gameId, from, "A4");
+            var newGameResult = await _sut.MovePieceAsync(gameId, from, "A4");
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -315,15 +290,13 @@ namespace MinimalChessApi.Test.Unit
         {
             // Arrange
             var gameId = new Guid("3bc2693e-7d86-443e-a807-e6baea67bfba");
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
-            storeServiceMock.SaveGameAsync(gameId, Arg.Any<string>()).Returns(true);
+            _storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
+            _storeServiceMock.SaveGameAsync(gameId, Arg.Any<string>()).Returns(true);
 
-            var sut = new ChessController(storeServiceMock);
             var to = "X0";
 
             // Act
-            var newGameResult = await sut.MovePieceAsync(gameId, "A2", to);
+            var newGameResult = await _sut.MovePieceAsync(gameId, "A2", to);
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -336,15 +309,13 @@ namespace MinimalChessApi.Test.Unit
         {
             // Arrange
             var gameId = new Guid("3bc2693e-7d86-443e-a807-e6baea67bfba");
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
-            storeServiceMock.SaveGameAsync(gameId, Arg.Any<string>()).Returns(true);
+            _storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
+            _storeServiceMock.SaveGameAsync(gameId, Arg.Any<string>()).Returns(true);
 
-            var sut = new ChessController(storeServiceMock);
             var from = "A3";
 
             // Act
-            var newGameResult = await sut.MovePieceAsync(gameId, from, "A4");
+            var newGameResult = await _sut.MovePieceAsync(gameId, from, "A4");
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -357,15 +328,13 @@ namespace MinimalChessApi.Test.Unit
         {
             // Arrange
             var gameId = new Guid("3bc2693e-7d86-443e-a807-e6baea67bfba");
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
-            storeServiceMock.SaveGameAsync(gameId, Arg.Any<string>()).Returns(true);
+            _storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
+            _storeServiceMock.SaveGameAsync(gameId, Arg.Any<string>()).Returns(true);
 
-            var sut = new ChessController(storeServiceMock);
             var from = "A7";
 
             // Act
-            var newGameResult = await sut.MovePieceAsync(gameId, from, "A4");
+            var newGameResult = await _sut.MovePieceAsync(gameId, from, "A4");
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -378,14 +347,11 @@ namespace MinimalChessApi.Test.Unit
         {
             // Arrange
             var gameId = new Guid("3bc2693e-7d86-443e-a807-e6baea67bfba");
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
-            storeServiceMock.SaveGameAsync(gameId, Arg.Any<string>()).Returns(false);
-
-            var sut = new ChessController(storeServiceMock);
+            _storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
+            _storeServiceMock.SaveGameAsync(gameId, Arg.Any<string>()).Returns(false);
 
             // Act
-            var newGameResult = await sut.MovePieceAsync(gameId, "A2", "A4");
+            var newGameResult = await _sut.MovePieceAsync(gameId, "A2", "A4");
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -400,13 +366,10 @@ namespace MinimalChessApi.Test.Unit
         {
             // Arrange
             var gameId = new Guid("3bc2693e-7d86-443e-a807-e6baea67bfba");
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
+            _storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
             
-            var sut = new ChessController(storeServiceMock);
-
             // Act
-            var newGameResult = await sut.GetAllowedMovesAsync(gameId, "A2");
+            var newGameResult = await _sut.GetAllowedMovesAsync(gameId, "A2");
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -420,13 +383,10 @@ namespace MinimalChessApi.Test.Unit
         {
             // Arrange
             var gameId = new Guid("3bc2693e-7d86-443e-a807-e6baea67bfba");
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(null as string);
-
-            var sut = new ChessController(storeServiceMock);
+            _storeServiceMock.LoadGameAsync(gameId).Returns(null as string);
 
             // Act
-            var newGameResult = await sut.GetAllowedMovesAsync(gameId, "A2");
+            var newGameResult = await _sut.GetAllowedMovesAsync(gameId, "A2");
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -439,14 +399,12 @@ namespace MinimalChessApi.Test.Unit
         {
             // Arrange
             var gameId = new Guid("3bc2693e-7d86-443e-a807-e6baea67bfba");
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
+            _storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
 
-            var sut = new ChessController(storeServiceMock);
             var cell = "A3";
 
             // Act
-            var newGameResult = await sut.GetAllowedMovesAsync(gameId, cell);
+            var newGameResult = await _sut.GetAllowedMovesAsync(gameId, cell);
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -459,14 +417,12 @@ namespace MinimalChessApi.Test.Unit
         {
             // Arrange
             var gameId = new Guid("3bc2693e-7d86-443e-a807-e6baea67bfba");
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
+            _storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
 
-            var sut = new ChessController(storeServiceMock);
             var cell = "X2";
 
             // Act
-            var newGameResult = await sut.GetAllowedMovesAsync(gameId, cell);
+            var newGameResult = await _sut.GetAllowedMovesAsync(gameId, cell);
 
             // Assert
             newGameResult.Should().NotBeNull();
@@ -479,14 +435,12 @@ namespace MinimalChessApi.Test.Unit
         {
             // Arrange
             var gameId = new Guid("3bc2693e-7d86-443e-a807-e6baea67bfba");
-            var storeServiceMock = Substitute.For<IGameStoreService>();
-            storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
+            _storeServiceMock.LoadGameAsync(gameId).Returns(string.Empty);
 
-            var sut = new ChessController(storeServiceMock);
             var cell = "A7";
 
             // Act
-            var newGameResult = await sut.GetAllowedMovesAsync(gameId, cell);
+            var newGameResult = await _sut.GetAllowedMovesAsync(gameId, cell);
 
             // Assert
             newGameResult.Should().NotBeNull();
