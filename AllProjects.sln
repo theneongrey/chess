@@ -29,7 +29,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{9073
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logic", "Logic", "{4136F628-6D6A-4A39-85F6-10EF395E705C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinimalChessApi.Test", "MinimalChessApi.Test\MinimalChessApi.Test.csproj", "{6CAD06A0-312A-4EFE-A11C-978E412DBE09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinimalChessApi.Test", "MinimalChessApi.Test\MinimalChessApi.Test.csproj", "{6CAD06A0-312A-4EFE-A11C-978E412DBE09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessApi", "ChessApi\ChessApi.csproj", "{776709A5-90A6-42A1-A6D1-E8645DE0FDC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{6CAD06A0-312A-4EFE-A11C-978E412DBE09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CAD06A0-312A-4EFE-A11C-978E412DBE09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CAD06A0-312A-4EFE-A11C-978E412DBE09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{776709A5-90A6-42A1-A6D1-E8645DE0FDC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{776709A5-90A6-42A1-A6D1-E8645DE0FDC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{776709A5-90A6-42A1-A6D1-E8645DE0FDC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{776709A5-90A6-42A1-A6D1-E8645DE0FDC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{AA741F9E-955B-4CDB-9992-D712115CC8C7} = {FE626AAF-B83F-4F41-B88F-99BD65D1A2AA}
 		{D12E98DD-9CCC-490D-AA99-948E4463E694} = {FE626AAF-B83F-4F41-B88F-99BD65D1A2AA}
 		{6CAD06A0-312A-4EFE-A11C-978E412DBE09} = {FE626AAF-B83F-4F41-B88F-99BD65D1A2AA}
+		{776709A5-90A6-42A1-A6D1-E8645DE0FDC7} = {FE626AAF-B83F-4F41-B88F-99BD65D1A2AA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C06250C8-EAC4-44FE-B3E2-B7BE2C4DE1D9}
