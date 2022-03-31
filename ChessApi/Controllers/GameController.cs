@@ -2,6 +2,7 @@ using AutoMapper;
 using ChessApi.Dto;
 using ChessApi.Model;
 using ChessApi.Services;
+using ChessApi.Validators.Game;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChessApi.Controllers
@@ -33,7 +34,7 @@ namespace ChessApi.Controllers
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public IActionResult NewGame([FromBody] NewGameDto newGame)
+        public IActionResult NewGame([FromServices] NewGameValidator validator, [FromBody] NewGameDto newGame)
         {
             var game = _gameService.NewGame(newGame.Player1, newGame.Player2);
             return CreatedAtAction(nameof(GetGame), new { id = game.Id }, _mapper.Map<GameShortDto>(game));
@@ -60,7 +61,7 @@ namespace ChessApi.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult MovePiece(Guid id, [FromBody] MoveDto move)
+        public IActionResult MovePiece(Guid id, [FromBody]MoveDto move)
         {
             var from = CellPosition.FromString(move.From);
             var to = CellPosition.FromString(move.To);

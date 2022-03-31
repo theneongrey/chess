@@ -7,6 +7,7 @@ namespace ChessApi.Data
     {
         IEnumerable<User> GetUsers();
         User? GetUserById(Guid id);
+        bool UserExists(string id);
         User AddUser(string name);
         User? UpdateUser(Guid id, string name);
         bool DeleteUser(Guid id);

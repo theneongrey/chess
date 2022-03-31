@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using ChessApi.Dto;
-using ChessApi.Model;
+﻿using ChessApi.Model;
 
 namespace ChessApi.Data
 {
@@ -21,6 +19,11 @@ namespace ChessApi.Data
         public User? GetUserById(Guid id)
         {
             return _dataContext.Users!.FirstOrDefault(u => u.Id == id);
+        }
+
+        public bool UserExists(string name)
+        {
+            return _dataContext.Users!.Any(u => u.Name == name);
         }
 
         public User AddUser(string name)
