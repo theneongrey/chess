@@ -48,7 +48,7 @@
           <d:Url>https://www.google.de/</d:Url>
         </d:Links>
         <d:Kategorie>Projektverwaltung</d:Kategorie>
-        <d:Icon m:null="true"/>
+        <d:Icon m:null="Icons/Freigabe/Freigabe.png"/>
       </m:properties>
     </content>
   </entry>
@@ -97,7 +97,7 @@
           <d:Url>https://www.google.com</d:Url>
         </d:Links>
         <d:Kategorie>Projektverwaltung</d:Kategorie>
-        <d:Icon m:null="true"/>
+        <d:Icon m:null="Icons/Freigabe/Freigabe.png"/>
       </m:properties>
     </content>
   </entry>
@@ -146,7 +146,7 @@
           <d:Url>https://www.linkedin.com/feed/?trk=DACH-SEM_google-adwords_brand-ghp</d:Url>
         </d:Links>
         <d:Kategorie>Allgemeines</d:Kategorie>
-        <d:Icon m:null="true"/>
+        <d:Icon m:null="Icons/Freigabe/Freigabe.png"/>
       </m:properties>
     </content>
   </entry>
